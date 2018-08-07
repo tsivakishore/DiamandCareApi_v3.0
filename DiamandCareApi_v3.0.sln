@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiamandCare.Core", "DiamandCare.Core\DiamandCare.Core.csproj", "{85C62C55-C971-4392-B810-1CBD79181EAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiamandCare.WebApi", "DiamandCare.WebApi\DiamandCare.WebApi.csproj", "{F15D604D-DB8A-4EB2-B48A-E6DF226DD343}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{85C62C55-C971-4392-B810-1CBD79181EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85C62C55-C971-4392-B810-1CBD79181EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85C62C55-C971-4392-B810-1CBD79181EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85C62C55-C971-4392-B810-1CBD79181EAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15D604D-DB8A-4EB2-B48A-E6DF226DD343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15D604D-DB8A-4EB2-B48A-E6DF226DD343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15D604D-DB8A-4EB2-B48A-E6DF226DD343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15D604D-DB8A-4EB2-B48A-E6DF226DD343}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A839F599-1228-4517-9280-DEB00B0B7CEC}
+	EndGlobalSection
+EndGlobal

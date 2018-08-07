@@ -1,0 +1,294 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using DiamandCare.WebApi.Repository;
+using DiamandCare.WebApi.ViewModels;
+using DiamandCare.WebApi;
+using DiamandCare.WebApi.Models;
+using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using DiamandCare.Core;
+
+namespace DiamandCare.WebApi.Controllers
+{
+
+    [RoutePrefix("api/user")]
+    public class UserController : ApiController
+    {
+        private AuthRepository _repo = null;
+
+        public UserController(AuthRepository autRepisitory)
+        {
+            _repo = autRepisitory;
+        }
+
+        [Authorize]
+        [Route("registeruser")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> RegisterUser(User model)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.RegisterUser(model);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("getallusers")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<RegistrationViewModel>>> GetAllUsers()
+        {
+            //List<RegistrationViewModel> allUsers = null;
+            Tuple<bool, string, List<RegistrationViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetAllUsers();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("updateuser")] //UpdateUserDetails
+        [HttpPost]
+        public async Task<Tuple<bool, string>> UpdateUserDetails(RegistrationViewModel updateUser)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.UpdateUserDetails(updateUser);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("getuserrole")] //GetUserRole
+        [HttpPost]
+        public async Task<Tuple<bool, string, int>> GetUserRole(User updateUser)
+        {
+            Tuple<bool, string, int> result = null;
+            try
+            {
+                result = await _repo.GetUserRole(updateUser);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("getuserbyid")]//GetUsersDetailsByID
+        [HttpGet]
+        public Tuple<bool, string, User> GetUserDetailsByID()
+        {
+            Tuple<bool, string, User> result = null;
+            try
+            {
+                result = _repo.GetUserDetailsByID();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Route("getuserbyloginid")]//GetUsersDetailsByLoginID
+        [HttpGet]
+        public Tuple<bool, string, UserViewModel> GetUsersDetailsByLoginID()
+        {
+            Tuple<bool, string, UserViewModel> result = null;
+            try
+            {
+                result = _repo.GetUsersDetailsByLoginID();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("usersprofile")]
+        [HttpGet]
+        public Tuple<bool, string, UserProfileViewModel> GetUsersProfile()
+        {
+            Tuple<bool, string, UserProfileViewModel> result = null;
+            try
+            {
+                result = _repo.GetUsersProfile();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("updateuserprofile")] //UpdateUserProfile
+        [HttpPost]
+        public async Task<Tuple<bool, string, UserProfileViewModel>> UpdateUserProfile(UserProfileViewModel userProfile)
+        {
+            Tuple<bool, string, UserProfileViewModel> result = null;
+            try
+            {
+                result = await _repo.UpdateUserProfile(userProfile);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("useraddress")]
+        [HttpGet]
+        public Tuple<bool, string, AddressViewModel> GetUsersAddress()
+        {
+            Tuple<bool, string, AddressViewModel> result = null;
+            try
+            {
+                result = _repo.GetUsersAddress();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("updateuseraddress")] //UpdateUserAddress
+        [HttpPost]
+        public async Task<Tuple<bool, string, AddressViewModel>> UpdateUserAddress(AddressViewModel userAddress)
+        {
+            Tuple<bool, string, AddressViewModel> result = null;
+            try
+            {
+                result = await _repo.UpdateUserAddress(userAddress);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("changepassword")] //UpdateUserAddress
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ChangePassword(ForgetPasswordModel forgetPasswordModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.ChangePassword(forgetPasswordModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Route("getmenu")]
+        [HttpPost]
+        public async Task<Tuple<bool, string, List<MenuViewModel>>> GetMenu(UserViewModel userViewModel)
+        {
+            Tuple<bool, string, List<MenuViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetMenu(userViewModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Route("forgetpassword")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ForgetePassword(ForgetPasswordModel forgetPasswordModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.ForgetePassword(forgetPasswordModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Route("getusersandrole")] //GetUsers and Role
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<UsersRoleViewModel>>> GetUserAndRoles()
+        {
+            Tuple<bool, string, List<UsersRoleViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetUserAndRoles();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Route("updateuserrole")] //UpdateUserRole
+        [HttpPost]
+        public async Task<Tuple<bool, string>> UpdateUserRole(RegistrationViewModel obj)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.UpdateUserRole(obj);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Route("getroles")] //GetAllRoles
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<Role>>> GetAllRoles()
+        {
+            Tuple<bool, string, List<Role>> result = null;
+            try
+            {
+                result = await _repo.GetAllRoles();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+    }
+}

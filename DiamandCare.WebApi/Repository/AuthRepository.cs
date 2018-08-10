@@ -724,6 +724,34 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+
+        public Tuple<bool, string, UserNomineeDetailsViewModel> GetUsersNomineeDetails(int UserID)
+        {
+            Tuple<bool, string, UserNomineeDetailsViewModel> result = null;
+            UserNomineeDetailsViewModel userNomineeDetails = null;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", UserID);
+                    userNomineeDetails = con.QuerySingle<UserNomineeDetailsViewModel>("dbo.Select_UserNomineeDetails", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                if (userNomineeDetails != null && userNomineeDetails.UserID > 0)
+                    result = Tuple.Create(true, "", userNomineeDetails);
+                else
+                    result = Tuple.Create(false, "No details found.", userNomineeDetails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "No details found.", userNomineeDetails);
+            }
+            return result;
+        }
+
         public async Task<Tuple<bool, string, List<MenuViewModel>>> GetMenu(UserViewModel userViewModel)
         {
             Tuple<bool, string, List<MenuViewModel>> result = null;
@@ -892,6 +920,42 @@ namespace DiamandCare.WebApi.Repository
             return updateUserAddress;
         }
 
+        public async Task<Tuple<bool, string, UserNomineeDetailsViewModel>> AddOrModifyNomineeDetails(UserNomineeDetailsViewModel userNomineeDatails)
+        {
+            Tuple<bool, string, UserNomineeDetailsViewModel> updateUserNominee = null;
+            UserNomineeDetailsViewModel objUserNomineeDetailsViewModel = new UserNomineeDetailsViewModel();
+
+            try
+            {
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@NomineeID", userNomineeDatails.NomineeID);
+                    parameters.Add("@UserID", userNomineeDatails.UserID);
+                    parameters.Add("@NomineeName", userNomineeDatails.NomineeName);
+                    parameters.Add("@NomineeRelationshipID", userNomineeDatails.NomineeRelationshipID);
+                    parameters.Add("@NomineeAddress", userNomineeDatails.NomineeAddress);
+                    parameters.Add("@PhoneNumber", userNomineeDatails.PhoneNumber);
+                    parameters.Add("@CreatedBy", userNomineeDatails.UserID);
+                    parameters.Add("@NomineeRelations", userNomineeDatails.OtherRelationship);
+
+                    var userNomineeDetailsViewModel = await cxn.QueryAsync<UserNomineeDetailsViewModel>("dbo.InsertorUpdate_UserNomineeDetails", parameters, commandType: CommandType.StoredProcedure);
+                    objUserNomineeDetailsViewModel = userNomineeDetailsViewModel.FirstOrDefault();
+
+                    if (objUserNomineeDetailsViewModel != null)
+                        updateUserNominee = Tuple.Create(true, "User nominee details added/updated successfully.", objUserNomineeDetailsViewModel);
+                    else
+                        updateUserNominee = Tuple.Create(false, "Oops! User nominee details added/updatation failed.Please try again.", new UserNomineeDetailsViewModel());
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                updateUserNominee = Tuple.Create(false, "Oops! User nominee details added/updatation failed.Please try again.", new UserNomineeDetailsViewModel());
+            }
+
+            return updateUserNominee;
+        }
         public async Task<bool> AddRefreshToken(RefreshToken token)
         {
             try

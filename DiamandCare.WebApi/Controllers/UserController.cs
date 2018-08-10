@@ -195,6 +195,40 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("getnomineedetails")]
+        [HttpGet]
+        public Tuple<bool, string, UserNomineeDetailsViewModel> GetUsersNomineeDetails(int UserID)
+        {
+            Tuple<bool, string, UserNomineeDetailsViewModel> result = null;
+            try
+            {
+                result = _repo.GetUsersNomineeDetails(UserID);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("addupdatenomineedetails")] //Add Or Modify Nominee Details
+        [HttpPost]
+        public async Task<Tuple<bool, string, UserNomineeDetailsViewModel>> AddOrModifyNomineeDetails(UserNomineeDetailsViewModel userNomineeDatails)
+        {
+            Tuple<bool, string, UserNomineeDetailsViewModel> result = null;
+            try
+            {
+                result = await _repo.AddOrModifyNomineeDetails(userNomineeDatails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
         [Route("changepassword")] //UpdateUserAddress
         [HttpPost]
         public async Task<Tuple<bool, string>> ChangePassword(ForgetPasswordModel forgetPasswordModel)

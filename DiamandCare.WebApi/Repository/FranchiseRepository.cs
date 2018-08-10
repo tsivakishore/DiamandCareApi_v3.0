@@ -150,32 +150,37 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
-        public async Task<Tuple<bool, string, List<UserIDNameModel>>> GetUnderFranchiseDetails(int FranchiseTypeID)
+        public async Task<Tuple<bool, string, List<UserIDNameModel>,FranchiseMaster>> GetUnderFranchiseDetails(int FranchiseTypeID)
         {
-            Tuple<bool, string, List<UserIDNameModel>> result = null;
+            Tuple<bool, string, List<UserIDNameModel>, FranchiseMaster> result = null;
             List<UserIDNameModel> dataModel = new List<UserIDNameModel>();
-
+            FranchiseMaster fmaster = new FranchiseMaster();
             try
             {
                 var parameters = new DynamicParameters();
                 using (SqlConnection con = new SqlConnection(_dcDb))
                 {
-                    con.Open();
+                    //con.Open();
                     parameters.Add("@FranchiseTypeID", FranchiseTypeID, DbType.Int32);
-                    var list = await con.QueryAsync<UserIDNameModel>("[dbo].[Select_UnderFranchiseDetails]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    dataModel = list as List<UserIDNameModel>;
-                    con.Close();
+                    //var list = await con.QueryAsync<UserIDNameModel>("[dbo].[Select_UnderFranchiseDetails]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    //dataModel = list as List<UserIDNameModel>;
+                    //con.Close();
+                    using (var multi = await con.QueryMultipleAsync("[dbo].[Select_UnderFranchiseDetails]", parameters, commandType: CommandType.StoredProcedure))
+                    {
+                        dataModel = multi.Read<UserIDNameModel>().ToList();
+                        fmaster = multi.Read<FranchiseMaster>().SingleOrDefault();
+                    }
                 }
 
                 if (dataModel != null && dataModel.Count > 0)
-                    result = Tuple.Create(true, "", dataModel);
+                    result = Tuple.Create(true, "", dataModel,fmaster);
                 else
-                    result = Tuple.Create(false, "No records found", dataModel);
+                    result = Tuple.Create(false, "No records found", dataModel,fmaster);
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "", dataModel);
+                result = Tuple.Create(false, "", dataModel,fmaster);
             }
             return result;
         }

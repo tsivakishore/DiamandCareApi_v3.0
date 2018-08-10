@@ -139,7 +139,8 @@ namespace DiamandCare.WebApi.Repository
                         RegKeyStatus = x.RegKeyStatus,
                         CreatedBy = x.CreatedBy,
                         CreateDate = x.CreateDate,
-                        KeyType=x.KeyType
+                        KeyType=x.KeyType,
+                        KeyCost=x.KeyCost
                     }).ToList();
 
                     con.Close();

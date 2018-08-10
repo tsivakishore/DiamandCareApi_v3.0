@@ -95,9 +95,9 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("GetUnderFranchiseDetails")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<UserIDNameModel>>> GetUnderFranchiseDetails(int FranchiseTypeID)
+        public async Task<Tuple<bool, string, List<UserIDNameModel>,FranchiseMaster>> GetUnderFranchiseDetails(int FranchiseTypeID)
         {
-            Tuple<bool, string, List<UserIDNameModel>> result = null;
+            Tuple<bool, string, List<UserIDNameModel>, FranchiseMaster> result = null;
             try
             {
                 result = await _repo.GetUnderFranchiseDetails(FranchiseTypeID);

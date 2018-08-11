@@ -145,5 +145,40 @@ namespace DiamandCare.WebApi.Controllers
 
             return result;
         }
+        [Authorize]
+        [Route("GetFranchiseUsernameWalletByIDorName")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, Franchises, Wallet>> GetFranchiseUsernameWalletByIDorName(string DcIDorName)
+        {
+            Tuple<bool, string, Franchises, Wallet> result = null;
+            try
+            {
+                result = await _repo.GetFranchiseUsernameWalletByIDorName(DcIDorName);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("UpdateFranchiseWalletBalance")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> UpdateFranchiseWalletBalance(UpdateWallet obj)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.UpdateFranchiseWalletBalance(obj);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
     }
 }

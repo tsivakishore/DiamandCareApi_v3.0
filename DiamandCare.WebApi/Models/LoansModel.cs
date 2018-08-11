@@ -29,4 +29,6 @@ namespace DiamandCare.WebApi
         public decimal TDS { get; set; }
         public int ApproveOrRejectedBy { get; set; }
     }
+
+    
 }

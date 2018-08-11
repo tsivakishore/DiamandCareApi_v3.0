@@ -374,6 +374,39 @@ namespace DiamandCare.WebApi
 
             return approvedLoanResult;
         }
+
+        public async Task<Tuple<bool, string>> LoanTransferApprovedOrRejected(LoansModel approvedLoansStatusModel)
+        {
+            int approvedLoanStatus = -1;
+            Tuple<bool, string> approvedLoanResult = null;
+
+            try
+            {
+                using (SqlConnection cxn = new SqlConnection(_dvDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@LoanID", approvedLoansStatusModel.LoanID, DbType.Int32);
+                    parameters.Add("@UserID", approvedLoansStatusModel.UserID, DbType.Int32);
+                    parameters.Add("@TransferStatusID", approvedLoansStatusModel.TransferStatusID, DbType.Int32);
+                    parameters.Add("@TransferBy", UserID, DbType.Int32);
+
+                    approvedLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_LoanTransferStatus", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (approvedLoanStatus == 0)
+                        approvedLoanResult = Tuple.Create(true, "You have changed  transfer status approved/rejected successfully.");
+                    else
+                        approvedLoanResult = Tuple.Create(false, "Oops! There has been an error while transfer status approve/reject loan.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                approvedLoanResult = Tuple.Create(false, "Oops! There has been an error while transfer status approve/reject loan.");
+            }
+
+            return approvedLoanResult;
+        }
+
         public async Task<Tuple<bool, string, List<LoanDetailsViewModel>>> GetLoanDetails(int LoanID)
         {
             Tuple<bool, string, List<LoanDetailsViewModel>> result = null;

@@ -339,6 +339,23 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("LoanTransferApprovedOrRejected")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> LoanTransferApprovedOrRejected(LoansModel obj)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repoLoans.LoanTransferApprovedOrRejected(obj);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
         [Route("feereimbursement")]
         [HttpPost]
         public async Task<Tuple<bool, string>> ApplyFeeReimbursement()

@@ -150,7 +150,7 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
-        public async Task<Tuple<bool, string, List<UserIDNameModel>,FranchiseMaster>> GetUnderFranchiseDetails(int FranchiseTypeID)
+        public async Task<Tuple<bool, string, List<UserIDNameModel>, FranchiseMaster>> GetUnderFranchiseDetails(int FranchiseTypeID)
         {
             Tuple<bool, string, List<UserIDNameModel>, FranchiseMaster> result = null;
             List<UserIDNameModel> dataModel = new List<UserIDNameModel>();
@@ -173,14 +173,14 @@ namespace DiamandCare.WebApi.Repository
                 }
 
                 if (dataModel != null && dataModel.Count > 0)
-                    result = Tuple.Create(true, "", dataModel,fmaster);
+                    result = Tuple.Create(true, "", dataModel, fmaster);
                 else
-                    result = Tuple.Create(false, "No records found", dataModel,fmaster);
+                    result = Tuple.Create(false, "No records found", dataModel, fmaster);
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "", dataModel,fmaster);
+                result = Tuple.Create(false, "", dataModel, fmaster);
             }
             return result;
         }
@@ -252,6 +252,40 @@ namespace DiamandCare.WebApi.Repository
             {
                 ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstDetails);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, Franchises, Wallet>> GetFranchiseUsernameWalletByIDorName(string DcIDorName)
+        {
+            Tuple<bool, string, Franchises, Wallet> result = null;
+            Franchises franchisesDetails = new Franchises();
+            Wallet walletDetails = new Wallet();
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@DcIDorName", DcIDorName);
+                    con.Open();
+
+                    using (var multi = await con.QueryMultipleAsync("dbo.Select_FranchiseIDandName_Wallet", parameters, commandType: CommandType.StoredProcedure))
+                    {
+                        franchisesDetails = multi.Read<Franchises>().Single();
+                        walletDetails = multi.Read<Wallet>().Single();
+                    }
+                    con.Close();
+                }
+                if (franchisesDetails != null)
+                    result = Tuple.Create(true, "", franchisesDetails, walletDetails);
+                else
+                    result = Tuple.Create(false, "No records found", franchisesDetails, walletDetails);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+                result = Tuple.Create(false, "No records found", franchisesDetails, walletDetails);
             }
             return result;
         }

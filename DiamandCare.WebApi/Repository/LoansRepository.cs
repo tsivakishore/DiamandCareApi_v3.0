@@ -89,7 +89,6 @@ namespace DiamandCare.WebApi
 
             return applyLoanResult;
         }
-
         public async Task<Tuple<bool, string>> ApplyHomeLoan(LoansModel applyHLLoansModel)
         {
             int applyLoanStatus = -1;

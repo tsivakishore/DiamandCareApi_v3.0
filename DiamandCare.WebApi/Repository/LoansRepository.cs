@@ -402,10 +402,10 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-        public async Task<Tuple<bool, string, List<LoansModel>>> GetApproveLoanDetailsByUserID()
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetApproveLoanDetailsByUserID()
         {
-            Tuple<bool, string, List<LoansModel>> result = null;
-            List<LoansModel> lstApprovedLoanDetails = new List<LoansModel>();
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstApprovedLoanDetails = new List<LoansViewModel>();
             var parameters = new DynamicParameters();
             try
             {
@@ -413,8 +413,8 @@ namespace DiamandCare.WebApi
                 {
                     con.Open();
                     parameters.Add("@UserID", UserID, DbType.Int32);
-                    var list = await con.QueryAsync<LoansModel>("[dbo].[Select_Loans_Approved]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstApprovedLoanDetails = list as List<LoansModel>;
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Approved]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstApprovedLoanDetails = list as List<LoansViewModel>;
                     con.Close();
                 }
                 if (lstApprovedLoanDetails != null && lstApprovedLoanDetails.Count > 0)
@@ -430,10 +430,10 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-        public async Task<Tuple<bool, string, List<LoansModel>>> GetPaidLoanDetailsByUserID()
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetRejectedLoanDetailsByUserID()
         {
-            Tuple<bool, string, List<LoansModel>> result = null;
-            List<LoansModel> lstApprovedLoanDetails = new List<LoansModel>();
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstApprovedLoanDetails = new List<LoansViewModel>();
             var parameters = new DynamicParameters();
             try
             {
@@ -441,8 +441,8 @@ namespace DiamandCare.WebApi
                 {
                     con.Open();
                     parameters.Add("@UserID", UserID, DbType.Int32);
-                    var list = await con.QueryAsync<LoansModel>("[dbo].[Select_Loans_Paid]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstApprovedLoanDetails = list as List<LoansModel>;
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Rejected]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstApprovedLoanDetails = list as List<LoansViewModel>;
                     con.Close();
                 }
                 if (lstApprovedLoanDetails != null && lstApprovedLoanDetails.Count > 0)
@@ -459,10 +459,10 @@ namespace DiamandCare.WebApi
         }
 
 
-        public async Task<Tuple<bool, string, List<LoansModel>>> GetNotApproveLoanDetailsByUserID()
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetPaidLoanDetailsByUserID()
         {
-            Tuple<bool, string, List<LoansModel>> result = null;
-            List<LoansModel> lstNotApprovedLoanDetails = new List<LoansModel>();
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstApprovedLoanDetails = new List<LoansViewModel>();
             var parameters = new DynamicParameters();
             try
             {
@@ -470,8 +470,65 @@ namespace DiamandCare.WebApi
                 {
                     con.Open();
                     parameters.Add("@UserID", UserID, DbType.Int32);
-                    var list = await con.QueryAsync<LoansModel>("[dbo].[Select_Loans_NotApproved]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstNotApprovedLoanDetails = list as List<LoansModel>;
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Paid]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstApprovedLoanDetails = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstApprovedLoanDetails != null && lstApprovedLoanDetails.Count > 0)
+                    result = Tuple.Create(true, "", lstApprovedLoanDetails);
+                else
+                    result = Tuple.Create(false, "No records found", lstApprovedLoanDetails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstApprovedLoanDetails);
+            }
+            return result;
+        }
+
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetActiveLoanDetailsByUserID()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstApprovedLoanDetails = new List<LoansViewModel>();
+            var parameters = new DynamicParameters();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Active]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstApprovedLoanDetails = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstApprovedLoanDetails != null && lstApprovedLoanDetails.Count > 0)
+                    result = Tuple.Create(true, "", lstApprovedLoanDetails);
+                else
+                    result = Tuple.Create(false, "No records found", lstApprovedLoanDetails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstApprovedLoanDetails);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetNotApproveLoanDetailsByUserID()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstNotApprovedLoanDetails = new List<LoansViewModel>();
+            var parameters = new DynamicParameters();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_NotApproved]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstNotApprovedLoanDetails = list as List<LoansViewModel>;
                     con.Close();
                 }
                 if (lstNotApprovedLoanDetails != null && lstNotApprovedLoanDetails.Count > 0)
@@ -487,17 +544,17 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-        public async Task<Tuple<bool, string, List<LoansModel>>> GetApproveLoanDetails()
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetApproveLoanDetails()
         {
-            Tuple<bool, string, List<LoansModel>> result = null;
-            List<LoansModel> lstApprovedLoanDetails = new List<LoansModel>();
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstApprovedLoanDetails = new List<LoansViewModel>();
             try
             {
                 using (SqlConnection con = new SqlConnection(_dvDb))
                 {
                     con.Open();
-                    var list = await con.QueryAsync<LoansModel>("[dbo].[Select_Loans_Approved]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstApprovedLoanDetails = list as List<LoansModel>;
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Approved]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstApprovedLoanDetails = list as List<LoansViewModel>;
                     con.Close();
                 }
                 if (lstApprovedLoanDetails != null && lstApprovedLoanDetails.Count > 0)
@@ -513,17 +570,43 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-        public async Task<Tuple<bool, string, List<LoansModel>>> GetNotApproveLoanDetails()
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetRejectedLoanDetails()
         {
-            Tuple<bool, string, List<LoansModel>> result = null;
-            List<LoansModel> lstNotApprovedLoanDetails = new List<LoansModel>();
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstApprovedLoanDetails = new List<LoansViewModel>();
             try
             {
                 using (SqlConnection con = new SqlConnection(_dvDb))
                 {
                     con.Open();
-                    var list = await con.QueryAsync<LoansModel>("[dbo].[Select_Loans_NotApproved]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstNotApprovedLoanDetails = list as List<LoansModel>;
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Rejected]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstApprovedLoanDetails = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstApprovedLoanDetails != null && lstApprovedLoanDetails.Count > 0)
+                    result = Tuple.Create(true, "", lstApprovedLoanDetails);
+                else
+                    result = Tuple.Create(false, "No records found", lstApprovedLoanDetails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstApprovedLoanDetails);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetNotApproveLoanDetails()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstNotApprovedLoanDetails = new List<LoansViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_NotApproved]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstNotApprovedLoanDetails = list as List<LoansViewModel>;
                     con.Close();
                 }
                 if (lstNotApprovedLoanDetails != null && lstNotApprovedLoanDetails.Count > 0)
@@ -535,6 +618,168 @@ namespace DiamandCare.WebApi
             {
                 ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstNotApprovedLoanDetails);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferPending()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstLoans = new List<LoansViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_AmountTransferPending]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoans = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstLoans != null && lstLoans.Count > 0)
+                    result = Tuple.Create(true, "", lstLoans);
+                else
+                    result = Tuple.Create(false, "No records found", lstLoans);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstLoans);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransfered()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstLoans = new List<LoansViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_AmountTransfered]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoans = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstLoans != null && lstLoans.Count > 0)
+                    result = Tuple.Create(true, "", lstLoans);
+                else
+                    result = Tuple.Create(false, "No records found", lstLoans);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstLoans);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferRejected()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstLoans = new List<LoansViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_AmountTransferRejected]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoans = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstLoans != null && lstLoans.Count > 0)
+                    result = Tuple.Create(true, "", lstLoans);
+                else
+                    result = Tuple.Create(false, "No records found", lstLoans);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstLoans);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferPendingByUserID()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstLoans = new List<LoansViewModel>();
+            try
+            {
+                var spParams = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    spParams.Add("@UserID", UserID, DbType.Int32);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_AmountTransferPending]", spParams, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoans = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstLoans != null && lstLoans.Count > 0)
+                    result = Tuple.Create(true, "", lstLoans);
+                else
+                    result = Tuple.Create(false, "No records found", lstLoans);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstLoans);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferedByUserID()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstLoans = new List<LoansViewModel>();
+            try
+            {
+                var spParams = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    spParams.Add("@UserID", UserID, DbType.Int32);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_AmountTransfered]", spParams, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoans = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstLoans != null && lstLoans.Count > 0)
+                    result = Tuple.Create(true, "", lstLoans);
+                else
+                    result = Tuple.Create(false, "No records found", lstLoans);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstLoans);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferRejectedByUserID()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstLoans = new List<LoansViewModel>();
+            try
+            {
+                var spParams = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    spParams.Add("@UserID", UserID, DbType.Int32);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_AmountTransferRejected]", spParams, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoans = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstLoans != null && lstLoans.Count > 0)
+                    result = Tuple.Create(true, "", lstLoans);
+                else
+                    result = Tuple.Create(false, "No records found", lstLoans);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstLoans);
             }
             return result;
         }

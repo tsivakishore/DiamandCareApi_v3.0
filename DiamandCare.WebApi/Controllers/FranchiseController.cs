@@ -165,7 +165,7 @@ namespace DiamandCare.WebApi.Controllers
 
         [Authorize]
         [Route("UpdateFranchiseWalletBalance")]
-        [HttpGet]
+        [HttpPost]
         public async Task<Tuple<bool, string>> UpdateFranchiseWalletBalance(UpdateWallet obj)
         {
             Tuple<bool, string> result = null;

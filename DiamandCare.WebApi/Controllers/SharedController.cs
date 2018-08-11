@@ -93,6 +93,24 @@ namespace DiamandCare.WebApi.Controllers
             return result;
         }
 
+        [Route("loantransferstatus")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoanTransferStatus>>> GetLoanTransferStatus()
+        {
+            Tuple<bool, string, List<LoanTransferStatus>> result = null;
+
+            try
+            {
+                result = await _srepo.GetLoanTransferStatus();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
         [Authorize]
         [Route("nomineerelations")]
         [HttpGet]

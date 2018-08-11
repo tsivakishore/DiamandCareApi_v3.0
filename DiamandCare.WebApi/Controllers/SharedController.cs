@@ -140,6 +140,8 @@ namespace DiamandCare.WebApi.Controllers
             try
             {
                 result = await _srepo.SendSMS(resKey.PhoneNumber, resKey.RegKey);
+                if (result.Item1)
+                    await _srepo.UpdatePhonenumber(resKey.PhoneNumber, resKey.RegKey);
             }
             catch (Exception ex)
             {

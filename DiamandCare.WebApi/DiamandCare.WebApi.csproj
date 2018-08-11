@@ -195,6 +195,7 @@
     <Compile Include="Models\LoanEarnsModel.cs" />
     <Compile Include="Models\LoansModel.cs" />
     <Compile Include="Models\LoanStatusModel.cs" />
+    <Compile Include="Models\LoanTransferStatus.cs" />
     <Compile Include="Models\MasterChargesModel.cs" />
     <Compile Include="Models\MenuCustomModel.cs" />
     <Compile Include="Models\ModeofTransfer.cs" />

@@ -147,6 +147,38 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
+        public async Task<Tuple<bool, string, List<LoanTransferStatus>>> GetLoanTransferStatus()
+        {
+            Tuple<bool, string, List<LoanTransferStatus>> result = null;
+            List<LoanTransferStatus> lstLoanTransferStatus = new List<LoanTransferStatus>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<LoanTransferStatus>("[dbo].[Select_TransferStatusTypes]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoanTransferStatus = list as List<LoanTransferStatus>;
+
+                    lstLoanTransferStatus = list.Select(x => new LoanTransferStatus
+                    {
+                        ID = x.ID,
+                        Status = x.Status
+                    }).ToList();
+
+                    con.Close();
+                }
+                if (lstLoanTransferStatus != null && lstLoanTransferStatus.Count > 0)
+                    result = Tuple.Create(true, "", lstLoanTransferStatus);
+                else
+                    result = Tuple.Create(false, "No records found", lstLoanTransferStatus);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstLoanTransferStatus);
+            }
+            return result;
+        }
         public async Task<Tuple<bool, string, List<NomineeRelationshipViewModel>>> GetNomineeRelations()
         {
             Tuple<bool, string, List<NomineeRelationshipViewModel>> result = null;

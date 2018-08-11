@@ -15,4 +15,10 @@ namespace DiamandCare.WebApi.Models
         public int UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
     }
+    public class UpdateWallet
+    {
+        public int UserID { get; set; }
+        public decimal AddBalance { get; set; }       
+        public int CreatedBy { get; set; }       
+    }
 }

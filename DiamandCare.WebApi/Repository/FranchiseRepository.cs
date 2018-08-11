@@ -289,5 +289,37 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+
+        public async Task<Tuple<bool, string>> UpdateFranchiseWalletBalance(UpdateWallet obj)
+        {
+            Tuple<bool, string> result = null;
+            int status = -1;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", obj.UserID, DbType.Int32);
+                    parameters.Add("@AddBalance", obj.AddBalance, DbType.Decimal);                 
+                    parameters.Add("@CreatedBy", userID, DbType.Int32);
+
+                    status = await cxn.ExecuteScalarAsync<int>("dbo.Update_Franchise_WalletBalance", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (status == 0)
+                        result = Tuple.Create(true, "You have added balance successfully.");
+                    else
+                        result = Tuple.Create(false, "Oops! There has been an error while adding balance to wallet.");
+                  
+                }               
+            }
+            catch (Exception ex)
+            {
+                // ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! There has been an error while adding balance to wallet.Please try again.");
+            }
+
+            return result;
+        }
     }
 }

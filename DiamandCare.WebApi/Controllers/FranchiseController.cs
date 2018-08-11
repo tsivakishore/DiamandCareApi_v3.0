@@ -162,5 +162,23 @@ namespace DiamandCare.WebApi.Controllers
 
             return result;
         }
+
+        [Authorize]
+        [Route("UpdateFranchiseWalletBalance")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> UpdateFranchiseWalletBalance(UpdateWallet obj)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.UpdateFranchiseWalletBalance(obj);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
     }
 }

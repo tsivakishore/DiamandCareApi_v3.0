@@ -251,27 +251,58 @@ namespace DiamandCare.WebApi.Repository
         public async Task<Tuple<bool, string>> SendSMS(string PhoneNumber, string RegKey)
         {
             Tuple<bool, string> result = null;
+            string msgBody = "Your one time registration key: " + RegKey;
 
             string res = string.Empty;
             try
             {
-                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username=sivakishore&password=1174306098&sendername=SFEOrg&mobileno=" + PhoneNumber + "&message=" + RegKey;
+                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username=sivakishore&password=1174306098&sendername=SFEOrg&mobileno=" + PhoneNumber + "&message=" + msgBody;
                 res = getHTTP(url.Trim());
                 if (res.Contains("Your message is successfully sent"))
                 {
                     result = Tuple.Create(true, "Sent secret key successfully.");
                 }
                 else
-                    result = Tuple.Create(true, "Sent secret key failed.");
+                    result = Tuple.Create(false, "Sent secret key failed.");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "");
+                result = Tuple.Create(false, "Sent secret key failed.");
             }
             return result;
         }
 
+        public async Task<Tuple<bool, string>> UpdatePhonenumber(string PhoneNumber, string RegKey)
+        {
+            int updatedStatus = -1;
+            Tuple<bool, string> updatePhonenumber = null;
+
+            try
+            {
+                using (SqlConnection cxn = new SqlConnection(_dvDb))
+                {
+                    var parameters = new DynamicParameters();
+
+                    parameters.Add("@RegKey", RegKey);
+                    parameters.Add("@PhoneNumber", PhoneNumber, DbType.String);
+
+                    updatedStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_RegKeyPhonenumber", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (updatedStatus == 0)
+                        updatePhonenumber = Tuple.Create(true, "");
+                    else
+                        updatePhonenumber = Tuple.Create(false, "");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                updatePhonenumber = Tuple.Create(false, "");
+            }
+
+            return updatePhonenumber;
+        }
         public async Task<Tuple<bool, string, string>> VerifySecretKey(RegisterKey obj)
         {
             Tuple<bool, string, string> objKey = null;

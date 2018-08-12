@@ -25,6 +25,7 @@ namespace DiamandCare.WebApi.Repository
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<ApplicationRole> _roleManager;
         BaseController _baseControler = null;
+        int userID;
 
         private string _dcDb = Settings.Default.DiamandCareConnection;
 
@@ -33,6 +34,8 @@ namespace DiamandCare.WebApi.Repository
             _ctx = new AuthContext();
             _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_ctx));
             _roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(_ctx));
+
+            userID = Helper.FindUserByID().UserID;
 
             //_userManager.FindAsync("", "");
         }
@@ -1003,6 +1006,103 @@ namespace DiamandCare.WebApi.Repository
             return refreshTokens;
         }
 
+        public async Task<Tuple<bool, string>> UpdateLoanWaiveoff(int UserID, bool LoanWaiveoff)
+        {
+            Tuple<bool, string> result = null;
+            int status = -1;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+                    parameters.Add("@LoanWaiveoff", LoanWaiveoff, DbType.Boolean);
+                    parameters.Add("@CreatedBy", userID, DbType.Int32);
+
+                    status = await cxn.ExecuteScalarAsync<int>("dbo.Update_LoanWaiveOffStatus", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (status == 0)
+                        result = Tuple.Create(true, "Your Loan Waivedoff successfully.");
+                    else
+                        result = Tuple.Create(false, "Oops! There has been an error while Loan Waiveoff.");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                // ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! There has been an error while Loan Waiveoff.Please try again.");
+            }
+
+            return result;
+        }
+        public async Task<Tuple<bool, string, UserIDNameModel, MasterCharges>> getfreetopaiduserdetails(string DcIDorName)
+        {
+            Tuple<bool, string, UserIDNameModel, MasterCharges> result = null;
+            UserIDNameModel dataModel = new UserIDNameModel();
+            MasterCharges masterCharges = new MasterCharges();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    con.Open();
+                    parameters.Add("@DcIDorName", DcIDorName, DbType.String);
+                    using (var multi = await con.QueryMultipleAsync("[dbo].[Select_UsernameWithFreeKeyByDCIDorName]", parameters, commandType: CommandType.StoredProcedure))
+                    {
+                        dataModel = multi.Read<UserIDNameModel>().Single();
+                        masterCharges = multi.Read<MasterCharges>().Single();
+                    }
+                }
+
+                if (dataModel.UserName != null)
+                {
+                    result = Tuple.Create(true, "", dataModel, masterCharges);
+                }
+                else
+                    result = Tuple.Create(false, "No records found", dataModel, masterCharges);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "No records found", dataModel, masterCharges);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string>> updatefreetopaidkeydetails(int UserID, decimal KeyCost)
+        {
+            Tuple<bool, string> result = null;
+            int status = -1;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+                    parameters.Add("@KeyCost", KeyCost, DbType.Decimal);
+                    parameters.Add("@CreatedBy", userID, DbType.Int32);
+
+                    status = await cxn.ExecuteScalarAsync<int>("dbo.Update_UserStatus_FreetoPaidKey", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (status == 0)
+                        result = Tuple.Create(true, "Your Free to Paid Key Updated successfully.");
+                    else
+                        result = Tuple.Create(false, "Oops! There has been an error while Updating Free to Paid Key.");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                // ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! There has been an error while Updating Free to Paid Key.Please try again.");
+            }
+
+            return result;
+        }
         public void Dispose()
         {
             _roleManager.Dispose();

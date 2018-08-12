@@ -67,6 +67,23 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("UpdateUserLoanPayment")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> UpdateUserLoanPayment(int UserID, int LoanID, decimal AmountToPay)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repoLoans.UpdateUserLoanPayment(UserID, LoanID, AmountToPay);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
         [Route("getapprovedloandetailsuserid")] //By User id
         [HttpGet]
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetApproveLoanDetailsByUserID()
@@ -151,7 +168,7 @@ namespace DiamandCare.WebApi.Controllers
             return result;
         }
 
-        
+
 
         [Authorize]
         [Route("getapprovedloandetails")] //All user loan details

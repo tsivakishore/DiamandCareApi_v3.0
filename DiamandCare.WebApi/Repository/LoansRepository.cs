@@ -435,6 +435,36 @@ namespace DiamandCare.WebApi
             return result;
         }
 
+        public async Task<Tuple<bool, string>> UpdateUserLoanPayment(int userID, int LoanID, decimal AmountToPay)
+        {
+            Tuple<bool, string> result = null;
+            int updatedStatus = -1;
+            var parameters = new DynamicParameters();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    parameters.Add("@LoanID", LoanID, DbType.Int32);
+                    parameters.Add("@UserID", userID, DbType.Int32);
+                    parameters.Add("@AmountToPay", AmountToPay, DbType.Decimal);
+                    parameters.Add("@CreatedBy", UserID, DbType.Int32);
+                    updatedStatus = await con.ExecuteScalarAsync<int>("[dbo].[Update_Loan_PayAmount]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+
+                    con.Close();
+                }
+                if (updatedStatus == 0)
+                    result = Tuple.Create(true, "Loan payment is successfull.");
+                else
+                    result = Tuple.Create(false, "Oops! Update loan payment failed. Please try again.");
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! Update loan payment failed. Please try again.");
+            }
+            return result;
+        }
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetApproveLoanDetailsByUserID()
         {
             Tuple<bool, string, List<LoansViewModel>> result = null;

@@ -324,5 +324,57 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+        [Authorize]
+        [Route("updateloanwaiveoff")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> UpdateLoanWaiveoff(int UserID, bool LoanWaiveoff)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.UpdateLoanWaiveoff(UserID, LoanWaiveoff);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+        [Authorize]
+        [Route("getfreetopaiduserdetails")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, UserIDNameModel, MasterCharges>> getfreetopaiduserdetails(string DcIDorName)
+        {
+            Tuple<bool, string, UserIDNameModel, MasterCharges> result = null;
+            try
+            {
+                result = await _repo.getfreetopaiduserdetails(DcIDorName);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("updatefreetopaidkeydetails")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> updatefreetopaidkeydetails(int UserID, decimal KeyCost)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.updatefreetopaidkeydetails(UserID, KeyCost);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
     }
 }

@@ -286,8 +286,9 @@ namespace DiamandCare.WebApi
         public const string DISPLAY_MESSAGE_8 = "Previous Emergency loan payment not done.";
         public const string DISPLAY_MESSAGE_9 = "Fee Reimbursement already applied.";
         public const string DISPLAY_MESSAGE_10 = "Prepaid loan can't be applied.";
-        public const string DISPLAY_MESSAGE_11 = "Your ID was renewed, please apply loans with new user. ";
-        public const string DISPLAY_MESSAGE_12 = "User is on hold, Please contact administrator. ";
-        public const string DISPLAY_MESSAGE_13 = "Please fill the bank details ";
+        public const string DISPLAY_MESSAGE_11 = "Your ID was renewed, please apply loans with new user.";
+        public const string DISPLAY_MESSAGE_12 = "User is on hold, Please contact administrator.";
+        public const string DISPLAY_MESSAGE_13 = "Please fill the bank details.";
+        public const string DISPLAY_MESSAGE_14 = "Loans are not exist to Prepaid.";
     }
 }

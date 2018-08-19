@@ -152,6 +152,23 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("GetActiveLoanDetailsByUserNameorDCID")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetActiveLoanDetailsByUserNameorDCID(string DcIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.GetActiveLoanDetailsByUserNameorDCID(DcIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
         [Route("GetPaidLoanDetailsByUserID")]
         [HttpGet]
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetPaidLoanDetailsByUserID()
@@ -168,7 +185,39 @@ namespace DiamandCare.WebApi.Controllers
             return result;
         }
 
+        [Authorize]
+        [Route("GetPaidLoanDetails")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetPaidLoanDetails()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.GetPaidLoanDetails();
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
 
+        [Authorize]
+        [Route("GetPaidLoanDetailsByUserNameorDCID")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetPaidLoanDetailsByUserNameorDCID(string DcIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.GetPaidLoanDetailsByUserNameorDCID(DcIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
 
         [Authorize]
         [Route("getapprovedloandetails")] //All user loan details

@@ -77,6 +77,8 @@ namespace DiamandCare.WebApi
                         applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
                     else if (applyLoanStatus == -13)
                         applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
+                    else if (applyLoanStatus == -14)
+                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
                     else
                         applyLoanResult = Tuple.Create(false, "Oops! Personal loan applied failed.");
                 }
@@ -138,6 +140,8 @@ namespace DiamandCare.WebApi
                         applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
                     else if (applyLoanStatus == -13)
                         applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
+                    else if (applyLoanStatus == -14)
+                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
                     else
                         applyHomeResult = Tuple.Create(false, "Oops! Home loan applied failed.");
                 }
@@ -201,6 +205,8 @@ namespace DiamandCare.WebApi
                         applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
                     else if (applyLoanStatus == -13)
                         applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
+                    else if (applyLoanStatus == -14)
+                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
                     else
                         applyFeeReimbursementResult = Tuple.Create(false, "Oops! Fee reimbursement applied failed.");
                 }
@@ -265,6 +271,8 @@ namespace DiamandCare.WebApi
                         applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
                     else if (applyLoanStatus == -13)
                         applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
+                    else if (applyLoanStatus == -14)
+                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
                     else
                         applyHealthBenefitResult = Tuple.Create(false, "Oops! Health benefit applied failed.");
                 }
@@ -329,6 +337,8 @@ namespace DiamandCare.WebApi
                         applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
                     else if (applyLoanStatus == -13)
                         applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
+                    else if (applyLoanStatus == -14)
+                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
                     else
                         applyRiskBenefitsResult = Tuple.Create(false, "Oops! Risk benefit applied failed.");
                 }
@@ -521,7 +531,6 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetPaidLoanDetailsByUserID()
         {
             Tuple<bool, string, List<LoansViewModel>> result = null;
@@ -550,7 +559,58 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetPaidLoanDetails()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstUserPaidLoanDetails = new List<LoansViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Users_Loans_Paid]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstUserPaidLoanDetails = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstUserPaidLoanDetails != null && lstUserPaidLoanDetails.Count > 0)
+                    result = Tuple.Create(true, "", lstUserPaidLoanDetails);
+                else
+                    result = Tuple.Create(false, "No records found", lstUserPaidLoanDetails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstUserPaidLoanDetails);
+            }
+            return result;
+        }
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetPaidLoanDetailsByUserNameorDCID(string DcIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstUserPaidLoanDetails = new List<LoansViewModel>();
+            var parameters = new DynamicParameters();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    parameters.Add("@DcIDorName", DcIDorName, DbType.String);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Paid_by_UserNameorDCID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstUserPaidLoanDetails = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstUserPaidLoanDetails != null && lstUserPaidLoanDetails.Count > 0)
+                    result = Tuple.Create(true, "", lstUserPaidLoanDetails);
+                else
+                    result = Tuple.Create(false, "No records found", lstUserPaidLoanDetails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstUserPaidLoanDetails);
+            }
+            return result;
+        }
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetActiveLoanDetailsByUserID()
         {
             Tuple<bool, string, List<LoansViewModel>> result = null;
@@ -577,6 +637,33 @@ namespace DiamandCare.WebApi
             return result;
         }
 
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetActiveLoanDetailsByUserNameorDCID(string DcIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstUserActiveLoans = new List<LoansViewModel>();
+            var parameters = new DynamicParameters();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    parameters.Add("@DcIDorName", DcIDorName, DbType.String);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Active_By_DCIDorUserName]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstUserActiveLoans = list as List<LoansViewModel>;
+                    con.Close();
+                }
+                if (lstUserActiveLoans != null && lstUserActiveLoans.Count > 0)
+                    result = Tuple.Create(true, "", lstUserActiveLoans);
+                else
+                    result = Tuple.Create(false, "No records found", lstUserActiveLoans);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstUserActiveLoans);
+            }
+            return result;
+        }
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetNotApproveLoanDetailsByUserID()
         {
             Tuple<bool, string, List<LoansViewModel>> result = null;

@@ -486,7 +486,7 @@ namespace DiamandCare.WebApi
                 {
                     con.Open();
                     parameters.Add("@UserID", UserID, DbType.Int32);
-                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Approved]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Approved_by_UserID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
                     lstApprovedLoanDetails = list as List<LoansViewModel>;
                     con.Close();
                 }
@@ -514,7 +514,7 @@ namespace DiamandCare.WebApi
                 {
                     con.Open();
                     parameters.Add("@UserID", UserID, DbType.Int32);
-                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Rejected]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Rejected_By_UserID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
                     lstApprovedLoanDetails = list as List<LoansViewModel>;
                     con.Close();
                 }
@@ -702,7 +702,7 @@ namespace DiamandCare.WebApi
                 {
                     con.Open();
                     parameters.Add("@UserID", UserID, DbType.Int32);
-                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_NotApproved]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_NotApproved_By_UserID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
                     lstNotApprovedLoanDetails = list as List<LoansViewModel>;
                     con.Close();
                 }

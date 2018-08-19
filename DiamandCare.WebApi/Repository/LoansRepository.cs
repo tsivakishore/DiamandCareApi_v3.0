@@ -555,14 +555,12 @@ namespace DiamandCare.WebApi
         {
             Tuple<bool, string, List<LoansViewModel>> result = null;
             List<LoansViewModel> lstApprovedLoanDetails = new List<LoansViewModel>();
-            var parameters = new DynamicParameters();
             try
             {
                 using (SqlConnection con = new SqlConnection(_dvDb))
                 {
                     con.Open();
-                    parameters.Add("@UserID", UserID, DbType.Int32);
-                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Active]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_Active]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
                     lstApprovedLoanDetails = list as List<LoansViewModel>;
                     con.Close();
                 }

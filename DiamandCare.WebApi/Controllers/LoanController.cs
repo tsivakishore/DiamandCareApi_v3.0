@@ -133,7 +133,23 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+        [Authorize]
+        [Route("GetRejectedLoanDetailsByDCIDorUserName")] //By User id
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetRejectedLoanDetailsByDCIDorUserName(string DCIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
 
+                result = await _repoLoans.GetRejectedLoanDetailsByDCIDorUserName(DCIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
         [Authorize]
         [Route("GetActiveLoanDetailsByUserID")]
         [HttpGet]
@@ -237,6 +253,57 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("getapprovedloandetailsByDCIDorName")] //All user loan details
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> getapprovedloandetailsByDCIDorName(string DCIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.getapprovedloandetailsByDCIDorName(DCIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("getpendingloandetailsByDCIDorName")] //All user loan details
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> getpendingloandetailsByDCIDorName(string DCIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.getpendingloandetailsByDCIDorName(DCIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("getRejectedLoanDetailsDCIDorName")] //All user loan details
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> getRejectedLoanDetailsDCIDorName(string DCIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.getRejectedLoanDetailsDCIDorName(DCIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
         [Route("GetRejectedLoanDetails")]//All user loan details
         [HttpGet]
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetRejectedLoanDetails()
@@ -271,6 +338,54 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("GetLoansAmountTransferPendingByDCIDorName")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferPendingByDCIDorName(string DCIDorName)
+        {
+          Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.GetLoansAmountTransferPendingByDCIDorName(DCIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+        [Authorize]
+        [Route("GetLoansAmountTransferedByDCIDorName")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferedByDCIDorName(string DCIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.GetLoansAmountTransferedByDCIDorName(DCIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+        [Authorize]
+        [Route("GetLoansAmountTransferRejectedByDCIDorName")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferRejectedByDCIDorName(string DCIDorName)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.GetLoansAmountTransferRejectedByDCIDorName(DCIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+        [Authorize]
         [Route("GetLoansAmountTransferPending")]
         [HttpGet]
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferPending()
@@ -286,7 +401,6 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
-
         [Authorize]
         [Route("GetLoansAmountTransfered")]
         [HttpGet]

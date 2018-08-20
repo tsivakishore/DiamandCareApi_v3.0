@@ -290,5 +290,8 @@ namespace DiamandCare.WebApi
         public const string DISPLAY_MESSAGE_12 = "User is on hold, Please contact administrator.";
         public const string DISPLAY_MESSAGE_13 = "Please fill the bank details.";
         public const string DISPLAY_MESSAGE_14 = "Loans are not exist to Prepaid.";
+        public const string DISPLAY_MESSAGE_15 = "Can't prepaid the unpaid Loan.";
+        public const string DISPLAY_MESSAGE_16 = "Can't apply this loan as Prepaid second time.";
+        public const string DISPLAY_MESSAGE_17 = "Can't apply this loan second time as the next level is not enabled.";
     }
 }

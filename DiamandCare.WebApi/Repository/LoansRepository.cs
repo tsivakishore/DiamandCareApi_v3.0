@@ -80,6 +80,12 @@ namespace DiamandCare.WebApi
                         applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
                     else if (applyLoanStatus == -14)
                         applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
+                    else if (applyLoanStatus == -15)
+                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
+                    else if (applyLoanStatus == -16)
+                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
+                    else if (applyLoanStatus == -17)
+                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
                     else
                         applyLoanResult = Tuple.Create(false, "Oops! Personal loan applied failed.");
                 }
@@ -143,6 +149,12 @@ namespace DiamandCare.WebApi
                         applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
                     else if (applyLoanStatus == -14)
                         applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
+                    else if (applyLoanStatus == -15)
+                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
+                    else if (applyLoanStatus == -16)
+                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
+                    else if (applyLoanStatus == -17)
+                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
                     else
                         applyHomeResult = Tuple.Create(false, "Oops! Home loan applied failed.");
                 }
@@ -208,6 +220,12 @@ namespace DiamandCare.WebApi
                         applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
                     else if (applyLoanStatus == -14)
                         applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
+                    else if (applyLoanStatus == -15)
+                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
+                    else if (applyLoanStatus == -16)
+                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
+                    else if (applyLoanStatus == -17)
+                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
                     else
                         applyFeeReimbursementResult = Tuple.Create(false, "Oops! Fee reimbursement applied failed.");
                 }
@@ -274,6 +292,12 @@ namespace DiamandCare.WebApi
                         applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
                     else if (applyLoanStatus == -14)
                         applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
+                    else if (applyLoanStatus == -15)
+                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
+                    else if (applyLoanStatus == -16)
+                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
+                    else if (applyLoanStatus == -17)
+                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
                     else
                         applyHealthBenefitResult = Tuple.Create(false, "Oops! Health benefit applied failed.");
                 }
@@ -340,6 +364,12 @@ namespace DiamandCare.WebApi
                         applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
                     else if (applyLoanStatus == -14)
                         applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
+                    else if (applyLoanStatus == -15)
+                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
+                    else if (applyLoanStatus == -16)
+                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
+                    else if (applyLoanStatus == -17)
+                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
                     else
                         applyRiskBenefitsResult = Tuple.Create(false, "Oops! Risk benefit applied failed.");
                 }

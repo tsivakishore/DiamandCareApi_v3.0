@@ -84,7 +84,7 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
-        [Route("getapprovedloandetailsuserid")] //By User id
+        [Route("getapprovedloandetailsuserid")] //By User id - UI Page userloandetails
         [HttpGet]
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetApproveLoanDetailsByUserID()
         {
@@ -101,14 +101,14 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
-        [Route("getpendingloandetailsuserid")]  //By User id
+        [Route("getpendingloandetailsuserid")]  //By User id - UI Page userloandetails
         [HttpGet]
-        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetNotApproveLoanDetailsByUserID()
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetPendingLoanDetailsByUserID()
         {
             Tuple<bool, string, List<LoansViewModel>> result = null;
             try
             {
-                result = await _repoLoans.GetNotApproveLoanDetailsByUserID();
+                result = await _repoLoans.GetPendingLoanDetailsByUserID();
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
-        [Route("GetRejectedLoanDetailsByUserID")] //By User id
+        [Route("GetRejectedLoanDetailsByUserID")] //By User id - UI Page userloandetails
         [HttpGet]
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetRejectedLoanDetailsByUserID()
         {
@@ -236,7 +236,7 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
-        [Route("getapprovedloandetails")] //All user loan details
+        [Route("getapprovedloandetails")] //All user loan details - UI Page appliedloandetails
         [HttpGet]
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetApproveLoanDetails()
         {
@@ -244,6 +244,40 @@ namespace DiamandCare.WebApi.Controllers
             try
             {
                 result = await _repoLoans.GetApproveLoanDetails();
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("getpendingloandetails")]//All user loan details - UI Page appliedloandetails
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetNotApproveLoanDetails()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.GetNotApproveLoanDetails();
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetRejectedLoanDetails")]//All user loan details - UI Page appliedloandetails
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetRejectedLoanDetails()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            try
+            {
+                result = await _repoLoans.GetRejectedLoanDetails();
             }
             catch (Exception ex)
             {
@@ -295,40 +329,6 @@ namespace DiamandCare.WebApi.Controllers
             try
             {
                 result = await _repoLoans.getRejectedLoanDetailsDCIDorName(DCIDorName);
-            }
-            catch (Exception ex)
-            {
-                //ErrorLog.Write(ex);
-            }
-            return result;
-        }
-
-        [Authorize]
-        [Route("GetRejectedLoanDetails")]//All user loan details
-        [HttpGet]
-        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetRejectedLoanDetails()
-        {
-            Tuple<bool, string, List<LoansViewModel>> result = null;
-            try
-            {
-                result = await _repoLoans.GetRejectedLoanDetails();
-            }
-            catch (Exception ex)
-            {
-                //ErrorLog.Write(ex);
-            }
-            return result;
-        }
-
-        [Authorize]
-        [Route("getpendingloandetails")]//All user loan details
-        [HttpGet]
-        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetNotApproveLoanDetails()
-        {
-            Tuple<bool, string, List<LoansViewModel>> result = null;
-            try
-            {
-                result = await _repoLoans.GetNotApproveLoanDetails();
             }
             catch (Exception ex)
             {

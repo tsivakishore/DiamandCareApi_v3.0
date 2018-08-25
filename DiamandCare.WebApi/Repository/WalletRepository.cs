@@ -112,5 +112,33 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+
+        public async Task<Tuple<bool, string, List<WalletTransactions>>> GetWalletTransactions()
+        {
+            Tuple<bool, string, List<WalletTransactions>> result = null;
+            List<WalletTransactions> lstKeys = new List<WalletTransactions>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@userID", UserID, DbType.Int32);
+                    con.Open();
+                    var list = await con.QueryAsync<WalletTransactions>("[dbo].[Select_WalletTransactions]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<WalletTransactions>;
+                    con.Close();
+                }
+                if (lstKeys != null && lstKeys.Count > 0)
+                    result = Tuple.Create(true, "", lstKeys);
+                else
+                    result = Tuple.Create(false, "No records found", lstKeys);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstKeys);
+            }
+            return result;
+        }
     }
 }

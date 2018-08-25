@@ -53,6 +53,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
         [Authorize]
         [Route("InsertWalletExpenses")]
         [HttpPost]
@@ -62,6 +63,23 @@ namespace DiamandCare.WebApi.Controllers
             try
             {
                 result = await _repo.InsertWalletExpenses(obj);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetWalletTransactions")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<WalletTransactions>>> GetWalletTransactions()
+        {
+            Tuple<bool, string, List<WalletTransactions>> result = null;
+            try
+            {
+                result = await _repo.GetWalletTransactions();
             }
             catch (Exception ex)
             {

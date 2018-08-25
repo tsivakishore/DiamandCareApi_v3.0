@@ -37,5 +37,37 @@ namespace DiamandCare.WebApi.Controllers
 
             return result;
         }
+        [Authorize]
+        [Route("GetWalletRecentExpenses")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<WalletTransactions>>> GetWalletRecentExpenses()
+        {
+            Tuple<bool, string, List<WalletTransactions>> result = null;
+            try
+            {
+                result = await _repo.GetWalletRecentExpenses();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+        [Authorize]
+        [Route("InsertWalletExpenses")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> InsertWalletExpenses(WalletTransactions obj)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.InsertWalletExpenses(obj);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
     }
 }

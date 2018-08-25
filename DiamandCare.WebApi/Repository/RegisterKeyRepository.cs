@@ -16,10 +16,12 @@ namespace DiamandCare.WebApi.Repository
     {
         string _dcDb = Settings.Default.DiamandCareConnection;
         string userID = string.Empty;
+        int UserID = 0;
 
         public RegisterKeyRepository()
         {
             userID = Helper.FindUserByID().Id;
+            UserID = Helper.FindUserByID().UserID;
         }
         public async Task<Tuple<bool, string, RegisterKey>> RegisterKeyGenearation(RegisterKey obj)
         {
@@ -141,6 +143,44 @@ namespace DiamandCare.WebApi.Repository
                         CreateDate = x.CreateDate,
                         KeyType=x.KeyType,
                         KeyCost=x.KeyCost
+                    }).ToList();
+
+                    con.Close();
+                }
+                if (lstKeys != null && lstKeys.Count > 0)
+                    result = Tuple.Create(true, "", lstKeys);
+                else
+                    result = Tuple.Create(false, "No records found", lstKeys);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstKeys);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<RegisterKey>>> GetIssuedRegisterKeysByUserID()
+        {
+            Tuple<bool, string, List<RegisterKey>> result = null;
+            List<RegisterKey> lstKeys = new List<RegisterKey>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@userID", UserID, DbType.Int32);
+                    con.Open();
+                    var list = await con.QueryAsync<RegisterKey>("[dbo].[Select_IssuedRegisterKeysByUserID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list.Select(x => new RegisterKey
+                    {
+                        RegKey = x.RegKey,
+                        PhoneNumber = x.PhoneNumber,
+                        RegKeyStatus = x.RegKeyStatus,
+                        CreatedBy = x.CreatedBy,
+                        CreateDate = x.CreateDate,
+                        KeyType = x.KeyType,
+                        KeyCost = x.KeyCost
                     }).ToList();
 
                     con.Close();

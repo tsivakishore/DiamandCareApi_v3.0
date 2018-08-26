@@ -50,6 +50,23 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("getloansforuser")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoanEarnsModel>, int>> GetLoanForUser(string DCIDorName)
+        {
+            Tuple<bool, string, List<LoanEarnsModel>, int> result = null;
+            try
+            {
+                result = await _repo.GetLoanForUser(DCIDorName);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
         [Route("getloandetailsbyloanid")]
         [HttpGet]
         public async Task<Tuple<bool, string, List<LoanDetailsViewModel>>> GetLoanDetails(int LoanID)
@@ -342,7 +359,7 @@ namespace DiamandCare.WebApi.Controllers
         [HttpGet]
         public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferPendingByDCIDorName(string DCIDorName)
         {
-          Tuple<bool, string, List<LoansViewModel>> result = null;
+            Tuple<bool, string, List<LoansViewModel>> result = null;
             try
             {
                 result = await _repoLoans.GetLoansAmountTransferPendingByDCIDorName(DCIDorName);
@@ -843,6 +860,311 @@ namespace DiamandCare.WebApi.Controllers
             return result;
         }
 
+        //Start Loan Apply for User through Admin or Franchise
+        [Authorize]
+        [Route("checkpersonalloanbyuserid")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> CheckPersonalLoanByUserID(int UserID)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.CheckPersonalLoanByUserID(UserID);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("checkfeereimbursementbyuserid")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> CheckFeeReimbursementByUserID(int UserID)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.CheckFeeReimbursementByUserID(UserID);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("checkhealthbenefitbyuserid")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> CheckHealthLoanByUserID(int UserID)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.CheckHealthLoanByUserID(UserID);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("checkriskbenefitbyuserid")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> CheckRiskBenefitByUserID(int UserID)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.CheckRiskBenefitByUserID(UserID);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("checkhomeloanbyuserid")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> CheckHomeLoanByUserID(int UserID)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.CheckHomeLoanByUserID(UserID);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("CheckRenewalStatusbyuserid")]
+        [HttpGet]
+        public async Task<Tuple<bool>> CheckRenewalStatusByUserID(int UserID)
+        {
+            Tuple<bool> result = null;
+            try
+            {
+                result = await _repo.CheckRenewalStatusByUserID(UserID);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("personalloanbyadmin")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ApplyPersonalLoanByAdmin(LoansModel applyPLLoansModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repoLoans.ApplyPersonalLoanByAdmin(applyPLLoansModel);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("homeloanbyadmin")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ApplyHomeLoanByAdmin(LoansModel applyHLLoansModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repoLoans.ApplyHomeLoanByAdmin(applyHLLoansModel);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("feereimbursementbyadmin")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ApplyFeeReimbursementByAdmin()
+        {
+            FeeReimbursementModel applyFeeReimbursementModel = new FeeReimbursementModel();
+            string fileUploadPath = ConfigurationManager.AppSettings["FileUploadPath"].ToString();
+            Tuple<bool, string> resTuple = null;
+            string filePath = string.Empty;
+            string[] headerColumns = new string[0];
+            Regex csvParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+
+            try
+            {
+                if (!Directory.Exists(fileUploadPath))
+                    Directory.CreateDirectory(fileUploadPath);
+                else
+                {
+                    Array.ForEach(Directory.GetFiles(fileUploadPath),
+                    delegate (string path)
+                    {
+                        File.Delete(path);
+                    });
+                }
+
+                var provider = new MultipartFormDataStreamProvider(fileUploadPath);
+                var result = await Request.Content.ReadAsMultipartAsync(provider);
+
+                if (result.FormData == null)
+                    return Tuple.Create(false, "BadRequest");
+
+                var formData = result.FormData;
+                foreach (var prop in typeof(FeeReimbursementModel).GetProperties())
+                {
+                    var curVal = formData[prop.Name];
+                    if (curVal != null && !string.IsNullOrEmpty(curVal))
+                    {
+                        prop.SetValue(applyFeeReimbursementModel, To(curVal, prop.PropertyType), null);
+                    }
+                }
+
+                if (UserID == null)
+                    return Tuple.Create(false, "User not Authenticated");
+
+                if (result.FileData.Count > 0)
+                    resTuple = await _repoLoans.ApplyFeeReimbursementByAdmin(applyFeeReimbursementModel, result.FileData.ToList(), fileUploadPath);
+                else
+                    resTuple = Tuple.Create(false, "There has been an error while applying fee reimbursement.");
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return resTuple;
+        }
+
+        [Authorize]
+        [Route("healthbenefitsbyadmin")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ApplyHealthBenefitsByAdmin()
+        {
+            HealthBenefitModel applyHealthBenefitModel = new HealthBenefitModel();
+            string fileUploadPath = ConfigurationManager.AppSettings["FileUploadPath"].ToString();
+            Tuple<bool, string> resTuple = null;
+            string filePath = string.Empty;
+            string[] headerColumns = new string[0];
+            Regex csvParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+
+            try
+            {
+                if (!Directory.Exists(fileUploadPath))
+                    Directory.CreateDirectory(fileUploadPath);
+                else
+                {
+                    Array.ForEach(Directory.GetFiles(fileUploadPath),
+                    delegate (string path)
+                    {
+                        File.Delete(path);
+                    });
+                }
+
+                var provider = new MultipartFormDataStreamProvider(fileUploadPath);
+                var result = await Request.Content.ReadAsMultipartAsync(provider);
+
+                if (result.FormData == null)
+                    return Tuple.Create(false, "BadRequest");
+
+                var formData = result.FormData;
+                foreach (var prop in typeof(HealthBenefitModel).GetProperties())
+                {
+                    var curVal = formData[prop.Name];
+                    if (curVal != null && !string.IsNullOrEmpty(curVal))
+                    {
+                        prop.SetValue(applyHealthBenefitModel, To(curVal, prop.PropertyType), null);
+                    }
+                }
+
+                if (UserID == null)
+                    return Tuple.Create(false, "User not Authenticated");
+
+                if (result.FileData.Count > 0)
+                    resTuple = await _repoLoans.ApplyHealthBenefitsByAdmin(applyHealthBenefitModel, result.FileData.ToList(), fileUploadPath);
+                else
+                    resTuple = Tuple.Create(false, "There has been an error while applying fee reimbursement.");
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return resTuple;
+        }
+
+        [Authorize]
+        [Route("riskbenefitsbyadmin")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ApplyRiskBenefitsByAdmin()
+        {
+            RiskBenefitModel applyRiskBenefitModel = new RiskBenefitModel();
+            string fileUploadPath = ConfigurationManager.AppSettings["FileUploadPath"].ToString();
+            Tuple<bool, string> resTuple = null;
+            string filePath = string.Empty;
+            string[] headerColumns = new string[0];
+            Regex csvParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+
+            try
+            {
+                if (!Directory.Exists(fileUploadPath))
+                    Directory.CreateDirectory(fileUploadPath);
+                else
+                {
+                    Array.ForEach(Directory.GetFiles(fileUploadPath),
+                    delegate (string path)
+                    {
+                        File.Delete(path);
+                    });
+                }
+
+                var provider = new MultipartFormDataStreamProvider(fileUploadPath);
+                var result = await Request.Content.ReadAsMultipartAsync(provider);
+
+                if (result.FormData == null)
+                    return Tuple.Create(false, "BadRequest");
+
+                var formData = result.FormData;
+                foreach (var prop in typeof(RiskBenefitModel).GetProperties())
+                {
+                    var curVal = formData[prop.Name];
+                    if (curVal != null && !string.IsNullOrEmpty(curVal))
+                    {
+                        prop.SetValue(applyRiskBenefitModel, To(curVal, prop.PropertyType), null);
+                    }
+                }
+
+                if (UserID == null)
+                    return Tuple.Create(false, "User not Authenticated");
+
+                if (result.FileData.Count > 0)
+                    resTuple = await _repoLoans.ApplyRiskBenefitsByAdmin(applyRiskBenefitModel, result.FileData.ToList(), fileUploadPath);
+                else
+                    resTuple = Tuple.Create(false, "There has been an error while applying fee reimbursement.");
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+            }
+            return resTuple;
+        }
+        //End Loan Apply for User through Admin or Franchise
         private object To(IConvertible obj, Type t)
         {
             Type u = Nullable.GetUnderlyingType(t);

@@ -43,6 +43,8 @@ namespace DiamandCare.WebApi.Repository
                     parameters.Add("@CGST", obj.CGST, DbType.Decimal);
                     parameters.Add("@IGST", obj.IGST, DbType.Decimal);
                     parameters.Add("@TDS", obj.TDS, DbType.Decimal);
+                    parameters.Add("@pincommission", obj.PinCommission, DbType.Decimal);
+                    parameters.Add("@fundtransfercharges", obj.FundTransferCharges, DbType.Decimal);
                     parameters.Add("@CreatedBy", Helper.FindUserByID().Id, DbType.String);
                     parameters.Add("@CreatedOn", DateTime.Now, DbType.DateTime);
 

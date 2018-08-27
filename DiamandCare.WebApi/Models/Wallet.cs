@@ -35,4 +35,20 @@ namespace DiamandCare.WebApi.Models
         public decimal TransactionAmount { get; set; }
         public string Purpose { get; set; }
     }
+    public class FundRequest
+    {
+        public int ID { get; set; }
+        public int UserID { get; set; }
+        public decimal RequestedAmount { get; set; }
+        public int RequestToUserID { get; set; }
+        public int RequestStatusID { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public int UpdatedBy { get; set; }
+        public DateTime UpdatedOn { get; set; }
+        public decimal TransferCharges { get; set; }
+        public int StatusID { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+    }
 }

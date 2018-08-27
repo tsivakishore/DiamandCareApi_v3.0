@@ -95,7 +95,7 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("GetUnderFranchiseDetails")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<UserIDNameModel>,FranchiseMaster>> GetUnderFranchiseDetails(int FranchiseTypeID)
+        public async Task<Tuple<bool, string, List<UserIDNameModel>, FranchiseMaster>> GetUnderFranchiseDetails(int FranchiseTypeID)
         {
             Tuple<bool, string, List<UserIDNameModel>, FranchiseMaster> result = null;
             try
@@ -172,6 +172,42 @@ namespace DiamandCare.WebApi.Controllers
             try
             {
                 result = await _repo.UpdateFranchiseWalletBalance(obj);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("SaveFranchiseRequest")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> SaveFranchiseRequest(FranchiseRequestResponse franchiseRequestResponse)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.SaveFranchiseRequest(franchiseRequestResponse);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetFranchiseUserRequests")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<FranchiseRequestViewModel>>> GetFranchiseUserRequests()
+        {
+            Tuple<bool, string, List<FranchiseRequestViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetFranchiseUserRequests();
             }
             catch (Exception ex)
             {

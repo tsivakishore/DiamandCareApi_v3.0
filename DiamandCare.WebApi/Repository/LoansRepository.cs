@@ -494,8 +494,10 @@ namespace DiamandCare.WebApi
 
                     con.Close();
                 }
-                if (updatedStatus == 0)
+                if (updatedStatus == 1)
                     result = Tuple.Create(true, "Loan payment is successfull.");
+                else if (updatedStatus == -2)
+                    result = Tuple.Create(false, "Insufficient Funds in wallet, Please check once.");
                 else
                     result = Tuple.Create(false, "Oops! Update loan payment failed. Please try again.");
             }

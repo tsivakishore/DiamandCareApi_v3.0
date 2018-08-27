@@ -87,5 +87,37 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+        [Authorize]
+        [Route("GetFundRequest")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<FundRequest>>> GetFundRequest()
+        {
+            Tuple<bool, string, List<FundRequest>> result = null;
+            try
+            {
+                result = await _repo.GetFundRequest();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+        [Authorize]
+        [Route("GetFundRequestStatus")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<FundRequest>>> GetFundRequestStatus()
+        {
+            Tuple<bool, string, List<FundRequest>> result = null;
+            try
+            {
+                result = await _repo.GetFundRequestStatus();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
     }
 }

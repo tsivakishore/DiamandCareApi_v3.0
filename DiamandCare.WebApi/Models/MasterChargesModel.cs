@@ -26,5 +26,8 @@ namespace DiamandCare.WebApi.Models
         public decimal CGST { get; set; }
         public decimal IGST { get; set; }
         public decimal TDS { get; set; }
+        public decimal PinCommission { get; set; }
+        public decimal FundTransferCharges { get; set; }
+
     }
 }

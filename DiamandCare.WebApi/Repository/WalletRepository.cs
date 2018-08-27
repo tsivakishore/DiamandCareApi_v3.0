@@ -140,5 +140,55 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+        public async Task<Tuple<bool, string, List<FundRequest>>> GetFundRequest()
+        {
+            Tuple<bool, string, List<FundRequest>> result = null;
+            List<FundRequest> lstKeys = new List<FundRequest>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@userID", UserID, DbType.Int32);
+                    con.Open();
+                    var list = await con.QueryAsync<FundRequest>("[dbo].[Select_FundRequest]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<FundRequest>;
+                    con.Close();
+                }
+                if (lstKeys != null && lstKeys.Count > 0)
+                    result = Tuple.Create(true, "", lstKeys);
+                else
+                    result = Tuple.Create(false, "No records found", lstKeys);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstKeys);
+            }
+            return result;
+        }
+        public async Task<Tuple<bool, string, List<FundRequest>>> GetFundRequestStatus()
+        {
+            Tuple<bool, string, List<FundRequest>> result = null;
+            List<FundRequest> lstKeys = new List<FundRequest>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var list = await con.QueryAsync<FundRequest>("[dbo].[Select_FundRequestStatus]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<FundRequest>;
+                }
+                if (lstKeys != null && lstKeys.Count > 0)
+                    result = Tuple.Create(true, "", lstKeys);
+                else
+                    result = Tuple.Create(false, "No records found", lstKeys);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstKeys);
+            }
+            return result;
+        }
     }
 }

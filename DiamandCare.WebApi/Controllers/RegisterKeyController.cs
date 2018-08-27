@@ -79,6 +79,23 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("GetIssuedRegisterKeysByUserID")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<RegisterKey>>> GetIssuedRegisterKeysByUserID()
+        {
+            Tuple<bool, string, List<RegisterKey>> result = null;
+            try
+            {
+                result = await _repo.GetIssuedRegisterKeysByUserID();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
         [Route("GetUsedRegisterKeys")]
         [HttpGet]
         public async Task<Tuple<bool, string, List<RegisterKey>>> GetUsedRegisterKeys()

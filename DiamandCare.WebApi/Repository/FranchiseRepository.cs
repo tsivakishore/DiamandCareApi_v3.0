@@ -301,7 +301,7 @@ namespace DiamandCare.WebApi.Repository
                 using (SqlConnection cxn = new SqlConnection(_dcDb))
                 {
                     parameters.Add("@UserID", obj.UserID, DbType.Int32);
-                    parameters.Add("@AddBalance", obj.AddBalance, DbType.Decimal);                 
+                    parameters.Add("@AddBalance", obj.AddBalance, DbType.Decimal);
                     parameters.Add("@CreatedBy", userID, DbType.Int32);
 
                     status = await cxn.ExecuteScalarAsync<int>("dbo.Update_Franchise_WalletBalance", parameters, commandType: CommandType.StoredProcedure);
@@ -310,8 +310,8 @@ namespace DiamandCare.WebApi.Repository
                         result = Tuple.Create(true, "You have added balance successfully.");
                     else
                         result = Tuple.Create(false, "Oops! There has been an error while adding balance to wallet.");
-                  
-                }               
+
+                }
             }
             catch (Exception ex)
             {
@@ -320,6 +320,78 @@ namespace DiamandCare.WebApi.Repository
             }
 
             return result;
+        }
+
+        public async Task<Tuple<bool, string>> SaveFranchiseRequest(FranchiseRequestResponse franchiseRequestResponse)
+        {
+            Tuple<bool, string> requestResult = null;
+            FranchiseRequestResponse franchisRequestResponse = new FranchiseRequestResponse();
+            int requestStatus = -1;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", userID, DbType.Int32);
+                    parameters.Add("@StatusID", franchiseRequestResponse.StatusID, DbType.Int32);
+                    parameters.Add("@CreatedBy", userID, DbType.Int32);
+
+                    requestStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_FranchiseUserRequests", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                if (requestStatus == 0)
+                    requestResult = Tuple.Create(true, "Your franchise request has been successfull.");
+                else
+                    requestResult = Tuple.Create(false, "Your franchise request has been failed.Please try again.");
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                requestResult = Tuple.Create(false, "Oops! Your franchise request has been failed.Please try again.");
+            }
+
+            return requestResult;
+        }
+
+        public async Task<Tuple<bool, string, List<FranchiseRequestViewModel>>> GetFranchiseUserRequests()
+        {
+            Tuple<bool, string, List<FranchiseRequestViewModel>> requestResult = null;
+            List<FranchiseRequestViewModel> lstFranchiseRequests = new List<FranchiseRequestViewModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", userID, DbType.Int32);
+                    var lstRequests = await cxn.QueryAsync<FranchiseRequestViewModel>("dbo.Select_FranchiseUserRequests", parameters, commandType: CommandType.StoredProcedure);
+
+                    lstFranchiseRequests = lstRequests.Select(x => new FranchiseRequestViewModel
+                    {
+                        ID = x.ID,
+                        UserID = x.UserID,
+                        UserName=x.UserName,
+                        RequestedMonth = x.RequestedMonth,
+                        StatusID = x.StatusID,
+                        Status = x.Status,
+                        CreatedBy = x.CreatedBy,
+                        CreatedOn = x.CreatedOn
+                    }).ToList();
+                }
+
+                if (lstFranchiseRequests.Count > 0)
+                    requestResult = Tuple.Create(true, "", lstFranchiseRequests);
+                else
+                    requestResult = Tuple.Create(false, "No records found.", lstFranchiseRequests);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                requestResult = Tuple.Create(false, "Oops! Error while getting franchise requests.Please try again.", lstFranchiseRequests);
+            }
+
+            return requestResult;
         }
     }
 }

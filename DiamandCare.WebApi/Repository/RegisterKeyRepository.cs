@@ -262,5 +262,42 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+
+        public async Task<Tuple<bool, string, MultipleSecreateKeys>> GetUserWalletMasterCharges(string DcIDorName)
+        {
+            Tuple<bool, string, MultipleSecreateKeys> result = null;
+            Wallet walletDetails = new Wallet();
+            MasterCharges masterChargesDetails = new MasterCharges();
+            MultipleSecreateKeys lstMultipleSecreateKeys = new MultipleSecreateKeys();
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@DcIDorName", DcIDorName);
+                    con.Open();
+
+                    using (var multi = await con.QueryMultipleAsync("dbo.Select_User_WalletMasterCharges_RegKey", parameters, commandType: CommandType.StoredProcedure))
+                    {
+                        walletDetails = multi.Read<Wallet>().Single();
+                        masterChargesDetails = multi.Read<MasterCharges>().Single();
+                        lstMultipleSecreateKeys.Wallet = walletDetails;
+                        lstMultipleSecreateKeys.MasterCharges = masterChargesDetails;
+                    }
+                    con.Close();
+                }
+                if (lstMultipleSecreateKeys != null)
+                    result = Tuple.Create(true, "", lstMultipleSecreateKeys);
+                else
+                    result = Tuple.Create(false, "No records found", lstMultipleSecreateKeys);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+                result = Tuple.Create(false, "No records found", lstMultipleSecreateKeys);
+            }
+            return result;
+        }
     }
 }

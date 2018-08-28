@@ -128,5 +128,22 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
+        [Authorize]
+        [Route("GetUserWalletMasterCharges")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, MultipleSecreateKeys>> GetUserWalletMasterCharges(string DcIDorName)
+        {
+            Tuple<bool, string, MultipleSecreateKeys> result = null;
+            try
+            {
+                result = await _repo.GetUserWalletMasterCharges(DcIDorName);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
     }
 }

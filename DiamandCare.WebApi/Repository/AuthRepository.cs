@@ -28,6 +28,7 @@ namespace DiamandCare.WebApi.Repository
         int userID;
 
         private string _dcDb = Settings.Default.DiamandCareConnection;
+        private string _url = Settings.Default.WebSiteURL;
 
         public AuthRepository()
         {
@@ -105,7 +106,7 @@ namespace DiamandCare.WebApi.Repository
                                             $"Your USERNAME :- {userModel.UserName}  " +
                                             $"ID number :- {userModel.DcID}  " +
                                             $"Your PASSWORD :- {userModel.Password}  " +
-                                            $"Login at www.diamandcare.com";
+                                            $"Login at " + _url;
 
                         await SendSMSDCID(userModel.PhoneNumber, smsBody);
 
@@ -437,7 +438,7 @@ namespace DiamandCare.WebApi.Repository
                 string smsBody = $"Welcome to DIAMAND CARE  " +
                         $"Your password has been reset.  " +
                         $"Your new password :- {password}  " +
-                        $"Login at www.diamandcare.com";
+                        $"Login at " + _url;
 
                 passwordHash = _userManager.PasswordHasher.HashPassword(password);
                 createdUser = await _userManager.FindByNameAsync(forgetPasswordModel.UserName);
@@ -1120,7 +1121,7 @@ namespace DiamandCare.WebApi.Repository
                     {
                         userProfile = multi.Read<UserProfileViewModel>().SingleOrDefault();
                     }
-                   
+
                     //userProfile = con.QuerySingle<UserProfileViewModel>("dbo.Select_UserProfileByDCIDorUserName", parameters, commandType: CommandType.StoredProcedure);
                 }
 
@@ -1141,7 +1142,7 @@ namespace DiamandCare.WebApi.Repository
         {
             Tuple<bool, string, AddressViewModel> result = null;
             AddressViewModel userAddress = null;
-           
+
             try
             {
                 var parameters = new DynamicParameters();

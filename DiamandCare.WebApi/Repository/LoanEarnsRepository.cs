@@ -122,14 +122,14 @@ namespace DiamandCare.WebApi.Repository
                 if (loanStatu == 1)
                     result = Tuple.Create(true, "");
                 else if (loanStatu == 0)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else
-                    result = Tuple.Create(false, "Oops! Error while checking personal loan.");
+                    result = Tuple.Create(false, "Oops! Error while checking personal loan");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking personal loan.");
+                result = Tuple.Create(false, "Oops! Error while checking personal loan");
             }
             return result;
         }
@@ -150,16 +150,16 @@ namespace DiamandCare.WebApi.Repository
                     con.Close();
                 }
                 if (loanStatu == -2)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else if (loanStatu == -9)
-                    result = Tuple.Create(false, "Fees Reimbursement already applied.");
+                    result = Tuple.Create(false, "Fees Reimbursement already applied");
                 else
                     result = Tuple.Create(true, "");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking fee reimbursement.");
+                result = Tuple.Create(false, "Oops! Error while checking fee reimbursement");
             }
             return result;
         }
@@ -183,14 +183,14 @@ namespace DiamandCare.WebApi.Repository
                 if (loanStatu == 1)
                     result = Tuple.Create(true, "");
                 else if (loanStatu == 0)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else
-                    result = Tuple.Create(false, "Oops! Error while checking health loan.");
+                    result = Tuple.Create(false, "Oops! Error while checking health loan");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking health loan.");
+                result = Tuple.Create(false, "Oops! Error while checking health loan");
             }
             return result;
         }
@@ -214,14 +214,14 @@ namespace DiamandCare.WebApi.Repository
                 if (loanStatu == 1)
                     result = Tuple.Create(true, "");
                 else if (loanStatu == 0)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else
-                    result = Tuple.Create(false, "Oops! Error while checking risk benefit.");
+                    result = Tuple.Create(false, "Oops! Error while checking risk benefit");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking risk benefit.");
+                result = Tuple.Create(false, "Oops! Error while checking risk benefit");
             }
             return result;
         }
@@ -245,14 +245,14 @@ namespace DiamandCare.WebApi.Repository
                 if (loanStatu == 1)
                     result = Tuple.Create(true, "");
                 else if (loanStatu == 0)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else
-                    result = Tuple.Create(false, "Oops! Error while checking home loan.");
+                    result = Tuple.Create(false, "Oops! Error while checking home loan");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking home loan.");
+                result = Tuple.Create(false, "Oops! Error while checking home loan");
             }
             return result;
         }
@@ -308,14 +308,14 @@ namespace DiamandCare.WebApi.Repository
                 if (loanStatu == 1)
                     result = Tuple.Create(true, "");
                 else if (loanStatu == 0)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else
-                    result = Tuple.Create(false, "Oops! Error while checking personal loan.");
+                    result = Tuple.Create(false, "Oops! Error while checking personal loan");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking personal loan.");
+                result = Tuple.Create(false, "Oops! Error while checking personal loan");
             }
             return result;
         }
@@ -336,16 +336,16 @@ namespace DiamandCare.WebApi.Repository
                     con.Close();
                 }
                 if (loanStatu == -2)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else if (loanStatu == -9)
-                    result = Tuple.Create(false, "Fees Reimbursement already applied.");
+                    result = Tuple.Create(false, "Fees Reimbursement already applied");
                 else
                     result = Tuple.Create(true, "");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking fee reimbursement.");
+                result = Tuple.Create(false, "Oops! Error while checking fee reimbursement");
             }
             return result;
         }
@@ -369,14 +369,14 @@ namespace DiamandCare.WebApi.Repository
                 if (loanStatu == 1)
                     result = Tuple.Create(true, "");
                 else if (loanStatu == 0)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else
-                    result = Tuple.Create(false, "Oops! Error while checking health loan.");
+                    result = Tuple.Create(false, "Oops! Error while checking health loan");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking health loan.");
+                result = Tuple.Create(false, "Oops! Error while checking health loan");
             }
             return result;
         }
@@ -400,14 +400,14 @@ namespace DiamandCare.WebApi.Repository
                 if (loanStatu == 1)
                     result = Tuple.Create(true, "");
                 else if (loanStatu == 0)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else
-                    result = Tuple.Create(false, "Oops! Error while checking risk benefit.");
+                    result = Tuple.Create(false, "Oops! Error while checking risk benefit");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking risk benefit.");
+                result = Tuple.Create(false, "Oops! Error while checking risk benefit");
             }
             return result;
         }
@@ -431,14 +431,14 @@ namespace DiamandCare.WebApi.Repository
                 if (loanStatu == 1)
                     result = Tuple.Create(true, "");
                 else if (loanStatu == 0)
-                    result = Tuple.Create(false, "Payment not done for previous applied loan.");
+                    result = Tuple.Create(false, "Payment not done for previous applied loan");
                 else
-                    result = Tuple.Create(false, "Oops! Error while checking home loan.");
+                    result = Tuple.Create(false, "Oops! Error while checking home loan");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error while checking home loan.");
+                result = Tuple.Create(false, "Oops! Error while checking home loan");
             }
             return result;
         }

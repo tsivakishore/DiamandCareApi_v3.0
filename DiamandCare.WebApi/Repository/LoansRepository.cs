@@ -52,43 +52,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyLoanResult = Tuple.Create(true, "You have been applied personal loan successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyLoanResult = Tuple.Create(false, "Oops! Personal loan applied failed.");
+                    applyLoanResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)
@@ -99,6 +63,55 @@ namespace DiamandCare.WebApi
 
             return applyLoanResult;
         }
+
+        private Tuple<bool, string> StatusTuple(int applyLoanStatus)
+        {
+            Tuple<bool, string> applyLoanResult = null;
+
+            if (applyLoanStatus > 0)
+                applyLoanResult = Tuple.Create(true, "You have been applied loan successfully.");
+            else if (applyLoanStatus == -2)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
+            else if (applyLoanStatus == -3)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
+            else if (applyLoanStatus == -4)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
+            else if (applyLoanStatus == -5)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
+            else if (applyLoanStatus == -6)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
+            else if (applyLoanStatus == -7)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
+            else if (applyLoanStatus == -8)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
+            else if (applyLoanStatus == -9)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
+            else if (applyLoanStatus == -10)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
+            else if (applyLoanStatus == -11)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
+            else if (applyLoanStatus == -12)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
+            else if (applyLoanStatus == -13)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
+            else if (applyLoanStatus == -14)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
+            else if (applyLoanStatus == -15)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
+            else if (applyLoanStatus == -16)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
+            else if (applyLoanStatus == -17)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
+            else if (applyLoanStatus == -18)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_18);
+            else if (applyLoanStatus == -19)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_19);
+            else
+                applyLoanResult = Tuple.Create(false, "Oops! loan apply failed.");
+
+            return applyLoanResult;
+        }
+
         public async Task<Tuple<bool, string>> ApplyHomeLoan(LoansModel applyHLLoansModel)
         {
             int applyLoanStatus = -1;
@@ -122,43 +135,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyHomeResult = Tuple.Create(true, "You have been applied home loan successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyHomeResult = Tuple.Create(false, "Oops! Home loan applied failed.");
+                    applyHomeResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)
@@ -193,43 +170,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyFeeReimbursementResult = Tuple.Create(true, "You have been applied for fee reimbursement successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyFeeReimbursementResult = Tuple.Create(false, "Oops! Fee reimbursement applied failed.");
+                    applyFeeReimbursementResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)
@@ -265,43 +206,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyHealthBenefitResult = Tuple.Create(true, "You have been applied for health benefit successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyHealthBenefitResult = Tuple.Create(false, "Oops! Health benefit applied failed.");
+                    applyHealthBenefitResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)
@@ -337,43 +242,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyRiskBenefitsResult = Tuple.Create(true, "You have been applied for risk benefit successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyRiskBenefitsResult = Tuple.Create(false, "Oops! Risk benefit applied failed.");
+                    applyRiskBenefitsResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)
@@ -1184,43 +1053,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyLoanResult = Tuple.Create(true, "You have been applied personal loan successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyLoanResult = Tuple.Create(false, "Oops! Personal loan applied failed.");
+                    applyLoanResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)
@@ -1254,43 +1087,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyHomeResult = Tuple.Create(true, "You have been applied home loan successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyHomeResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyHomeResult = Tuple.Create(false, "Oops! Home loan applied failed.");
+                    applyHomeResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)
@@ -1325,43 +1122,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyFeeReimbursementResult = Tuple.Create(true, "You have been applied for fee reimbursement successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyFeeReimbursementResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyFeeReimbursementResult = Tuple.Create(false, "Oops! Fee reimbursement applied failed.");
+                    applyFeeReimbursementResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)
@@ -1397,43 +1158,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyHealthBenefitResult = Tuple.Create(true, "You have been applied for health benefit successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyHealthBenefitResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyHealthBenefitResult = Tuple.Create(false, "Oops! Health benefit applied failed.");
+                    applyHealthBenefitResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)
@@ -1469,43 +1194,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
                     applyLoanStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Loan", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (applyLoanStatus > 0)
-                        applyRiskBenefitsResult = Tuple.Create(true, "You have been applied for risk benefit successfully.");
-                    else if (applyLoanStatus == -2)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_2);
-                    else if (applyLoanStatus == -3)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_3);
-                    else if (applyLoanStatus == -4)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_4);
-                    else if (applyLoanStatus == -5)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_5);
-                    else if (applyLoanStatus == -6)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_6);
-                    else if (applyLoanStatus == -7)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_7);
-                    else if (applyLoanStatus == -8)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_8);
-                    else if (applyLoanStatus == -9)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_9);
-                    else if (applyLoanStatus == -10)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_10);
-                    else if (applyLoanStatus == -11)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_11);
-                    else if (applyLoanStatus == -12)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_12);
-                    else if (applyLoanStatus == -13)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_13);
-                    else if (applyLoanStatus == -14)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_14);
-                    else if (applyLoanStatus == -15)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_15);
-                    else if (applyLoanStatus == -16)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_16);
-                    else if (applyLoanStatus == -17)
-                        applyRiskBenefitsResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_17);
-                    else
-                        applyRiskBenefitsResult = Tuple.Create(false, "Oops! Risk benefit applied failed.");
+                    applyRiskBenefitsResult = StatusTuple(applyLoanStatus);
                 }
             }
             catch (Exception ex)

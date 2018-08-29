@@ -17,7 +17,10 @@ namespace DiamandCare.WebApi.Repository
     public class SharedRepository
     {
         private string _dvDb = Settings.Default.DiamandCareConnection;
-
+        private string _url = Settings.Default.WebSiteURL;
+        private string _smsUserName = Settings.Default.SMSUserName;
+        private string _smsPwd = Settings.Default.SMSPwd;
+        private string _smsSender = Settings.Default.SMSSender;
 
         public async Task<Tuple<bool, string, List<State>>> GetState()
         {
@@ -320,7 +323,7 @@ namespace DiamandCare.WebApi.Repository
             string res = string.Empty;
             try
             {
-                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username=sivakishore&password=1174306098&sendername=SFEOrg&mobileno=" + PhoneNumber + "&message=" + msgBody;
+                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username=" + _smsUserName + "&password=" + _smsPwd + "&sendername=" + _smsSender + "&mobileno=" + PhoneNumber + "&message=" + msgBody;
                 res = getHTTP(url.Trim());
                 if (res.Contains("Your message is successfully sent"))
                 {

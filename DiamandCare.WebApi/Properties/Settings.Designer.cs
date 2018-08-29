@@ -12,7 +12,7 @@ namespace DiamandCare.WebApi.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,8 +26,8 @@ namespace DiamandCare.WebApi.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.169.219.198;Initial Catalog=S4ELoans;User ID=sa;Password=S4e99661" +
-            "@7597")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.169.219.198;Initial Catalog=S4ELoansIndia;User ID=sa;Password=S4e" +
+            "99661@7597")]
         public string DiamandCareConnection {
             get {
                 return ((string)(this["DiamandCareConnection"]));
@@ -36,10 +36,37 @@ namespace DiamandCare.WebApi.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://diamandcare.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://diamandcare.in")]
         public string WebSiteURL {
             get {
                 return ((string)(this["WebSiteURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("sivakishore")]
+        public string SMSUserName {
+            get {
+                return ((string)(this["SMSUserName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1174306098")]
+        public string SMSPwd {
+            get {
+                return ((string)(this["SMSPwd"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DCLoan")]
+        public string SMSSender {
+            get {
+                return ((string)(this["SMSSender"]));
             }
         }
     }

@@ -18,8 +18,8 @@ namespace DiamandCare.WebApi.Models
     public class UpdateWallet
     {
         public int UserID { get; set; }
-        public decimal AddBalance { get; set; }       
-        public int CreatedBy { get; set; }       
+        public decimal AddBalance { get; set; }
+        public int CreatedBy { get; set; }
     }
     public class WalletTransactions
     {
@@ -27,7 +27,7 @@ namespace DiamandCare.WebApi.Models
         public int UserID { get; set; }
         public int AgainstTypeID { get; set; }
         public string TransactionType { get; set; }
-        public int AgainstID { get; set; }        
+        public int AgainstID { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int UpdatedBy { get; set; }
@@ -40,6 +40,7 @@ namespace DiamandCare.WebApi.Models
         public int ID { get; set; }
         public int UserID { get; set; }
         public decimal RequestedAmount { get; set; }
+        public decimal ApprovedAmount { get; set; }
         public int RequestToUserID { get; set; }
         public int RequestStatusID { get; set; }
         public int CreatedBy { get; set; }
@@ -48,6 +49,12 @@ namespace DiamandCare.WebApi.Models
         public DateTime UpdatedOn { get; set; }
         public decimal TransferCharges { get; set; }
         public int StatusID { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+    }
+    public class FundRequestStatus
+    {
+        public int RequestStatusID { get; set; }
         public string Status { get; set; }
         public string Description { get; set; }
     }

@@ -90,9 +90,9 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("GetFundRequest")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<FundRequest>>> GetFundRequest()
+        public async Task<Tuple<bool, string, List<FundRequestViewModel>>> GetFundRequest()
         {
-            Tuple<bool, string, List<FundRequest>> result = null;
+            Tuple<bool, string, List<FundRequestViewModel>> result = null;
             try
             {
                 result = await _repo.GetFundRequest();
@@ -106,12 +106,46 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("GetFundRequestStatus")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<FundRequest>>> GetFundRequestStatus()
+        public async Task<Tuple<bool, string, List<FundRequestStatus>>> GetFundRequestStatus()
         {
-            Tuple<bool, string, List<FundRequest>> result = null;
+            Tuple<bool, string, List<FundRequestStatus>> result = null;
             try
             {
                 result = await _repo.GetFundRequestStatus();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("RequestFunds")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> RequestFunds(FundRequest fundRequestModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.RequestFunds(fundRequestModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetUserFundRequestDetails")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<FundRequestViewModel>>> GetUserFundRequestDetails()
+        {
+            Tuple<bool, string, List<FundRequestViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetUserFundRequestDetails();
             }
             catch (Exception ex)
             {

@@ -140,10 +140,10 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
-        public async Task<Tuple<bool, string, List<FundRequest>>> GetFundRequest()
+        public async Task<Tuple<bool, string, List<FundRequestViewModel>>> GetFundRequest()
         {
-            Tuple<bool, string, List<FundRequest>> result = null;
-            List<FundRequest> lstKeys = new List<FundRequest>();
+            Tuple<bool, string, List<FundRequestViewModel>> result = null;
+            List<FundRequestViewModel> lstKeys = new List<FundRequestViewModel>();
             try
             {
                 using (SqlConnection con = new SqlConnection(_dcDb))
@@ -151,8 +151,8 @@ namespace DiamandCare.WebApi.Repository
                     var parameters = new DynamicParameters();
                     parameters.Add("@userID", UserID, DbType.Int32);
                     con.Open();
-                    var list = await con.QueryAsync<FundRequest>("[dbo].[Select_FundRequest]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstKeys = list as List<FundRequest>;
+                    var list = await con.QueryAsync<FundRequestViewModel>("[dbo].[Select_FundRequest]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<FundRequestViewModel>;
                     con.Close();
                 }
                 if (lstKeys != null && lstKeys.Count > 0)
@@ -167,26 +167,84 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
-        public async Task<Tuple<bool, string, List<FundRequest>>> GetFundRequestStatus()
+        public async Task<Tuple<bool, string, List<FundRequestStatus>>> GetFundRequestStatus()
         {
-            Tuple<bool, string, List<FundRequest>> result = null;
-            List<FundRequest> lstKeys = new List<FundRequest>();
+            Tuple<bool, string, List<FundRequestStatus>> result = null;
+            List<FundRequestStatus> lstFundsRequestStatus = new List<FundRequestStatus>();
             try
             {
                 using (SqlConnection con = new SqlConnection(_dcDb))
                 {
-                    var list = await con.QueryAsync<FundRequest>("[dbo].[Select_FundRequestStatus]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstKeys = list as List<FundRequest>;
+                    var list = await con.QueryAsync<FundRequestStatus>("[dbo].[Select_FundRequestStatus]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstFundsRequestStatus = list as List<FundRequestStatus>;
                 }
-                if (lstKeys != null && lstKeys.Count > 0)
-                    result = Tuple.Create(true, "", lstKeys);
+                if (lstFundsRequestStatus != null && lstFundsRequestStatus.Count > 0)
+                    result = Tuple.Create(true, "", lstFundsRequestStatus);
                 else
-                    result = Tuple.Create(false, "No records found", lstKeys);
+                    result = Tuple.Create(false, "No records found", lstFundsRequestStatus);
             }
             catch (Exception ex)
             {
                 //ErrorLog.Write(ex);
-                result = Tuple.Create(false, "", lstKeys);
+                result = Tuple.Create(false, "", lstFundsRequestStatus);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string>> RequestFunds(FundRequest fundRequestModel)
+        {
+            int requestStatus = -1;
+            Tuple<bool, string> requestFundsResult = null;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                   
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+                    parameters.Add("@RequestedAmount", fundRequestModel.RequestedAmount, DbType.Decimal);
+                    parameters.Add("@RequestToUserID", fundRequestModel.RequestToUserID, DbType.Int32);
+                    parameters.Add("@RequestStatusID", fundRequestModel.RequestStatusID, DbType.Int32);
+                    parameters.Add("@CreatedBy", UserID, DbType.Int32);
+                    requestStatus = await con.ExecuteScalarAsync<int>("dbo.Insert_FundRequest", parameters, commandType: CommandType.StoredProcedure);
+                    if (requestStatus == 0)
+                        requestFundsResult = Tuple.Create(true, "Your funds request successfully.");
+                    else
+                        requestFundsResult = Tuple.Create(false, "Your funds request failed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                requestFundsResult = Tuple.Create(false, "Oops! Your funds request failed.");
+            }
+            return requestFundsResult;
+        }
+
+        public async Task<Tuple<bool, string, List<FundRequestViewModel>>> GetUserFundRequestDetails()
+        {
+            Tuple<bool, string, List<FundRequestViewModel>> result = null;
+            List<FundRequestViewModel> lstUserFundsRequestDetails = new List<FundRequestViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+                    con.Open();
+                    var list = await con.QueryAsync<FundRequestViewModel>("[dbo].[Select_UserFundRequestDetails]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstUserFundsRequestDetails = list as List<FundRequestViewModel>;
+                    con.Close();
+                }
+                if (lstUserFundsRequestDetails != null && lstUserFundsRequestDetails.Count > 0)
+                    result = Tuple.Create(true, "", lstUserFundsRequestDetails);
+                else
+                    result = Tuple.Create(false, "No records found", lstUserFundsRequestDetails);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! No records found", lstUserFundsRequestDetails);
             }
             return result;
         }

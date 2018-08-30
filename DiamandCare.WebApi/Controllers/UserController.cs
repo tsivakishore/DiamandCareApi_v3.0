@@ -376,5 +376,57 @@ namespace DiamandCare.WebApi.Controllers
 
             return result;
         }
+
+        //Get user details by DCIC or Username
+        [Authorize]
+        [Route("UserDetailsByDCIDOrUserName")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, UserProfileViewModel>> GetUserDetailsByDCIDOrUserName(string DCIDorName)
+        {
+            Tuple<bool, string, UserProfileViewModel> result = null;
+            try
+            {
+                result = await _repo.GetUserDetailsByDCIDOrUserName(DCIDorName);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("useraddressbyId")]
+        [HttpGet]
+        public Tuple<bool, string, AddressViewModel> GetUsersAddressById(string Id)
+        {
+            Tuple<bool, string, AddressViewModel> result = null;
+            try
+            {
+                result = _repo.GetUsersAddressById(Id);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("changepasswordbyId")] //UpdateUserAddress
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ChangePasswordById(ForgetPasswordModel forgetPasswordModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.ChangePasswordById(forgetPasswordModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
     }
 }

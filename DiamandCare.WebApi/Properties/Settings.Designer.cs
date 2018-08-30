@@ -26,11 +26,47 @@ namespace DiamandCare.WebApi.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=43.255.152.21;Initial Catalog=S4ELoansLive;User ID=S4ELoansLive;Passw" +
-            "ord=S4ELoansLive@123")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.169.219.198;Initial Catalog=S4ELoansIndia;User ID=sa;Password=S4e" +
+            "99661@7597")]
         public string DiamandCareConnection {
             get {
                 return ((string)(this["DiamandCareConnection"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://diamandcare.in")]
+        public string WebSiteURL {
+            get {
+                return ((string)(this["WebSiteURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("sivakishore")]
+        public string SMSUserName {
+            get {
+                return ((string)(this["SMSUserName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1174306098")]
+        public string SMSPwd {
+            get {
+                return ((string)(this["SMSPwd"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DCLoan")]
+        public string SMSSender {
+            get {
+                return ((string)(this["SMSSender"]));
             }
         }
     }

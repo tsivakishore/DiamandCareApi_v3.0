@@ -277,17 +277,23 @@ namespace DiamandCare.WebApi
 
         //Loan eligibility fali conditions display messages
 
-        public const string DISPLAY_MESSAGE_2 = "Payment not done for your previous loan.";
-        public const string DISPLAY_MESSAGE_3 = "Already applied for personal loan in this level.";
-        public const string DISPLAY_MESSAGE_4 = "Risk loan already applied.";
-        public const string DISPLAY_MESSAGE_5 = "Applied for Rinsk benefit, can't apply for any loan.";
-        public const string DISPLAY_MESSAGE_6 = "Payment not done for Emergency loan.";
-        public const string DISPLAY_MESSAGE_7 = "House loan already applied.";
-        public const string DISPLAY_MESSAGE_8 = "Previous Emergency loan payment not done.";
-        public const string DISPLAY_MESSAGE_9 = "Fee Reimbursement already applied.";
-        public const string DISPLAY_MESSAGE_10 = "Prepaid loan can't be applied.";
-        public const string DISPLAY_MESSAGE_11 = "Your ID was renewed, please apply loans with new user. ";
-        public const string DISPLAY_MESSAGE_12 = "User is on hold, Please contact administrator. ";
-        public const string DISPLAY_MESSAGE_13 = "Please fill the bank details ";
+        public const string DISPLAY_MESSAGE_2 = "Payment not done for your previous loan";
+        public const string DISPLAY_MESSAGE_3 = "Already applied for personal loan in this level";
+        public const string DISPLAY_MESSAGE_4 = "Risk loan already applied";
+        public const string DISPLAY_MESSAGE_5 = "Applied for Rinsk benefit, can't apply for any loan";
+        public const string DISPLAY_MESSAGE_6 = "Payment not done for Emergency loan";
+        public const string DISPLAY_MESSAGE_7 = "House loan already applied";
+        public const string DISPLAY_MESSAGE_8 = "Previous Emergency loan payment not done";
+        public const string DISPLAY_MESSAGE_9 = "Fee Reimbursement already applied";
+        public const string DISPLAY_MESSAGE_10 = "Prepaid loan can't be applied";
+        public const string DISPLAY_MESSAGE_11 = "Your ID was renewed, please apply loans with new user";
+        public const string DISPLAY_MESSAGE_12 = "User is on hold, Please contact administrator";
+        public const string DISPLAY_MESSAGE_13 = "Please fill the bank details";
+        public const string DISPLAY_MESSAGE_14 = "Loans are not exist to Prepaid";
+        public const string DISPLAY_MESSAGE_15 = "Can't prepaid the unpaid Loan";
+        public const string DISPLAY_MESSAGE_16 = "Can't apply this loan as Prepaid second time";
+        public const string DISPLAY_MESSAGE_17 = "Can't apply this loan second time as the next level is not enabled";
+        public const string DISPLAY_MESSAGE_18 = "Fees Reimbursement can't applied as already loan was applied in this level.";
+        public const string DISPLAY_MESSAGE_19 = "Not eligible for this loan.";
     }
 }

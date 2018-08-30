@@ -32,6 +32,7 @@ namespace DiamandCare.WebApi
         public decimal CGST { get; set; }
         public decimal IGST { get; set; }
         public decimal TDS { get; set; }
+        public decimal AmountPaid { get; set; }
         public int ApproveOrRejectedBy { get; set; }
         public DateTime ApproveOrRejectedOn { get; set; }
         public int TransferBy { get; set; }

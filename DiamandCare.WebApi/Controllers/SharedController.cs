@@ -221,5 +221,22 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
+        [Authorize]
+        [Route("GetFranchiseRequestStaus")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<FranchiseRequestStaus>>> GetFranchiseRequestStaus()
+        {
+            Tuple<bool, string, List<FranchiseRequestStaus>> result = null;
+            try
+            {
+                result = await _srepo.GetFranchiseRequestStaus();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
     }
 }

@@ -28,6 +28,10 @@ namespace DiamandCare.WebApi.Repository
         int userID;
 
         private string _dcDb = Settings.Default.DiamandCareConnection;
+        private string _url = Settings.Default.WebSiteURL;
+        private string _smsUserName = Settings.Default.SMSUserName;
+        private string _smsPwd = Settings.Default.SMSPwd;
+        private string _smsSender = Settings.Default.SMSSender;
 
         public AuthRepository()
         {
@@ -105,7 +109,7 @@ namespace DiamandCare.WebApi.Repository
                                             $"Your USERNAME :- {userModel.UserName}  " +
                                             $"ID number :- {userModel.DcID}  " +
                                             $"Your PASSWORD :- {userModel.Password}  " +
-                                            $"Login at www.diamandcare.com";
+                                            $"Login at " + _url;
 
                         await SendSMSDCID(userModel.PhoneNumber, smsBody);
 
@@ -169,7 +173,7 @@ namespace DiamandCare.WebApi.Repository
             string res = string.Empty;
             try
             {
-                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username=sivakishore&password=1174306098&sendername=SFEOrg&mobileno=" + PhoneNumber + "&message=" + DcID;
+                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username="+_smsUserName+"&password="+_smsPwd+"&sendername="+_smsSender+"&mobileno=" + PhoneNumber + "&message=" + DcID;
                 res = getHTTP(url.Trim());
                 if (res.Contains("Your message is successfully sent"))
                 {
@@ -437,7 +441,7 @@ namespace DiamandCare.WebApi.Repository
                 string smsBody = $"Welcome to DIAMAND CARE  " +
                         $"Your password has been reset.  " +
                         $"Your new password :- {password}  " +
-                        $"Login at www.diamandcare.com";
+                        $"Login at " + _url;
 
                 passwordHash = _userManager.PasswordHasher.HashPassword(password);
                 createdUser = await _userManager.FindByNameAsync(forgetPasswordModel.UserName);
@@ -939,7 +943,7 @@ namespace DiamandCare.WebApi.Repository
                     parameters.Add("@NomineeRelationshipID", userNomineeDatails.NomineeRelationshipID);
                     parameters.Add("@NomineeAddress", userNomineeDatails.NomineeAddress);
                     parameters.Add("@PhoneNumber", userNomineeDatails.PhoneNumber);
-                    parameters.Add("@CreatedBy", userNomineeDatails.UserID);
+                    parameters.Add("@CreatedBy", userID);
                     parameters.Add("@NomineeRelations", userNomineeDatails.OtherRelationship);
 
                     var userNomineeDetailsViewModel = await cxn.QueryAsync<UserNomineeDetailsViewModel>("dbo.InsertorUpdate_UserNomineeDetails", parameters, commandType: CommandType.StoredProcedure);
@@ -1103,6 +1107,98 @@ namespace DiamandCare.WebApi.Repository
 
             return result;
         }
+
+        //Get user details by DCID or Username
+        public async Task<Tuple<bool, string, UserProfileViewModel>> GetUserDetailsByDCIDOrUserName(string DCIDorName)
+        {
+            Tuple<bool, string, UserProfileViewModel> result = null;
+            UserProfileViewModel userProfile = null;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@DCIDorName", DCIDorName);
+                    using (var multi = await con.QueryMultipleAsync("[dbo].[Select_UserProfileByDCIDorUserName]", parameters, commandType: CommandType.StoredProcedure))
+                    {
+                        userProfile = multi.Read<UserProfileViewModel>().SingleOrDefault();
+                    }
+
+                    //userProfile = con.QuerySingle<UserProfileViewModel>("dbo.Select_UserProfileByDCIDorUserName", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                if (userProfile != null)
+                    result = Tuple.Create(true, "", userProfile);
+                else
+                    result = Tuple.Create(false, "No details found.", userProfile);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "No details found.", userProfile);
+            }
+            return result;
+        }
+
+        public Tuple<bool, string, AddressViewModel> GetUsersAddressById(string Id)
+        {
+            Tuple<bool, string, AddressViewModel> result = null;
+            AddressViewModel userAddress = null;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@Id", Id);
+                    userAddress = con.QuerySingle<AddressViewModel>("dbo.Select_UserAddress", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                if (userAddress != null)
+                    result = Tuple.Create(true, "", userAddress);
+                else
+                    result = Tuple.Create(false, "No details found.", userAddress);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "No details found.", userAddress);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string>> ChangePasswordById(ForgetPasswordModel forgetPasswordModel)
+        {
+            Tuple<bool, string> changePasswordResult = null;
+            string passwordHash = string.Empty;
+            int updatedStatus = -1;
+
+            try
+            {
+                passwordHash = _userManager.PasswordHasher.HashPassword(forgetPasswordModel.Password);
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@Id", forgetPasswordModel.Id, DbType.String);
+                    parameters.Add("@PasswordHash", passwordHash, DbType.String);
+                    updatedStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_ForgetPassword", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                if (updatedStatus == 0)
+                    changePasswordResult = Tuple.Create(true, "Password has been changed successfully.");
+                else
+                    changePasswordResult = Tuple.Create(false, "Oops! Change Password failed. Please try again.");
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                changePasswordResult = Tuple.Create(false, "Oops! Change Password failed.Please try again.");
+            }
+            return changePasswordResult;
+        }
+
         public void Dispose()
         {
             _roleManager.Dispose();

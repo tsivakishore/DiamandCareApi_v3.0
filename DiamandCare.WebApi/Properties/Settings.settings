@@ -5,10 +5,22 @@
     <Setting Name="DiamandCareConnection" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=43.255.152.21;Initial Catalog=S4ELoansLive;User ID=S4ELoansLive;Password=S4ELoansLive@123&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=192.169.219.198;Initial Catalog=S4ELoansIndia;User ID=sa;Password=S4e99661@7597&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=43.255.152.21;Initial Catalog=S4ELoansLive;User ID=S4ELoansLive;Password=S4ELoansLive@123</Value>
+      <Value Profile="(Default)">Data Source=192.169.219.198;Initial Catalog=S4ELoansIndia;User ID=sa;Password=S4e99661@7597</Value>
+    </Setting>
+    <Setting Name="WebSiteURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://diamandcare.in</Value>
+    </Setting>
+    <Setting Name="SMSUserName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">sivakishore</Value>
+    </Setting>
+    <Setting Name="SMSPwd" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1174306098</Value>
+    </Setting>
+    <Setting Name="SMSSender" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">DCLoan</Value>
     </Setting>
   </Settings>
 </SettingsFile>

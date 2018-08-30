@@ -188,6 +188,8 @@
     <Compile Include="Models\EventsModel.cs" />
     <Compile Include="Models\FeeReimbursementModel.cs" />
     <Compile Include="Models\FranchiseMaster.cs" />
+    <Compile Include="Models\FranchiseRequestResponse.cs" />
+    <Compile Include="Models\FranchiseRequestStaus.cs" />
     <Compile Include="Models\HealthBenefitModel.cs" />
     <Compile Include="Models\LoanEarns.cs" />
     <Compile Include="Models\LoanEarnsModel.cs" />
@@ -237,6 +239,8 @@
     <Compile Include="ViewModels\ErrorLogViewModel.cs" />
     <Compile Include="ViewModels\FacebookAuthViewModel.cs" />
     <Compile Include="ViewModels\ForgetPasswordModel.cs" />
+    <Compile Include="ViewModels\FranchiseRequestViewModel.cs" />
+    <Compile Include="ViewModels\FundRequestViewModel.cs" />
     <Compile Include="ViewModels\LoanDetailsViewModel.cs" />
     <Compile Include="ViewModels\LoansViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />

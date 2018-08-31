@@ -113,10 +113,10 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
-        public async Task<Tuple<bool, string, List<WalletTransactions>>> GetWalletTransactions()
+        public async Task<Tuple<bool, string, List<WalletTransactionsViewModel>>> GetWalletTransactions()
         {
-            Tuple<bool, string, List<WalletTransactions>> result = null;
-            List<WalletTransactions> lstKeys = new List<WalletTransactions>();
+            Tuple<bool, string, List<WalletTransactionsViewModel>> result = null;
+            List<WalletTransactionsViewModel> lstKeys = new List<WalletTransactionsViewModel>();
             try
             {
                 using (SqlConnection con = new SqlConnection(_dcDb))
@@ -124,8 +124,8 @@ namespace DiamandCare.WebApi.Repository
                     var parameters = new DynamicParameters();
                     parameters.Add("@userID", UserID, DbType.Int32);
                     con.Open();
-                    var list = await con.QueryAsync<WalletTransactions>("[dbo].[Select_WalletTransactions]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstKeys = list as List<WalletTransactions>;
+                    var list = await con.QueryAsync<WalletTransactionsViewModel>("[dbo].[Select_WalletTransactions]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<WalletTransactionsViewModel>;
                     con.Close();
                 }
                 if (lstKeys != null && lstKeys.Count > 0)

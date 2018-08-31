@@ -74,9 +74,9 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("GetWalletTransactions")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<WalletTransactions>>> GetWalletTransactions()
+        public async Task<Tuple<bool, string, List<WalletTransactionsViewModel>>> GetWalletTransactions()
         {
-            Tuple<bool, string, List<WalletTransactions>> result = null;
+            Tuple<bool, string, List<WalletTransactionsViewModel>> result = null;
             try
             {
                 result = await _repo.GetWalletTransactions();

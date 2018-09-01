@@ -248,5 +248,37 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+
+        public async Task<Tuple<bool, string>> ApproveFundsRequest(FundRequest fundRequestModel)
+        {
+            int requestStatus = -1;
+            Tuple<bool, string> requestFundsResult = null;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+
+                    parameters.Add("@FundsRequestID", fundRequestModel.ID, DbType.Int32);
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+                    parameters.Add("@RequestedAmount", fundRequestModel.RequestedAmount, DbType.Decimal);
+                    parameters.Add("@ApprovedAmount", fundRequestModel.ApprovedAmount, DbType.Decimal);
+                    parameters.Add("@RequestToUserID", fundRequestModel.RequestToUserID, DbType.Int32);
+                    parameters.Add("@RequestStatusID", fundRequestModel.RequestStatusID, DbType.Int32);
+                    parameters.Add("@CreatedBy", UserID, DbType.Int32);
+                    requestStatus = await con.ExecuteScalarAsync<int>("dbo.Update_FundRequest", parameters, commandType: CommandType.StoredProcedure);
+                    if (requestStatus == 0)
+                        requestFundsResult = Tuple.Create(true, "Funds request updated successfully.");
+                    else
+                        requestFundsResult = Tuple.Create(false, "Funds request updation failed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                requestFundsResult = Tuple.Create(false, "Oops! Funds request updation failed.");
+            }
+            return requestFundsResult;
+        }
     }
 }

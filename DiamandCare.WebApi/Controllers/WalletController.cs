@@ -153,5 +153,22 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
+        [Authorize]
+        [Route("ApproveFundsRequest")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ApproveFundsRequest(FundRequest fundRequestModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.ApproveFundsRequest(fundRequestModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace DiamandCare.WebApi.Models
         public DateTime CreateDate { get; set; }
         public string KeyType { get; set; }
         public int ToUserID { get; set; }
+        public int SharedUserID { get; set; }
         public decimal KeyCost { get; set; }
     }
 }

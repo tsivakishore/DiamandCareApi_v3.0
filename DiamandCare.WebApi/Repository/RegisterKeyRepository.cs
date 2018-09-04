@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using DiamandCare.WebApi.Properties;
 using System.Threading;
+using DiamandCare.Core;
 
 namespace DiamandCare.WebApi.Repository
 {
@@ -114,7 +115,7 @@ namespace DiamandCare.WebApi.Repository
             return dt;
         }
 
-        private DataRow ReturnDataRow(string RegKey, string RegKeyStatus, string CreatedBy, int ToUserID,DataTable dtTable)
+        private DataRow ReturnDataRow(string RegKey, string RegKeyStatus, string CreatedBy, int ToUserID, DataTable dtTable)
         {
             DataRow row = null;
             row = dtTable.NewRow();
@@ -141,8 +142,8 @@ namespace DiamandCare.WebApi.Repository
                         RegKeyStatus = x.RegKeyStatus,
                         CreatedBy = x.CreatedBy,
                         CreateDate = x.CreateDate,
-                        KeyType=x.KeyType,
-                        KeyCost=x.KeyCost
+                        KeyType = x.KeyType,
+                        KeyCost = x.KeyCost
                     }).ToList();
 
                     con.Close();
@@ -174,6 +175,7 @@ namespace DiamandCare.WebApi.Repository
                     var list = await con.QueryAsync<RegisterKey>("[dbo].[Select_IssuedRegisterKeysByUserID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
                     lstKeys = list.Select(x => new RegisterKey
                     {
+                        ToUserID = x.ToUserID,
                         RegKey = x.RegKey,
                         PhoneNumber = x.PhoneNumber,
                         RegKeyStatus = x.RegKeyStatus,
@@ -298,6 +300,40 @@ namespace DiamandCare.WebApi.Repository
                 result = Tuple.Create(false, "No records found", lstMultipleSecreateKeys);
             }
             return result;
+        }
+
+        public async Task<Tuple<bool, string>> ShareRegisterKey(RegisterKey registerKey)
+        {
+            Tuple<bool, string> resultShareKey = null;
+            int insertStatus = -1;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@RegKey", registerKey.RegKey, DbType.String);
+                    parameters.Add("@ToUserID", registerKey.ToUserID, DbType.Int32);
+                    parameters.Add("@SharedUserID", registerKey.SharedUserID, DbType.Int32);
+                    parameters.Add("@CreatedBy", userID, DbType.String);
+
+                    insertStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_ShareRegKey", parameters, commandType: CommandType.StoredProcedure);
+
+                    cxn.Close();
+                }
+
+                if (insertStatus == 0)
+                    resultShareKey = Tuple.Create(true, "Register key shared successfully.");
+                else
+                    Tuple.Create(false, "Register key shared failed.Please try again.");
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                resultShareKey = Tuple.Create(false, "Oops! Register key shared failed.Please try again.");
+            }
+
+            return resultShareKey;
         }
     }
 }

@@ -145,5 +145,24 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
+        [Authorize]
+        [Route("ShareRegisterKey")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ShareRegisterKey(RegisterKey registerKey)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.ShareRegisterKey(registerKey);
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
     }
 }

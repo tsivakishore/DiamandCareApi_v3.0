@@ -170,5 +170,22 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
+        [Authorize]
+        [Route("UpdateFundsTransfer")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> UpdateFundsTransfer(FundRequest fundRequestModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.UpdateFundsTransfer(fundRequestModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
     }
 }

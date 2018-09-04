@@ -280,5 +280,34 @@ namespace DiamandCare.WebApi.Repository
             }
             return requestFundsResult;
         }
+
+        public async Task<Tuple<bool, string>> UpdateFundsTransfer(FundRequest fundRequestModel)
+        {
+            int requestStatus = -1;
+            Tuple<bool, string> updateFundsTransferResult = null;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+
+                    parameters.Add("@FromUserID", UserID, DbType.Int32);
+                    parameters.Add("@Amount", fundRequestModel.ApprovedAmount, DbType.Decimal);
+                    parameters.Add("@ToUserID", fundRequestModel.RequestToUserID, DbType.Int32);
+                    parameters.Add("@CreatedBy", UserID, DbType.Int32);
+                    requestStatus = await con.ExecuteScalarAsync<int>("dbo.Update_FundTransfer", parameters, commandType: CommandType.StoredProcedure);
+                    if (requestStatus == 0)
+                        updateFundsTransferResult = Tuple.Create(true, "Transfer funds successfully.");
+                    else
+                        updateFundsTransferResult = Tuple.Create(false, "Transfer funds failed.Please try again.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                updateFundsTransferResult = Tuple.Create(false, "Oops! Transfer funds failed.Please try again.");
+            }
+            return updateFundsTransferResult;
+        }
     }
 }

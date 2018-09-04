@@ -200,14 +200,50 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
-        [Route("GetFranchiseUserRequests")]
+        [Route("GetFranchiseRequestsByUserID")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<FranchiseRequestViewModel>>> GetFranchiseUserRequests()
+        public async Task<Tuple<bool, string, List<FranchiseRequestViewModel>>> GetFranchiseUserRequests(int UserID)
         {
             Tuple<bool, string, List<FranchiseRequestViewModel>> result = null;
             try
             {
-                result = await _repo.GetFranchiseUserRequests();
+                result = await _repo.GetFranchiseUserRequests(UserID);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetAllFranchiseRequests")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<FranchiseRequestViewModel>>> GetAllFranchiseUserRequests()
+        {
+            Tuple<bool, string, List<FranchiseRequestViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetAllFranchiseUserRequests();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("ApproveFranchiseRequest")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> ApproveFranchiseRequest(FranchiseRequestResponse franchiseRequestResponse)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.ApproveFranchiseRequest(franchiseRequestResponse);
             }
             catch (Exception ex)
             {

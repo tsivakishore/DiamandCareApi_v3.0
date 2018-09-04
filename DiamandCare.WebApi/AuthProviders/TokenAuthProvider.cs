@@ -110,6 +110,8 @@ namespace DiamandCare.WebApi
                     roleName = "User";
                 else if (roleId == "9cc2f65f-7cc5-4ddb-b162-760775879796")
                     roleName = "Franchise";
+                else if (roleId == "8622fd1f-a666-4c3e-b5d8-2b079a1d09c8")
+                    roleName = "School";
 
                 user = new User
                 {

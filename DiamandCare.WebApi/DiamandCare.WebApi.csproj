@@ -247,6 +247,7 @@
     <Compile Include="ViewModels\MultipleSecreateKeys.cs" />
     <Compile Include="ViewModels\NomineeRelationshipViewModel.cs" />
     <Compile Include="ViewModels\RegisrationViewModel.cs" />
+    <Compile Include="ViewModels\RegisterKeyViewModel.cs" />
     <Compile Include="ViewModels\RoleViewModel.cs" />
     <Compile Include="ViewModels\SponserViewModel.cs" />
     <Compile Include="ViewModels\UnderViewModel.cs" />

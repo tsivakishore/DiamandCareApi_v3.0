@@ -315,7 +315,7 @@ namespace DiamandCare.WebApi.Repository
                     parameters.Add("@RegKey", registerKey.RegKey, DbType.String);
                     parameters.Add("@ToUserID", registerKey.ToUserID, DbType.Int32);
                     parameters.Add("@SharedUserID", registerKey.SharedUserID, DbType.Int32);
-                    parameters.Add("@CreatedBy", userID, DbType.String);
+                    //parameters.Add("@CreatedBy", userID, DbType.String);
 
                     insertStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_ShareRegKey", parameters, commandType: CommandType.StoredProcedure);
 
@@ -334,6 +334,45 @@ namespace DiamandCare.WebApi.Repository
             }
 
             return resultShareKey;
+        }
+
+        public async Task<Tuple<bool, string, List<RegisterKeyViewModel>>> GetSharedRegisterKeysByUserID()
+        {
+            Tuple<bool, string, List<RegisterKeyViewModel>> result = null;
+            List<RegisterKeyViewModel> lstSharedKeys = new List<RegisterKeyViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@userID", UserID, DbType.Int32);
+                    con.Open();
+                    var list = await con.QueryAsync<RegisterKeyViewModel>("[dbo].[Select_SharedRegKeyByUserID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstSharedKeys = list.Select(x => new RegisterKeyViewModel
+                    {
+                        ToUserID = x.ToUserID,
+                        SharedTo = x.SharedTo,
+                        RegKey = x.RegKey,
+                        PhoneNumber = x.PhoneNumber,
+                        RegKeyStatus = x.RegKeyStatus,
+                        SharedOn = x.SharedOn,
+                        KeyType = x.KeyType,
+                        KeyCost = x.KeyCost
+                    }).ToList();
+
+                    con.Close();
+                }
+                if (lstSharedKeys != null && lstSharedKeys.Count > 0)
+                    result = Tuple.Create(true, "", lstSharedKeys);
+                else
+                    result = Tuple.Create(false, "No records found", lstSharedKeys);
+            }
+            catch (Exception ex)
+            {
+                //ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstSharedKeys);
+            }
+            return result;
         }
     }
 }

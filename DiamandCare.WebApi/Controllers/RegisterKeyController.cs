@@ -164,5 +164,22 @@ namespace DiamandCare.WebApi.Controllers
 
             return result;
         }
+
+        [Authorize]
+        [Route("GetSharedRegisterKeysByUserID")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<RegisterKeyViewModel>>> GetSharedRegisterKeysByUserID()
+        {
+            Tuple<bool, string, List<RegisterKeyViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetSharedRegisterKeysByUserID();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
     }
 }

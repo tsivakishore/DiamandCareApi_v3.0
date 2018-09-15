@@ -39,6 +39,23 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("GetFranchiseDetails")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<FranchiseViewModel>>> GetFranchiseDetails()
+        {
+            Tuple<bool, string, List<FranchiseViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetFranchiseDetails();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+        [Authorize]
         [Route("UpdateFranchise")]
         [HttpPost]
         public async Task<Tuple<bool, string, FranchiseMaster>> UpdateFranchise(FranchiseMaster obj)

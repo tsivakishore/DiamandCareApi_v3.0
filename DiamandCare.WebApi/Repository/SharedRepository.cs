@@ -62,7 +62,7 @@ namespace DiamandCare.WebApi.Repository
 
                     lstSchoolDetails = list.Select(x => new SchoolModel
                     {
-                        SchoolID = x.SchoolID,
+                        //SchoolID = x.SchoolID,
                         SchoolName = x.SchoolName + " (" + x.BranchCode + ")"
                     }).ToList();
 

@@ -52,7 +52,36 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+        public async Task<Tuple<bool, string, List<FranchiseViewModel>>> GetFranchiseDetails()
+        {
+            Tuple<bool, string, List<FranchiseViewModel>> result = null;
+            List<FranchiseViewModel> lstDetails = new List<FranchiseViewModel>();
 
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<FranchiseViewModel>("[dbo].[Select_FranchiseDetails]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstDetails = list as List<FranchiseViewModel>;
+                    con.Close();
+                }
+
+                if (lstDetails != null && lstDetails.Count() > 0)
+                {
+                    result = Tuple.Create(true, "", lstDetails);
+                }
+                else
+                    result = Tuple.Create(false, "No records found", lstDetails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstDetails);
+            }
+            return result;
+        }
         public async Task<Tuple<bool, string, FranchiseMaster>> UpdateFranchise(FranchiseMaster obj)
         {
             Tuple<bool, string, FranchiseMaster> objKey = null;

@@ -85,10 +85,10 @@ namespace DiamandCare.WebApi.Repository
             }
             return addExpensesResult;
         }
-        public async Task<Tuple<bool, string, List<WalletTransactions>>> GetWalletRecentExpenses()
+        public async Task<Tuple<bool, string, List<WalletTransactionsViewModel>>> GetWalletRecentExpenses()
         {
-            Tuple<bool, string, List<WalletTransactions>> result = null;
-            List<WalletTransactions> lstKeys = new List<WalletTransactions>();
+            Tuple<bool, string, List<WalletTransactionsViewModel>> result = null;
+            List<WalletTransactionsViewModel> lstKeys = new List<WalletTransactionsViewModel>();
             try
             {
                 using (SqlConnection con = new SqlConnection(_dcDb))
@@ -96,8 +96,8 @@ namespace DiamandCare.WebApi.Repository
                     var parameters = new DynamicParameters();
                     parameters.Add("@userID", UserID, DbType.Int32);
                     con.Open();
-                    var list = await con.QueryAsync<WalletTransactions>("[dbo].[Select_WalletRecentExpenses]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstKeys = list as List<WalletTransactions>;
+                    var list = await con.QueryAsync<WalletTransactionsViewModel>("[dbo].[Select_WalletRecentExpenses]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<WalletTransactionsViewModel>;
                     con.Close();
                 }
                 if (lstKeys != null && lstKeys.Count > 0)
@@ -200,7 +200,7 @@ namespace DiamandCare.WebApi.Repository
                 using (SqlConnection con = new SqlConnection(_dcDb))
                 {
                     var parameters = new DynamicParameters();
-                   
+
                     parameters.Add("@UserID", UserID, DbType.Int32);
                     parameters.Add("@RequestedAmount", fundRequestModel.RequestedAmount, DbType.Decimal);
                     parameters.Add("@RequestToUserID", fundRequestModel.RequestToUserID, DbType.Int32);
@@ -308,6 +308,35 @@ namespace DiamandCare.WebApi.Repository
                 updateFundsTransferResult = Tuple.Create(false, "Oops! Transfer funds failed.Please try again.");
             }
             return updateFundsTransferResult;
+        }
+
+        public async Task<Tuple<bool, string>> DeleteWalletExpenses(WalletTransactions walletTransactions)
+        {
+            int deleteExpensesStatus = -1;
+            Tuple<bool, string> deleteExpensesResult = null;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+
+                    parameters.Add("@ID", walletTransactions.ID, DbType.Int32);
+                    parameters.Add("@userID", UserID, DbType.Int32);
+                    parameters.Add("@TransactionAmount", walletTransactions.TransactionAmount, DbType.Decimal);
+                    
+                    deleteExpensesStatus = await con.ExecuteScalarAsync<int>("dbo.Update_WalletExpenses", parameters, commandType: CommandType.StoredProcedure);
+                    if (deleteExpensesStatus == 0)
+                        deleteExpensesResult = Tuple.Create(true, "Expenses details deleted successfully.");
+                    else
+                        deleteExpensesResult = Tuple.Create(false, "Expenses details deleted failed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                deleteExpensesResult = Tuple.Create(false, "Oops! Expenses details deleted failed.Please try again.");
+            }
+            return deleteExpensesResult;
         }
     }
 }

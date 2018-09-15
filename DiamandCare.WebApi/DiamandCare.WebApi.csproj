@@ -169,6 +169,7 @@
     <Compile Include="Controllers\LoanEarnsController.cs" />
     <Compile Include="Controllers\MasterChargesController.cs" />
     <Compile Include="Controllers\RegisterKeyController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\TreeDataController.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Models\MultipleRegisterKey.cs" />
     <Compile Include="Models\PersonalLoanModel.cs" />
     <Compile Include="Models\RegisterKey.cs" />
+    <Compile Include="Models\ReportsTypesModel.cs" />
     <Compile Include="Models\RiskBenefitModel.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\SchoolModel.cs" />
@@ -227,6 +229,7 @@
     <Compile Include="Repository\LoansRepository.cs" />
     <Compile Include="Repository\MasterChargesRepository.cs" />
     <Compile Include="Repository\RegisterKeyRepository.cs" />
+    <Compile Include="Repository\ReportsRepository.cs" />
     <Compile Include="Repository\SharedRepository.cs" />
     <Compile Include="Repository\TreeDataRepository.cs" />
     <Compile Include="Repository\UserBankDetailsRepository.cs" />
@@ -255,6 +258,7 @@
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UsersRoleViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\WalletTransactionsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

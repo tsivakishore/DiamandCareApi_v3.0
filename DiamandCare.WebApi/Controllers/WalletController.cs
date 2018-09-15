@@ -40,9 +40,9 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("GetWalletRecentExpenses")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<WalletTransactions>>> GetWalletRecentExpenses()
+        public async Task<Tuple<bool, string, List<WalletTransactionsViewModel>>> GetWalletRecentExpenses()
         {
-            Tuple<bool, string, List<WalletTransactions>> result = null;
+            Tuple<bool, string, List<WalletTransactionsViewModel>> result = null;
             try
             {
                 result = await _repo.GetWalletRecentExpenses();
@@ -180,6 +180,23 @@ namespace DiamandCare.WebApi.Controllers
             try
             {
                 result = await _repo.UpdateFundsTransfer(fundRequestModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("DeleteWalletExpenses")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> DeleteWalletExpenses(WalletTransactions walletTransactions)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.DeleteWalletExpenses(walletTransactions);
             }
             catch (Exception ex)
             {

@@ -45,4 +45,24 @@ namespace DiamandCare.WebApi.Models
         public int ID { get; set; }
         public string FranchiseType { get; set; }
     }
+    public class FranchiseViewModel
+    {
+        public int ID { get; set; }
+        public int UserID { get; set; }
+        public string UserName { get; set; }
+        public int UpgradeTo { get; set; }
+        public int FranchiseTypeID { get; set; }
+        public string FranchiseType { get; set; }
+        public bool ConditionsApplySelf { get; set; }
+        public bool ConditionsApplyUnderJoinees { get; set; }
+        public int FranchiseJoinees { get; set; }
+        public int FranchiseJoineesMinimum { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public int UpdatedBy { get; set; }
+        public DateTime UpdatedOn { get; set; }
+        public int UnderFranchiseID { get; set; }
+        public string UnderFranchiseName { get; set; }
+        public string UnderFranchiseType { get; set; }
+    }
 }

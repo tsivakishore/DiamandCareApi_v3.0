@@ -171,6 +171,7 @@
     <Compile Include="Controllers\RegisterKeyController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\TreeDataController.cs" />
     <Compile Include="Controllers\UserBankDetailsController.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Repository\MasterChargesRepository.cs" />
     <Compile Include="Repository\RegisterKeyRepository.cs" />
     <Compile Include="Repository\ReportsRepository.cs" />
+    <Compile Include="Repository\SchoolRepository.cs" />
     <Compile Include="Repository\SharedRepository.cs" />
     <Compile Include="Repository\TreeDataRepository.cs" />
     <Compile Include="Repository\UserBankDetailsRepository.cs" />

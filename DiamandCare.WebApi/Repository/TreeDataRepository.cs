@@ -46,7 +46,7 @@ namespace DiamandCare.WebApi.Repository
                     result = Tuple.Create(true, "", lstNewParentTreeData.ToList());
                 }                   
                 else
-                    result = Tuple.Create(false, "No records found", lstTreeData);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstTreeData);
             }
             catch (Exception ex)
             {

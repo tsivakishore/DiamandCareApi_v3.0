@@ -38,7 +38,7 @@ namespace DiamandCare.WebApi.Repository
                     result = Tuple.Create(true, "", lstBankDetails);
                 }
                 else
-                    result = Tuple.Create(false, "No records found", lstBankDetails);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstBankDetails);
             }
             catch (Exception ex)
             {

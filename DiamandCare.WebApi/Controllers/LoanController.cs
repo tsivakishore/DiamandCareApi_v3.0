@@ -44,7 +44,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -61,7 +61,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -78,7 +78,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -95,7 +95,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -112,7 +112,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -129,7 +129,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -146,7 +146,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -163,7 +163,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -179,7 +179,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -196,7 +196,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -213,7 +213,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -230,7 +230,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -247,7 +247,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -264,7 +264,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -281,7 +281,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -298,7 +298,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -315,7 +315,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -332,7 +332,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -349,7 +349,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -366,7 +366,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -382,7 +382,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -398,7 +398,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -414,7 +414,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -430,7 +430,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -447,7 +447,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -464,7 +464,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -481,7 +481,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -498,7 +498,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -515,7 +515,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -532,7 +532,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -549,7 +549,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -605,7 +605,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return resTuple;
         }
@@ -661,7 +661,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return resTuple;
         }
@@ -717,7 +717,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return resTuple;
         }
@@ -734,7 +734,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -752,7 +752,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
 
             return resultView;
@@ -770,7 +770,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -787,7 +787,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -804,7 +804,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -821,7 +821,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -838,7 +838,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -855,7 +855,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -873,7 +873,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -890,7 +890,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -907,7 +907,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -924,7 +924,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -941,7 +941,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -958,7 +958,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -975,7 +975,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -992,7 +992,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return result;
         }
@@ -1048,7 +1048,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return resTuple;
         }
@@ -1104,7 +1104,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return resTuple;
         }
@@ -1160,7 +1160,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
             return resTuple;
         }

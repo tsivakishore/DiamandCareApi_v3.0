@@ -33,7 +33,7 @@ namespace DiamandCare.WebApi.Repository
                 if (lstErrorLogs != null && lstErrorLogs.Count > 0)
                     result = Tuple.Create(true, "", lstErrorLogs);
                 else
-                    result = Tuple.Create(false, "No records found", lstErrorLogs);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstErrorLogs);
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace DiamandCare.WebApi.Repository
                 if (lstErrorLogs != null && lstErrorLogs.Count > 0)
                     result = Tuple.Create(true, "", lstErrorLogs);
                 else
-                    result = Tuple.Create(false, "No records found", lstErrorLogs);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstErrorLogs);
             }
             catch (Exception ex)
             {
@@ -94,12 +94,12 @@ namespace DiamandCare.WebApi.Repository
                 if (lstLoans != null && lstLoans.Count > 0)
                     result = Tuple.Create(true, "", lstLoans, UserID);
                 else
-                    result = Tuple.Create(false, "No records found", lstLoans, UserID);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstLoans, UserID);
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "No records found", lstLoans, UserID);
+                result = Tuple.Create(false, ex.Message, lstLoans, UserID);
             }
             return result;
         }

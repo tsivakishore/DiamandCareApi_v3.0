@@ -50,7 +50,7 @@ namespace DiamandCare.WebApi.Repository
                     result = Tuple.Create(true, "", data);
                 }
                 else
-                    result = Tuple.Create(false, "No records found", data);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, data);
             }
             catch (Exception ex)
             {
@@ -103,11 +103,11 @@ namespace DiamandCare.WebApi.Repository
                 if (lstKeys != null && lstKeys.Count > 0)
                     result = Tuple.Create(true, "", lstKeys);
                 else
-                    result = Tuple.Create(false, "No records found", lstKeys);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstKeys);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstKeys);
             }
             return result;
@@ -131,11 +131,11 @@ namespace DiamandCare.WebApi.Repository
                 if (lstKeys != null && lstKeys.Count > 0)
                     result = Tuple.Create(true, "", lstKeys);
                 else
-                    result = Tuple.Create(false, "No records found", lstKeys);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstKeys);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstKeys);
             }
             return result;
@@ -158,11 +158,11 @@ namespace DiamandCare.WebApi.Repository
                 if (lstKeys != null && lstKeys.Count > 0)
                     result = Tuple.Create(true, "", lstKeys);
                 else
-                    result = Tuple.Create(false, "No records found", lstKeys);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstKeys);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstKeys);
             }
             return result;
@@ -181,11 +181,11 @@ namespace DiamandCare.WebApi.Repository
                 if (lstFundsRequestStatus != null && lstFundsRequestStatus.Count > 0)
                     result = Tuple.Create(true, "", lstFundsRequestStatus);
                 else
-                    result = Tuple.Create(false, "No records found", lstFundsRequestStatus);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstFundsRequestStatus);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstFundsRequestStatus);
             }
             return result;
@@ -239,12 +239,12 @@ namespace DiamandCare.WebApi.Repository
                 if (lstUserFundsRequestDetails != null && lstUserFundsRequestDetails.Count > 0)
                     result = Tuple.Create(true, "", lstUserFundsRequestDetails);
                 else
-                    result = Tuple.Create(false, "No records found", lstUserFundsRequestDetails);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstUserFundsRequestDetails);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! No records found", lstUserFundsRequestDetails);
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstUserFundsRequestDetails);
             }
             return result;
         }

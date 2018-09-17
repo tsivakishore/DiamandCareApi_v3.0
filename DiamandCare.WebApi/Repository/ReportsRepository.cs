@@ -8,6 +8,8 @@ using System.Data.SqlClient;
 using Dapper;
 using System.Data;
 using DiamandCare.Core;
+using System.Globalization;
+using DiamandCare.WebApi.Models;
 
 namespace DiamandCare.WebApi
 {
@@ -41,7 +43,7 @@ namespace DiamandCare.WebApi
                 if (lstDetails != null && lstDetails.Count() > 0)
                     result = Tuple.Create(true, "", lstDetails);
                 else
-                    result = Tuple.Create(false, "No records found", lstDetails);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstDetails);
             }
             catch (Exception ex)
             {
@@ -51,5 +53,220 @@ namespace DiamandCare.WebApi
             return result;
         }
 
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> DownloadLoanPaymentsReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstLoanpayments = new List<LoansViewModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@FromDate", DateTime.ParseExact(reportsModel.FromDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ToDate", DateTime.ParseExact(reportsModel.ToDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ReportType", reportsModel.ReportType, DbType.String);
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+
+                    con.Open();
+
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[rpt_LoanPayments]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoanpayments = list as List<LoansViewModel>;
+
+                    con.Close();
+                }
+
+                if (lstLoanpayments != null && lstLoanpayments.Count() > 0)
+                    result = Tuple.Create(true, "", lstLoanpayments);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstLoanpayments);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstLoanpayments);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> DownloadLoanDetailsReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstLoanpayments = new List<LoansViewModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@FromDate", DateTime.ParseExact(reportsModel.FromDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ToDate", DateTime.ParseExact(reportsModel.ToDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ReportType", reportsModel.ReportType, DbType.String);
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+
+                    con.Open();
+
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[rpt_LoanDetails]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoanpayments = list as List<LoansViewModel>;
+
+                    con.Close();
+                }
+
+                if (lstLoanpayments != null && lstLoanpayments.Count() > 0)
+                    result = Tuple.Create(true, "", lstLoanpayments);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstLoanpayments);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstLoanpayments);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<RegisterKeyViewModel>>> DownloadUsedSecretKeysReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<RegisterKeyViewModel>> result = null;
+            List<RegisterKeyViewModel> lstUsedSecretKeys = new List<RegisterKeyViewModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@FromDate", DateTime.ParseExact(reportsModel.FromDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ToDate", DateTime.ParseExact(reportsModel.ToDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ReportType", reportsModel.ReportType, DbType.String);
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+
+                    con.Open();
+
+                    var list = await con.QueryAsync<RegisterKeyViewModel>("[dbo].[rpt_UsedSecretKeys]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstUsedSecretKeys = list as List<RegisterKeyViewModel>;
+
+                    con.Close();
+                }
+
+                if (lstUsedSecretKeys != null && lstUsedSecretKeys.Count() > 0)
+                    result = Tuple.Create(true, "", lstUsedSecretKeys);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstUsedSecretKeys);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstUsedSecretKeys);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<RegisterKeyViewModel>>> DownloadIssuedSecretKeysReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<RegisterKeyViewModel>> result = null;
+            List<RegisterKeyViewModel> lstIssuedSecretKeys = new List<RegisterKeyViewModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@FromDate", DateTime.ParseExact(reportsModel.FromDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ToDate", DateTime.ParseExact(reportsModel.ToDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ReportType", reportsModel.ReportType, DbType.String);
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+
+                    con.Open();
+
+                    var list = await con.QueryAsync<RegisterKeyViewModel>("[dbo].[rpt_IssuedSecretKeys]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstIssuedSecretKeys = list as List<RegisterKeyViewModel>;
+
+                    con.Close();
+                }
+
+                if (lstIssuedSecretKeys != null && lstIssuedSecretKeys.Count() > 0)
+                    result = Tuple.Create(true, "", lstIssuedSecretKeys);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstIssuedSecretKeys);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstIssuedSecretKeys);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<WalletTransactionsViewModel>>> DownloadWalletTransactionsReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<WalletTransactionsViewModel>> result = null;
+            List<WalletTransactionsViewModel> lstWalletTransactions = new List<WalletTransactionsViewModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@FromDate", DateTime.ParseExact(reportsModel.FromDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ToDate", DateTime.ParseExact(reportsModel.ToDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ReportType", reportsModel.ReportType, DbType.String);
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+
+                    con.Open();
+
+                    var list = await con.QueryAsync<WalletTransactionsViewModel>("[dbo].[rpt_WalletTransactions]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstWalletTransactions = list as List<WalletTransactionsViewModel>;
+
+                    con.Close();
+                }
+
+                if (lstWalletTransactions != null && lstWalletTransactions.Count() > 0)
+                    result = Tuple.Create(true, "", lstWalletTransactions);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstWalletTransactions);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstWalletTransactions);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<WalletTransactionsViewModel>>> DownloadCommissionsLogReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<WalletTransactionsViewModel>> result = null;
+            List<WalletTransactionsViewModel> lstCommissionsLog = new List<WalletTransactionsViewModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@FromDate", DateTime.ParseExact(reportsModel.FromDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ToDate", DateTime.ParseExact(reportsModel.ToDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ReportType", reportsModel.ReportType, DbType.String);
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+
+                    con.Open();
+
+                    var list = await con.QueryAsync<WalletTransactionsViewModel>("[dbo].[rpt_Commissions]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstCommissionsLog = list as List<WalletTransactionsViewModel>;
+
+                    con.Close();
+                }
+
+                if (lstCommissionsLog != null && lstCommissionsLog.Count() > 0)
+                    result = Tuple.Create(true, "", lstCommissionsLog);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstCommissionsLog);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstCommissionsLog);
+            }
+            return result;
+        }
     }
 }

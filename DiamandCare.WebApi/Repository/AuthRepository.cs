@@ -985,7 +985,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 return false;
             }
             return true;
@@ -1066,12 +1066,12 @@ namespace DiamandCare.WebApi.Repository
                     result = Tuple.Create(true, "", dataModel, masterCharges);
                 }
                 else
-                    result = Tuple.Create(false, "No records found", dataModel, masterCharges);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, dataModel, masterCharges);
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "No records found", dataModel, masterCharges);
+                result = Tuple.Create(false, ex.Message, dataModel, masterCharges);
             }
             return result;
         }

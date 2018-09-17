@@ -43,7 +43,7 @@ namespace DiamandCare.WebApi.Repository
                     result = Tuple.Create(true, "", lstDetails);
                 }
                 else
-                    result = Tuple.Create(false, "No records found", lstDetails);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstDetails);
             }
             catch (Exception ex)
             {
@@ -109,7 +109,7 @@ namespace DiamandCare.WebApi.Repository
                     result = Tuple.Create(true, "", lstDetails);
                 }
                 else
-                    result = Tuple.Create(false, "No records found", lstDetails);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstDetails);
             }
             catch (Exception ex)
             {
@@ -141,12 +141,12 @@ namespace DiamandCare.WebApi.Repository
                     result = Tuple.Create(true, "", dataModel);
                 }
                 else
-                    result = Tuple.Create(false, "No records found", dataModel);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, dataModel);
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "No records found", dataModel);
+                result = Tuple.Create(false, ex.Message, dataModel);
             }
             return result;
         }
@@ -175,7 +175,7 @@ namespace DiamandCare.WebApi.Repository
                 if (dataModel != null && dataModel.Count > 0)
                     result = Tuple.Create(true, "", dataModel, fmaster);
                 else
-                    result = Tuple.Create(false, "No records found", dataModel, fmaster);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, dataModel, fmaster);
             }
             catch (Exception ex)
             {
@@ -246,7 +246,7 @@ namespace DiamandCare.WebApi.Repository
                     result = Tuple.Create(true, "", lstDetails);
                 }
                 else
-                    result = Tuple.Create(false, "No records found", lstDetails);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstDetails);
             }
             catch (Exception ex)
             {
@@ -280,12 +280,12 @@ namespace DiamandCare.WebApi.Repository
                 if (franchisesDetails != null)
                     result = Tuple.Create(true, "", franchisesDetails, walletDetails);
                 else
-                    result = Tuple.Create(false, "No records found", franchisesDetails, walletDetails);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, franchisesDetails, walletDetails);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
-                result = Tuple.Create(false, "No records found", franchisesDetails, walletDetails);
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, franchisesDetails, walletDetails);
             }
             return result;
         }
@@ -383,7 +383,7 @@ namespace DiamandCare.WebApi.Repository
                 if (lstFranchiseRequests.Count > 0)
                     requestResult = Tuple.Create(true, "", lstFranchiseRequests);
                 else
-                    requestResult = Tuple.Create(false, "No records found.", lstFranchiseRequests);
+                    requestResult = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstFranchiseRequests);
             }
             catch (Exception ex)
             {
@@ -421,7 +421,7 @@ namespace DiamandCare.WebApi.Repository
                 if (lstAllFranchiseRequests.Count > 0)
                     requestResult = Tuple.Create(true, "", lstAllFranchiseRequests);
                 else
-                    requestResult = Tuple.Create(false, "No records found.", lstAllFranchiseRequests);
+                    requestResult = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstAllFranchiseRequests);
             }
             catch (Exception ex)
             {

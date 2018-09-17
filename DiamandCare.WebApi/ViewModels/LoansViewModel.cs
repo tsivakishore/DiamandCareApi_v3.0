@@ -39,5 +39,6 @@ namespace DiamandCare.WebApi
         public DateTime TransferOn { get; set; }
         public int TransferStatusID { get; set; }
         public string TransferStatus { get; set; }
+        public decimal PrePaidLoanCharges { get; set; }
     }
 }

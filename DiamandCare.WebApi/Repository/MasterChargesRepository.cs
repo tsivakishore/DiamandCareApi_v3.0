@@ -83,11 +83,11 @@ namespace DiamandCare.WebApi.Repository
                 if (masterCharges != null)
                     result = Tuple.Create(true, "", masterCharges);
                 else
-                    result = Tuple.Create(false, "No records found", masterCharges);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, masterCharges);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", masterCharges);
             }
             return result;

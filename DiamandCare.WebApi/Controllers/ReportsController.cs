@@ -1,4 +1,5 @@
 ﻿using DiamandCare.Core;
+using DiamandCare.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,200 @@ namespace DiamandCare.WebApi
             }
 
             return result;
+        }
+
+        [Authorize]
+        [Route("DownloadReport")]
+        [HttpPost]
+        public async Task<IEnumerable<dynamic>> DownloadReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            Tuple<bool, string, List<RegisterKeyViewModel>> resultRegisterKey = null;
+            Tuple<bool, string, List<WalletTransactionsViewModel>> resultWalletTransactions = null;
+
+            try
+            {
+                if (reportsModel.ReportType == AppConstants.ALL_LOAN_PAYMENTS || reportsModel.ReportType == AppConstants.LOAN_PAYMENTS)
+                {
+                    result = await _repoReports.DownloadLoanPaymentsReport(reportsModel);
+                    if (result.Item1)
+                    {
+                        return result.Item3.Select(x => new
+                        {
+                            x.LoanID,
+                            x.UserName,
+                            x.LoanAmount,
+                            x.IssuedAmount,
+                            x.AmountToPay,
+                            x.AmountPaid,
+                            x.AdminCharges,
+                            x.PrePaidLoanCharges,
+                            LoanType = x.LoanTypeDescription,
+                            x.LoanApprovalStatus,
+                            x.TransferStatus,
+                            LoanStatus = x.LoanStatusName
+                        });
+                    }
+                    else
+                    {
+                        if (!result.Item1 && result.Item2 == AppConstants.NO_RECORDS_FOUND)
+                        {
+                            return result.Item3.Select(x => new
+                            {
+                                x.LoanID
+                            });
+                        }
+                    }
+                }
+                else if (reportsModel.ReportType == AppConstants.ALL_LOAN_DETAILS || reportsModel.ReportType == AppConstants.LOAN_DETAILS)
+                {
+                    result = await _repoReports.DownloadLoanDetailsReport(reportsModel);
+                    if (result.Item1)
+                    {
+                        return result.Item3.Select(x => new
+                        {
+                            x.LoanID,
+                            x.UserName,
+                            x.LoanAmount,
+                            x.IssuedAmount,
+                            x.AmountToPay,
+                            x.AmountPaid,
+                            x.AdminCharges,
+                            x.PrePaidLoanCharges,
+                            LoanType = x.LoanTypeDescription,
+                            x.LoanApprovalStatus,
+                            x.TransferStatus,
+                            LoanStatus = x.LoanStatusName
+                        });
+                    }
+                    else
+                    {
+                        if (!result.Item1 && result.Item2 == AppConstants.NO_RECORDS_FOUND)
+                        {
+                            return result.Item3.Select(x => new
+                            {
+                                x.LoanID
+                            });
+                        }
+                    }
+                }
+                else if (reportsModel.ReportType == AppConstants.ALL_USED_SECRET_KEYS || reportsModel.ReportType == AppConstants.USED_SECRET_KEYS)
+                {
+                    resultRegisterKey = await _repoReports.DownloadUsedSecretKeysReport(reportsModel);
+                    if (resultRegisterKey.Item1)
+                    {
+                        return resultRegisterKey.Item3.Select(x => new
+                        {
+                            UserName = x.CreatedBy,
+                            x.RegKey,
+                            x.PhoneNumber,
+                            x.RegKeyStatus,
+                            x.CreateDate,
+                            KeyType = x.KeyType == "P" ? "Paid" : "Free",
+                            x.KeyCost
+                        });
+                    }
+                    else
+                    {
+                        if (!resultRegisterKey.Item1 && resultRegisterKey.Item2 == AppConstants.NO_RECORDS_FOUND)
+                        {
+                            return resultRegisterKey.Item3.Select(x => new
+                            {
+                                x.RegKey
+                            });
+                        }
+                    }
+                }
+                else if (reportsModel.ReportType == AppConstants.ALL_ISSUED_SECRET_KEYS || reportsModel.ReportType == AppConstants.ISSUED_SECRET_KEYS)
+                {
+                    resultRegisterKey = await _repoReports.DownloadIssuedSecretKeysReport(reportsModel);
+                    if (resultRegisterKey.Item1)
+                    {
+                        return resultRegisterKey.Item3.Select(x => new
+                        {
+                            UserName = x.CreatedBy,
+                            x.RegKey,
+                            x.PhoneNumber,
+                            x.RegKeyStatus,
+                            x.CreateDate,
+                            KeyType = x.KeyType == "P" ? "Paid" : "Free",
+                            x.KeyCost
+                        });
+                    }
+                    else
+                    {
+                        if (!resultRegisterKey.Item1 && resultRegisterKey.Item2 == AppConstants.NO_RECORDS_FOUND)
+                        {
+                            return resultRegisterKey.Item3.Select(x => new
+                            {
+                                x.RegKey
+                            });
+                        }
+                    }
+                }
+                else if (reportsModel.ReportType == AppConstants.ALL_WALLET_TRANSACTIONS || reportsModel.ReportType == AppConstants.WALLET_TRANSACTIONS)
+                {
+                    resultWalletTransactions = await _repoReports.DownloadWalletTransactionsReport(reportsModel);
+                    if (resultWalletTransactions.Item1)
+                    {
+                        return resultWalletTransactions.Item3.Select(x => new
+                        {
+                            x.Against,
+                            x.AgainstType,
+                            x.TransactionType,
+                            x.TransactionAmount,
+                            x.Purpose,
+                            x.CreatedOn
+                        });
+                    }
+                    else
+                    {
+                        if (!resultWalletTransactions.Item1 && resultWalletTransactions.Item2 == AppConstants.NO_RECORDS_FOUND)
+                        {
+                            return resultWalletTransactions.Item3.Select(x => new
+                            {
+                                x.Against
+                            });
+                        }
+                    }
+                }
+                else if (reportsModel.ReportType == AppConstants.ALL_COMMISSIONS_LOG || reportsModel.ReportType == AppConstants.COMMISSIONS_LOG)
+                {
+                    resultWalletTransactions = await _repoReports.DownloadCommissionsLogReport(reportsModel);
+                    if (resultWalletTransactions.Item1)
+                    {
+                        return resultWalletTransactions.Item3.Select(x => new
+                        {
+                            x.Against,
+                            x.AgainstType,
+                            x.TransactionType,
+                            x.TransactionAmount,
+                            x.Purpose,
+                            x.CreatedOn
+                        });
+                    }
+                    else
+                    {
+                        if (!resultWalletTransactions.Item1 && resultWalletTransactions.Item2 == AppConstants.NO_RECORDS_FOUND)
+                        {
+                            return resultWalletTransactions.Item3.Select(x => new
+                            {
+                                x.Against
+                            });
+                        }
+                    }
+                }
+                else if (reportsModel.ReportType == AppConstants.TRANSFER_PAYMENTS || reportsModel.ReportType == AppConstants.TRANSFER_PAYMENTS)
+                {
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return null;
         }
 
     }

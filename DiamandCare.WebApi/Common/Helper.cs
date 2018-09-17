@@ -278,6 +278,8 @@ namespace DiamandCare.WebApi
         //Loan eligibility fali conditions display messages
 
         public const string DISPLAY_MESSAGE_2 = "Payment not done for your previous loan";
+
+        public const string NO_RECORDS_FOUND = "No records found";
         public const string DISPLAY_MESSAGE_3 = "Already applied for personal loan in this level";
         public const string DISPLAY_MESSAGE_4 = "Risk loan already applied";
         public const string DISPLAY_MESSAGE_5 = "Applied for Rinsk benefit, can't apply for any loan";
@@ -293,7 +295,21 @@ namespace DiamandCare.WebApi
         public const string DISPLAY_MESSAGE_15 = "Can't prepaid the unpaid Loan";
         public const string DISPLAY_MESSAGE_16 = "Can't apply this loan as Prepaid second time";
         public const string DISPLAY_MESSAGE_17 = "Can't apply this loan second time as the next level is not enabled";
-        public const string DISPLAY_MESSAGE_18 = "Fees Reimbursement can't applied as already loan was applied in this level.";
-        public const string DISPLAY_MESSAGE_19 = "Not eligible for this loan.";
+        public const string DISPLAY_MESSAGE_18 = "Fees Reimbursement can't applied as already loan was applied in this level";
+        public const string DISPLAY_MESSAGE_19 = "Not eligible for this loan";
+
+        public const string ALL_LOAN_PAYMENTS = "All Loan Payments";
+        public const string LOAN_PAYMENTS = "Loan Payments";
+        public const string ALL_LOAN_DETAILS = "All Loan Details";
+        public const string LOAN_DETAILS = "Loan Details";
+        public const string ALL_USED_SECRET_KEYS = "All Used Secret Keys";
+        public const string USED_SECRET_KEYS = "Used Secret Keys";
+        public const string ALL_ISSUED_SECRET_KEYS = "All Issued Secret Keys";
+        public const string ISSUED_SECRET_KEYS = "Issued Secret Keys";
+        public const string ALL_WALLET_TRANSACTIONS = "All Wallet Transactions";
+        public const string WALLET_TRANSACTIONS = "Wallet Transactions";
+        public const string TRANSFER_PAYMENTS = "Transfer Payments";
+        public const string ALL_COMMISSIONS_LOG = "All Commissions Log";
+        public const string COMMISSIONS_LOG = "Commissions Log";
     }
 }

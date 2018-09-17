@@ -151,11 +151,11 @@ namespace DiamandCare.WebApi.Repository
                 if (lstKeys != null && lstKeys.Count > 0)
                     result = Tuple.Create(true, "", lstKeys);
                 else
-                    result = Tuple.Create(false, "No records found", lstKeys);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstKeys);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstKeys);
             }
             return result;
@@ -190,11 +190,11 @@ namespace DiamandCare.WebApi.Repository
                 if (lstKeys != null && lstKeys.Count > 0)
                     result = Tuple.Create(true, "", lstKeys);
                 else
-                    result = Tuple.Create(false, "No records found", lstKeys);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstKeys);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstKeys);
             }
             return result;
@@ -215,11 +215,11 @@ namespace DiamandCare.WebApi.Repository
                 if (lstKeys != null && lstKeys.Count > 0)
                     result = Tuple.Create(true, "", lstKeys);
                 else
-                    result = Tuple.Create(false, "No records found", lstKeys);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstKeys);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstKeys);
             }
             return result;
@@ -255,12 +255,12 @@ namespace DiamandCare.WebApi.Repository
                 if (lstMultipleSecreateKeys != null)
                     result = Tuple.Create(true, "", lstMultipleSecreateKeys);
                 else
-                    result = Tuple.Create(false, "No records found", lstMultipleSecreateKeys);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstMultipleSecreateKeys);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
-                result = Tuple.Create(false, "No records found", lstMultipleSecreateKeys);
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstMultipleSecreateKeys);
             }
             return result;
         }
@@ -292,12 +292,12 @@ namespace DiamandCare.WebApi.Repository
                 if (lstMultipleSecreateKeys != null)
                     result = Tuple.Create(true, "", lstMultipleSecreateKeys);
                 else
-                    result = Tuple.Create(false, "No records found", lstMultipleSecreateKeys);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstMultipleSecreateKeys);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
-                result = Tuple.Create(false, "No records found", lstMultipleSecreateKeys);
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstMultipleSecreateKeys);
             }
             return result;
         }
@@ -365,11 +365,11 @@ namespace DiamandCare.WebApi.Repository
                 if (lstSharedKeys != null && lstSharedKeys.Count > 0)
                     result = Tuple.Create(true, "", lstSharedKeys);
                 else
-                    result = Tuple.Create(false, "No records found", lstSharedKeys);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstSharedKeys);
             }
             catch (Exception ex)
             {
-                //ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", lstSharedKeys);
             }
             return result;

@@ -164,6 +164,7 @@
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\FranchiseController.cs" />
     <Compile Include="Controllers\LoanController.cs" />
     <Compile Include="Controllers\LoanEarnsController.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Models\BanksModel.cs" />
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\CommonModel.cs" />
+    <Compile Include="Models\CourseMasterModel.cs" />
     <Compile Include="Models\EventsModel.cs" />
     <Compile Include="Models\FeeReimbursementModel.cs" />
     <Compile Include="Models\FranchiseMaster.cs" />
@@ -224,6 +226,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\AuthRepository.cs" />
+    <Compile Include="Repository\CourseRepository.cs" />
     <Compile Include="Repository\ErrorLogRepository.cs" />
     <Compile Include="Repository\FranchiseRepository.cs" />
     <Compile Include="Repository\LoanEarnsRepository.cs" />
@@ -240,6 +243,7 @@
     <Compile Include="ViewModels\AccountLookupViewModel.cs" />
     <Compile Include="ViewModels\AccountTypesViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
+    <Compile Include="ViewModels\CourseMasterViewModel.cs" />
     <Compile Include="ViewModels\CredentialsViewModel.cs" />
     <Compile Include="ViewModels\ErrorLogViewModel.cs" />
     <Compile Include="ViewModels\FacebookAuthViewModel.cs" />

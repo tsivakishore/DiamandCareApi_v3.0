@@ -246,13 +246,13 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Route("getmenu")]
-        [HttpPost]
-        public async Task<Tuple<bool, string, List<MenuViewModel>>> GetMenu(UserViewModel userViewModel)
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<MenuViewModel1>>> GetMenu(string userID)
         {
-            Tuple<bool, string, List<MenuViewModel>> result = null;
+            Tuple<bool, string, List<MenuViewModel1>> result = null;
             try
             {
-                result = await _repo.GetMenu(userViewModel);
+                result = await _repo.GetMenu(userID);
             }
             catch (Exception ex)
             {

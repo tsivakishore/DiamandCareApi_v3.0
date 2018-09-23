@@ -11,7 +11,7 @@ using DiamandCare.Core;
 
 namespace DiamandCare.WebApi.Controllers
 {
-    
+
     [RoutePrefix("api/role")]
     public class RoleController : ApiController
     {
@@ -34,7 +34,7 @@ namespace DiamandCare.WebApi.Controllers
             }
             catch (Exception ex)
             {
-               ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
             }
 
             return result;
@@ -60,12 +60,12 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("getuserrolebyid")]//GetUsersRoleByID
         [HttpGet]
-        public Tuple<bool, string, User> GetUserRoleByID()
+        public async Task<Tuple<bool, string, List<RoleViewModel1>>> GetUserRoleByID(string userID)
         {
-            Tuple<bool, string, User> result = null;
+            Tuple<bool, string, List<RoleViewModel1>> result = null;
             try
             {
-                result = _repo.GetUserRoleByID();
+                result = await _repo.GetUserRoleByID(userID);
             }
             catch (Exception ex)
             {

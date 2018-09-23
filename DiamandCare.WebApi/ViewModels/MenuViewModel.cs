@@ -16,4 +16,10 @@ namespace DiamandCare.WebApi.ViewModels
         public int MenuTypeID { get; set; }
         public string CssClass { get; set; }
     }
+    public class MenuViewModel1
+    {
+        public int MenuID { get; set; }
+        public string MenuName { get; set; }
+        public bool Checked { get; set; }        
+    }
 }

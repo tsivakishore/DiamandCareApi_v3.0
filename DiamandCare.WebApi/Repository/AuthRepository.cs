@@ -173,7 +173,7 @@ namespace DiamandCare.WebApi.Repository
             string res = string.Empty;
             try
             {
-                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username="+_smsUserName+"&password="+_smsPwd+"&sendername="+_smsSender+"&mobileno=" + PhoneNumber + "&message=" + msgBody;
+                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username=" + _smsUserName + "&password=" + _smsPwd + "&sendername=" + _smsSender + "&mobileno=" + PhoneNumber + "&message=" + msgBody;
                 res = getHTTP(url.Trim());
                 if (res.Contains("Your message is successfully sent"))
                 {
@@ -566,29 +566,30 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
-        public Tuple<bool, string, User> GetUserRoleByID()
+        public async Task<Tuple<bool, string, List<RoleViewModel1>>> GetUserRoleByID(string userID)
         {
-            Tuple<bool, string, User> result = null;
-            User userDetails = new User();
+            Tuple<bool, string, List<RoleViewModel1>> result = null;
+            List<RoleViewModel1> roleDetails = new List<RoleViewModel1>();
 
             try
             {
                 var parameters = new DynamicParameters();
                 using (SqlConnection con = new SqlConnection(_dcDb))
                 {
-                    parameters.Add("@Id", Helper.FindUserByID().Id);
-                    userDetails = con.QuerySingle<User>("dbo.Select_UserRoleByUserID", parameters, commandType: CommandType.StoredProcedure);
+                    parameters.Add("@Id", userID);
+                    var data = await con.QueryAsync<RoleViewModel1>("dbo.Select_UserRoleByUserID", parameters, commandType: CommandType.StoredProcedure);
+                    roleDetails = data as List<RoleViewModel1>;
                 }
 
-                if (userDetails != null)
-                    result = Tuple.Create(true, "", userDetails);
+                if (roleDetails != null)
+                    result = Tuple.Create(true, "", roleDetails);
                 else
-                    result = Tuple.Create(false, "", userDetails);
+                    result = Tuple.Create(false, "", roleDetails);
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Error in get user role by Id.Please try again.", userDetails);
+                result = Tuple.Create(false, "Oops! Error in get user role by Id.Please try again.", roleDetails);
             }
             return result;
         }
@@ -759,26 +760,23 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
-        public async Task<Tuple<bool, string, List<MenuViewModel>>> GetMenu(UserViewModel userViewModel)
+        public async Task<Tuple<bool, string, List<MenuViewModel1>>> GetMenu(string userID)
         {
-            Tuple<bool, string, List<MenuViewModel>> result = null;
-            List<MenuViewModel> lstMenu = new List<MenuViewModel>();
-            string UserName = string.Empty;
-
-            ApplicationUser createdUser = await _userManager.FindByIdAsync(userViewModel.Id);
-            UserName = createdUser.UserName;
+            Tuple<bool, string, List<MenuViewModel1>> result = null;
+            List<MenuViewModel1> lstMenu = new List<MenuViewModel1>();
+            
             try
             {
                 using (SqlConnection cxn = new SqlConnection(_dcDb))
                 {
                     var parameters = new DynamicParameters();
-                    parameters.Add("@Id", userViewModel.Id, DbType.String);
+                    parameters.Add("@Id", userID, DbType.String);
 
-                    var data = await cxn.QueryAsync<MenuViewModel>("[dbo].[Select_RoleMenusByUserID]", parameters, commandType: CommandType.StoredProcedure);
-                    lstMenu = data as List<MenuViewModel>;
+                    var data = await cxn.QueryAsync<MenuViewModel1>("[dbo].[Select_RoleMenusByUserID]", parameters, commandType: CommandType.StoredProcedure);
+                    lstMenu = data as List<MenuViewModel1>;
 
                     cxn.Close();
-                    result = Tuple.Create(true, UserName, lstMenu);
+                    result = Tuple.Create(true, "", lstMenu);
                 }
             }
             catch (Exception ex)

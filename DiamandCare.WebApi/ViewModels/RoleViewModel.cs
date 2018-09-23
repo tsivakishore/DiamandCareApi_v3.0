@@ -11,4 +11,9 @@ namespace DiamandCare.WebApi
         public string Name { get; set; }
         public bool IsActive { get; set; }
     }
+    public class RoleViewModel1
+    {
+        public string RoleID { get; set; }
+        public string RoleName { get; set; }        
+    }
 }

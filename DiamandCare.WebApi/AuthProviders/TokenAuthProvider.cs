@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -85,7 +86,7 @@ namespace DiamandCare.WebApi
 
             User user = null;
             string roleId = string.Empty;
-            string roleName = string.Empty;
+            StringBuilder roleName = new StringBuilder();
             //List<UserRolesModel> roles = null;
             //List<UserPermissionNamesModel> perms = null;
 
@@ -99,26 +100,23 @@ namespace DiamandCare.WebApi
                     return;
                 }
 
-                foreach (IdentityUserRole role in iuser.Roles)
-                {
-                    roleId = role.RoleId;
-                }
+                Tuple<bool, string, List<RoleViewModel1>> result = await _repo.GetUserRoleByID(iuser.Id);
 
-                if (roleId == "928f6866-a684-412f-a68c-30fdba25885b")
-                    roleName = "Admin";
-                else if (roleId == "a4d94ea6-d20a-4b17-b8c2-cf299edb254a")
-                    roleName = "User";
-                else if (roleId == "9cc2f65f-7cc5-4ddb-b162-760775879796")
-                    roleName = "Franchise";
-                else if (roleId == "8622fd1f-a666-4c3e-b5d8-2b079a1d09c8")
-                    roleName = "School";
+                if (result.Item1)
+                {
+                    foreach (RoleViewModel1 role in result.Item3)
+                    {
+                        roleId = role.RoleID;
+                        roleName = roleName.Append(role.RoleName + ", ");
+                    }
+                }
 
                 user = new User
                 {
                     Id = iuser.Id,
                     UserName = iuser.UserName,
                     RoleID = roleId,
-                    RoleName = roleName
+                    RoleName = roleName.ToString().Substring(0, roleName.Length - 2)
                 };
             }
 
@@ -134,8 +132,7 @@ namespace DiamandCare.WebApi
                 {"userId", user.Id},
                 {"roleId", roleId},
                 {"roleName", user.RoleName}
-            }
-       );
+            });
 
 
             var ticket = new AuthenticationTicket(identity, properties);

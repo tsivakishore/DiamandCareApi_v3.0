@@ -166,14 +166,14 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
-        public async Task<Tuple<bool, string>> SendSMSDCID(string PhoneNumber, string DcID)
+        public async Task<Tuple<bool, string>> SendSMSDCID(string PhoneNumber, string msgBody)
         {
             Tuple<bool, string> result = null;
 
             string res = string.Empty;
             try
             {
-                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username="+_smsUserName+"&password="+_smsPwd+"&sendername="+_smsSender+"&mobileno=" + PhoneNumber + "&message=" + DcID;
+                string url = "http://bulksms.mysmsmantra.com:8080/WebSMS/SMSAPI.jsp?username="+_smsUserName+"&password="+_smsPwd+"&sendername="+_smsSender+"&mobileno=" + PhoneNumber + "&message=" + msgBody;
                 res = getHTTP(url.Trim());
                 if (res.Contains("Your message is successfully sent"))
                 {

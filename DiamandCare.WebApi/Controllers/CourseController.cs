@@ -89,5 +89,23 @@ namespace DiamandCare.WebApi
 
             return result;
         }
+
+        [Authorize]
+        [Route("GetCourses")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<CoursesModel>>> GetCourses()
+        {
+            Tuple<bool, string, List<CoursesModel>> result = null;
+            try
+            {
+                result = await _repo.GetCourses();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
     }
 }

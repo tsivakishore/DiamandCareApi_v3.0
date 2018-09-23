@@ -160,5 +160,33 @@ namespace DiamandCare.WebApi
 
             return result;
         }
+
+        public async Task<Tuple<bool, string, List<CoursesModel>>> GetCourses()
+        {
+            Tuple<bool, string, List<CoursesModel>> result = null;
+            List<CoursesModel> lstCourses = new List<CoursesModel>();
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<CoursesModel>("[dbo].[Select_Courses]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstCourses = list as List<CoursesModel>;
+                    con.Close();
+                }
+
+                if (lstCourses != null && lstCourses.Count() > 0)
+                    result = Tuple.Create(true, "", lstCourses);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstCourses);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstCourses);
+            }
+            return result;
+        }
     }
 }

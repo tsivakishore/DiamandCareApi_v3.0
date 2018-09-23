@@ -30,4 +30,10 @@ namespace DiamandCare.WebApi
         public int UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
     }
+
+    public class CoursesModel
+    {
+        public int CourseID { get; set; }
+        public string CourseName { get; set; }
+    }
 }

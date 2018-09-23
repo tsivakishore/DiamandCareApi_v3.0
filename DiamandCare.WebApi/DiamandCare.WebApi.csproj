@@ -165,10 +165,12 @@
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
+    <Compile Include="Controllers\FeeMasterController.cs" />
     <Compile Include="Controllers\FranchiseController.cs" />
     <Compile Include="Controllers\LoanController.cs" />
     <Compile Include="Controllers\LoanEarnsController.cs" />
     <Compile Include="Controllers\MasterChargesController.cs" />
+    <Compile Include="Controllers\RegisterByInstitutionController.cs" />
     <Compile Include="Controllers\RegisterKeyController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -190,6 +192,7 @@
     <Compile Include="Models\CommonModel.cs" />
     <Compile Include="Models\CourseMasterModel.cs" />
     <Compile Include="Models\EventsModel.cs" />
+    <Compile Include="Models\FeeMasterModel.cs" />
     <Compile Include="Models\FeeReimbursementModel.cs" />
     <Compile Include="Models\FranchiseMaster.cs" />
     <Compile Include="Models\FranchiseRequestResponse.cs" />
@@ -228,10 +231,12 @@
     <Compile Include="Repository\AuthRepository.cs" />
     <Compile Include="Repository\CourseRepository.cs" />
     <Compile Include="Repository\ErrorLogRepository.cs" />
+    <Compile Include="Repository\FeeMasterRepository.cs" />
     <Compile Include="Repository\FranchiseRepository.cs" />
     <Compile Include="Repository\LoanEarnsRepository.cs" />
     <Compile Include="Repository\LoansRepository.cs" />
     <Compile Include="Repository\MasterChargesRepository.cs" />
+    <Compile Include="Repository\RegisterByInstitutionRepository.cs" />
     <Compile Include="Repository\RegisterKeyRepository.cs" />
     <Compile Include="Repository\ReportsRepository.cs" />
     <Compile Include="Repository\SchoolRepository.cs" />
@@ -247,6 +252,7 @@
     <Compile Include="ViewModels\CredentialsViewModel.cs" />
     <Compile Include="ViewModels\ErrorLogViewModel.cs" />
     <Compile Include="ViewModels\FacebookAuthViewModel.cs" />
+    <Compile Include="ViewModels\FeeMasterViewModel.cs" />
     <Compile Include="ViewModels\ForgetPasswordModel.cs" />
     <Compile Include="ViewModels\FranchiseRequestViewModel.cs" />
     <Compile Include="ViewModels\FundRequestViewModel.cs" />
@@ -262,6 +268,7 @@
     <Compile Include="ViewModels\UnderViewModel.cs" />
     <Compile Include="ViewModels\UserNomineeDetailsViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
+    <Compile Include="ViewModels\UsersByInstitutionViewModel.cs" />
     <Compile Include="ViewModels\UsersRoleViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\WalletTransactionsViewModel.cs" />

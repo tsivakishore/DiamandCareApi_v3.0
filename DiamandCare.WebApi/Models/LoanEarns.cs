@@ -15,5 +15,6 @@ namespace DiamandCare.WebApi.Models
         public int HealthBenefit { get; set; }
         public int RiskBenefit { get; set; }
         public int FeesReimbursement { get; set; }
+        public string PersonsDesc { get; set; }
     }
 }

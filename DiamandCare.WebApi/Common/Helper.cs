@@ -11,12 +11,27 @@ using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using DiamandCare.Core;
 
 namespace DiamandCare.WebApi
 {
     public class Helper
     {
         private static string _DiamandCareDb = Settings.Default.DiamandCareConnection;
+        private static string _sMTPServer;
+        private static string _sMTPUser;
+        private static string _sMTPPassword;
+        private static string _sMTPPort;
+        private static string _bCC;
+
+        public Helper()
+        {
+            _sMTPServer = Settings.Default.SMTPServer;
+            _sMTPUser = Settings.Default.SMTPUser;
+            _sMTPPassword = Settings.Default.SMTPPassword;
+            _sMTPPort = Settings.Default.SMTPPort;
+            _bCC = Settings.Default.BBC;
+        }
         public static string GetHash(string input)
         {
             HashAlgorithm hashAlgorithm = new SHA256CryptoServiceProvider();
@@ -73,6 +88,38 @@ namespace DiamandCare.WebApi
             catch (Exception ex)
             {
                 SaveErrorToDataBase("DiamandCare.WebApi.Helper", "SendEmail", string.Empty, ex);
+            }
+        }
+
+        public static void SendEmailWithSignature(string strTo, string strToName, string strSubject, string strMailMessage, Helper obj, AlternateView AV, string CC = "", string BCC = "")
+        {
+            try
+            {
+                MailMessage objMailMessage = new MailMessage();
+                objMailMessage.AlternateViews.Add(AV);
+                objMailMessage.IsBodyHtml = true;
+                objMailMessage.Subject = strSubject;
+                objMailMessage.From = new MailAddress(_sMTPUser, "DIAMAND");
+
+                objMailMessage.To.Add(strTo);
+                if (!string.IsNullOrEmpty(CC))
+                    objMailMessage.CC.Add(CC);
+                if (!string.IsNullOrEmpty(_bCC))
+                    objMailMessage.Bcc.Add(_bCC);
+
+                SmtpClient objSmtpClient = new SmtpClient();
+                objSmtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                objSmtpClient.Host = _sMTPServer;
+                objSmtpClient.Port = Convert.ToInt32(_sMTPPort);
+                objSmtpClient.Credentials = new System.Net.NetworkCredential(_sMTPUser, _sMTPPassword);
+                objSmtpClient.EnableSsl = true;
+
+                objSmtpClient.Send(objMailMessage);
+                objMailMessage.To.Clear();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
             }
         }
         public static void SaveErrorToDataBase(string strScreenName, string strFunctionName, string strParameterValues, Exception exception)

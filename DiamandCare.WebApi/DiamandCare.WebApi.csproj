@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="logo_email.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -176,6 +177,7 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
+    <Compile Include="Controllers\StudentMappingController.cs" />
     <Compile Include="Controllers\TreeDataController.cs" />
     <Compile Include="Controllers\UserBankDetailsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="Models\SourceOfUserModel.cs" />
     <Compile Include="Models\SponserModel.cs" />
     <Compile Include="Models\State.cs" />
+    <Compile Include="Models\StudentMappingModel.cs" />
     <Compile Include="Models\TicketTypesModel.cs" />
     <Compile Include="Models\TreeData.cs" />
     <Compile Include="Models\UnderModel.cs" />
@@ -241,6 +244,7 @@
     <Compile Include="Repository\ReportsRepository.cs" />
     <Compile Include="Repository\SchoolRepository.cs" />
     <Compile Include="Repository\SharedRepository.cs" />
+    <Compile Include="Repository\StudentMappingRepository.cs" />
     <Compile Include="Repository\TreeDataRepository.cs" />
     <Compile Include="Repository\UserBankDetailsRepository.cs" />
     <Compile Include="Repository\WalletRepository.cs" />
@@ -261,10 +265,12 @@
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\MultipleSecreateKeys.cs" />
     <Compile Include="ViewModels\NomineeRelationshipViewModel.cs" />
+    <Compile Include="ViewModels\OTPViewModel.cs" />
     <Compile Include="ViewModels\RegisrationViewModel.cs" />
     <Compile Include="ViewModels\RegisterKeyViewModel.cs" />
     <Compile Include="ViewModels\RoleViewModel.cs" />
     <Compile Include="ViewModels\SponserViewModel.cs" />
+    <Compile Include="ViewModels\StudentMappingViewModel.cs" />
     <Compile Include="ViewModels\UnderViewModel.cs" />
     <Compile Include="ViewModels\UserNomineeDetailsViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />

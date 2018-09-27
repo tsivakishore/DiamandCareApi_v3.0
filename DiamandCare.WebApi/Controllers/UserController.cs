@@ -279,9 +279,9 @@ namespace DiamandCare.WebApi.Controllers
 
         [Route("getusersandrole")] //GetUsers and Role
         [HttpGet]
-        public async Task<Tuple<bool, string, List<UsersRoleViewModel>>> GetUserAndRoles()
+        public async Task<Tuple<bool, string, List<UserRolesViewModel>>> GetUserAndRoles()
         {
-            Tuple<bool, string, List<UsersRoleViewModel>> result = null;
+            Tuple<bool, string, List<UserRolesViewModel>> result = null;
             try
             {
                 result = await _repo.GetUserAndRoles();
@@ -295,7 +295,7 @@ namespace DiamandCare.WebApi.Controllers
 
         [Route("updateuserrole")] //UpdateUserRole
         [HttpPost]
-        public async Task<Tuple<bool, string>> UpdateUserRole(RegistrationViewModel obj)
+        public async Task<Tuple<bool, string>> UpdateUserRole(UserRolesViewModel obj)
         {
             Tuple<bool, string> result = null;
             try

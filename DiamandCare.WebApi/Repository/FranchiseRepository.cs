@@ -111,7 +111,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 objKey = Tuple.Create(false, "Oops! Franchise data update failed.Please try again.", franchiseData);
             }
 
@@ -248,7 +248,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 objKey = Tuple.Create(false, "Oops! Franchise data update failed.Please try again.", franchiseData);
             }
 
@@ -338,13 +338,13 @@ namespace DiamandCare.WebApi.Repository
                     if (status == 0)
                         result = Tuple.Create(true, "You have added balance successfully.");
                     else
-                        result = Tuple.Create(false, "Oops! There has been an error while adding balance to wallet.");
+                        result = Tuple.Create(false, "There has been an error while adding balance to wallet.");
 
                 }
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "Oops! There has been an error while adding balance to wallet.Please try again.");
             }
 

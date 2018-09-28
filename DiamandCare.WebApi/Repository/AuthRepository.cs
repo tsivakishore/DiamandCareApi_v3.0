@@ -116,7 +116,7 @@ namespace DiamandCare.WebApi.Repository
                         if (isUserInserted != 0)
                         {
                             await _userManager.DeleteAsync(appUser);
-                            return identityUserResult = Tuple.Create(false, "Oops! User details not created.Please try again.");
+                            return identityUserResult = Tuple.Create(false, "User details not created.Please try again.");
                         }
                     }
                     identityUserResult = Tuple.Create(true, "User Registered successfully!");
@@ -237,7 +237,7 @@ namespace DiamandCare.WebApi.Repository
                         updateUser = Tuple.Create(true, "User details updated successfully.");
                     }
                     else
-                        updateUser = Tuple.Create(false, "Oops! User details updatation failed.Please try again.");
+                        updateUser = Tuple.Create(false, "User details updatation failed.Please try again.");
                 }
             }
             catch (Exception ex)
@@ -352,7 +352,7 @@ namespace DiamandCare.WebApi.Repository
                     if (updatedStatus == 0)
                         updateRoles = Tuple.Create(true, "Role updated successfully.");
                     else
-                        updateRoles = Tuple.Create(false, "Oops! Role details updatation failed.Please try again.");
+                        updateRoles = Tuple.Create(false, "Role details updatation failed.Please try again.");
                 }
             }
             catch (Exception ex)
@@ -461,11 +461,11 @@ namespace DiamandCare.WebApi.Repository
                         await SendSMSDCID(createdUser.PhoneNumber, smsBody);
                     }
                     else
-                        resultForgetPassword = Tuple.Create(false, "Oops! There has been an error from server. Please try again.");
+                        resultForgetPassword = Tuple.Create(false, "There has been an error from server. Please try again.");
 
                 }
                 else
-                    resultForgetPassword = Tuple.Create(false, "Oops! There has been an error from server. Please try again.");
+                    resultForgetPassword = Tuple.Create(false, "There has been an error from server. Please try again.");
             }
             catch (Exception ex)
             {
@@ -495,7 +495,7 @@ namespace DiamandCare.WebApi.Repository
                 if (updatedStatus == 0)
                     changePasswordResult = Tuple.Create(true, "Password has been changed successfully.");
                 else
-                    changePasswordResult = Tuple.Create(false, "Oops! Change Password failed. Please try again.");
+                    changePasswordResult = Tuple.Create(false, "Change Password failed. Please try again.");
 
             }
             catch (Exception ex)
@@ -842,7 +842,7 @@ namespace DiamandCare.WebApi.Repository
                         updateUser = Tuple.Create(true, "User role updated successfully.");
                     }
                     else
-                        updateUser = Tuple.Create(false, "Oops! User role updatation failed.Please try again.");
+                        updateUser = Tuple.Create(false, "User role updatation failed.Please try again.");
                 }
             }
             catch (Exception ex)
@@ -878,7 +878,7 @@ namespace DiamandCare.WebApi.Repository
                     if (updatedStatus == 0)
                         updateUserProfile = Tuple.Create(true, "User profile updated successfully.", userProfile);
                     else
-                        updateUserProfile = Tuple.Create(false, "Oops! User profile updatation failed.Please try again.", new UserProfileViewModel());
+                        updateUserProfile = Tuple.Create(false, "User profile updatation failed.Please try again.", new UserProfileViewModel());
                 }
             }
             catch (Exception ex)
@@ -1033,7 +1033,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "Oops! There has been an error while Loan Waiveoff.Please try again.");
             }
 
@@ -1099,7 +1099,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "Oops! There has been an error while Updating Free to Paid Key.Please try again.");
             }
 

@@ -99,7 +99,7 @@ namespace DiamandCare.WebApi
                 objMailMessage.AlternateViews.Add(AV);
                 objMailMessage.IsBodyHtml = true;
                 objMailMessage.Subject = strSubject;
-                objMailMessage.From = new MailAddress(_sMTPUser, "DIAMAND");
+                objMailMessage.From = new MailAddress(_sMTPUser, "DIAMAND CARE");
 
                 objMailMessage.To.Add(strTo);
                 if (!string.IsNullOrEmpty(CC))

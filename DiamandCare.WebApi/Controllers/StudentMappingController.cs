@@ -21,13 +21,31 @@ namespace DiamandCare.WebApi
         [Authorize]
         [Route("UpdateUserOTP")]
         [HttpPost]
-        public async Task<Tuple<bool, string>> UpdateUserOTP(OTPViewModel oTPViewModel)
+        public async Task<Tuple<bool, string, OTPViewModel>> UpdateUserOTP(OTPViewModel oTPViewModel)
         {
-            Tuple<bool, string> result = null;
+            Tuple<bool, string, OTPViewModel> result = null;
             try
             {
                 result = await _repo.UpdateUserOTP(oTPViewModel);
 
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Route("VerifyOTP")]
+        [HttpPost]
+        public async Task<Tuple<bool, string, OTPViewModel>> VerifyOTP(OTPViewModel oTPViewModel)
+        {
+            Tuple<bool, string, OTPViewModel> result = null;
+
+            try
+            {
+                result = await _repo.VerifyOTP(oTPViewModel);
             }
             catch (Exception ex)
             {

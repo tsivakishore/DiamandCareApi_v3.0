@@ -27,7 +27,7 @@ namespace DiamandCare.WebApi
         public StudentMappingRepository()
         {
             UserID = Helper.FindUserByID().UserID;
-            _imageUrl = Directory.GetCurrentDirectory();
+            _imageUrl = System.Web.Hosting.HostingEnvironment.MapPath("~/Images");
         }
 
 
@@ -61,10 +61,10 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-        public async Task<Tuple<bool, string>> UpdateUserOTP(OTPViewModel oTPViewModel)
+        public async Task<Tuple<bool, string, OTPViewModel>> UpdateUserOTP(OTPViewModel oTPViewModel)
         {
-            Tuple<bool, string> resultOTPUpdate = null;
-            int updateStatus = -1;
+            Tuple<bool, string, OTPViewModel> resultOTPUpdate = null;
+            OTPViewModel otpResultObj = new OTPViewModel();
 
             try
             {
@@ -72,43 +72,74 @@ namespace DiamandCare.WebApi
                 using (SqlConnection cxn = new SqlConnection(_dcDb))
                 {
                     parameters.Add("@UserID", oTPViewModel.UserID, DbType.Int32);
-                    parameters.Add("@PhoneNumber", oTPViewModel.PhoneNumber, DbType.String);
                     parameters.Add("@OneTimePassword", oTPViewModel.OneTimePassword, DbType.Int32);
 
-                    updateStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_UserOTP", parameters, commandType: CommandType.StoredProcedure);
+                    var resultObj = await cxn.QueryAsync<OTPViewModel>("dbo.Update_UserOTP", parameters, commandType: CommandType.StoredProcedure);
+                    otpResultObj = resultObj.Single() as OTPViewModel;
+
+                    if (otpResultObj != null)
+                    {
+                        resultOTPUpdate = Tuple.Create(true, "", otpResultObj);
+                        string smsBody = $"Welcome to DIAMAND CARE  " +
+                                         $"Your OTP :- {oTPViewModel.OneTimePassword}";
+                        //await SendSMS(oTPViewModel.PhoneNumber, smsBody);
+                        //if (oTPViewModel.Email != "")
+                        //{
+                        //    string mailBody = $"<table width='100%'><tr><td style='font-family:Times New Roman;font-size:15px !important;'> Dear {oTPViewModel.FirstName + " " + oTPViewModel.LastName},</td></tr><tr><td><table width='100%'><tr><td style='width:95%;font-family:Times New Roman;font-size:15px !important;'>&nbsp;&nbsp;&nbsp;&nbsp;" +
+                        //        $"Your one time password is: {oTPViewModel.OneTimePassword}</td></tr></table></td></tr>" +
+                        //        $"<tr><td><table width='100%'><tr><td style='font-family:Times New Roman;font-size:15px !important;'>Kind Regards, <br/>DIAMAND CARE</td></tr></table><table width='100%'><tr><img src=cid:MyImage id='img'/></tr><tr><td style='font-family:Times New Roman;font-size:9px !important;'>CONFIDENTIALITY NOTICE AND DISCLAIMER</td>" +
+                        //        $"</tr><tr><td><table width='100%'><tr><td style='width:95%;font-family:Times New Roman;font-size:9px !important;'>" +
+                        //        $"Any views or opinions expressed within this email are those of the author. If you are not the intended recipient of this email you must not use, copy, distribute or disclose the e - mail, its existence, or any part of its contents to any other party.If you have received this email in error, please notify us immediately and destroy the message and all copies in your possession. Although the author operates anti - virus programs they do not accept responsibility for any loss or damage howsoever caused by viruses being passed or arising from the use of this e - mail or its attachments.We recommend that you subject them to your own virus checking procedures prior to use.Before printing, please think about the environment." +
+                        //        $"</td></tr></table></td></tr></table></td></tr></table>";
+
+                        //    AlternateView av = MailBody(mailBody);
+                        //    await Task.Run(async () => await SendEmailWithSignature(oTPViewModel, "OTP", mailBody, av));
+                        //}
+                    }
+                    else
+                        resultOTPUpdate = Tuple.Create(false, "One time password generation failed.Please try again.", otpResultObj);
 
                     cxn.Close();
                 }
-
-                if (updateStatus == 0)
-                {
-                    resultOTPUpdate = Tuple.Create(true, "Your One time passwor has been your mobile number.");
-                    string smsBody = $"Welcome to DIAMAND CARE  " +
-                                     $"Your OTP :- {oTPViewModel.OneTimePassword}";
-                    await SendSMS(oTPViewModel.PhoneNumber, smsBody);
-                    if (oTPViewModel.Email != "")
-                    {
-                        string mailBody = $"<table width='100%'><tr><td style='font-family:Times New Roman;font-size:15px !important;'> Dear {oTPViewModel.FirstName + " " + oTPViewModel.LastName},</td></tr><tr><td><table width='100%'><tr><td style='width:95%;font-family:Times New Roman;font-size:15px !important;'>&nbsp;&nbsp;&nbsp;&nbsp;" +
-                            $"Your one time password is: {oTPViewModel.OneTimePassword}</td></tr></table></td></tr>" +
-                            $"<tr><td><table width='100%'><tr><td style='font-family:Times New Roman;font-size:15px !important;'>Kind Regards, <br/>DIAMAND CARE</td></tr></table><table width='100%'><tr><img src=cid:MyImage id='img'/></tr><tr><td style='font-family:Times New Roman;font-size:9px !important;'>CONFIDENTIALITY NOTICE AND DISCLAIMER</td>" +
-                            $"</tr><tr><td><table width='100%'><tr><td style='width:95%;font-family:Times New Roman;font-size:9px !important;'>" +
-                            $"Any views or opinions expressed within this email are those of the author. If you are not the intended recipient of this email you must not use, copy, distribute or disclose the e - mail, its existence, or any part of its contents to any other party.If you have received this email in error, please notify us immediately and destroy the message and all copies in your possession. Although the author operates anti - virus programs they do not accept responsibility for any loss or damage howsoever caused by viruses being passed or arising from the use of this e - mail or its attachments.We recommend that you subject them to your own virus checking procedures prior to use.Before printing, please think about the environment." +
-                            $"</td></tr></table></td></tr></table></td></tr></table>";
-
-                        AlternateView av = MailBody(mailBody);
-                        await Task.Run(async () => await SendEmailWithSignature(oTPViewModel, "OTP", mailBody, av));
-                    }
-                }
-                else
-                    Tuple.Create(false, "One time password generation failed.Please try again.");
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                resultOTPUpdate = Tuple.Create(false, "Oops! One time password generation failed.Please try again.");
+                resultOTPUpdate = Tuple.Create(false, "Oops! One time password generation failed.Please try again.", otpResultObj);
             }
 
             return resultOTPUpdate;
+        }
+
+        public async Task<Tuple<bool, string, OTPViewModel>> VerifyOTP(OTPViewModel oTPViewModel)
+        {
+            Tuple<bool, string, OTPViewModel> result = null;
+            OTPViewModel otpResultObj = new OTPViewModel();
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", oTPViewModel.UserID, DbType.Int32);
+                    parameters.Add("@OneTimePassword", oTPViewModel.OneTimePassword, DbType.Int32);
+                    var resultObj = await cxn.QueryAsync<OTPViewModel>("dbo.Validate_OTP", parameters, commandType: CommandType.StoredProcedure);
+                    otpResultObj = resultObj.Single() as OTPViewModel;
+
+                    if (otpResultObj != null)
+                        result = Tuple.Create(true, "", otpResultObj);
+                    else
+                        result = Tuple.Create(false, "Please enter valid OTP.", otpResultObj);
+
+                    cxn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! Please enter valid OTP.", otpResultObj);
+            }
+
+            return result;
         }
 
         public async Task<Tuple<bool, string>> SendSMS(string PhoneNumber, string msgBody)

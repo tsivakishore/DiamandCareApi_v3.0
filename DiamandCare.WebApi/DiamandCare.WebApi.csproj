@@ -148,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="logo_email.png" />
+    <Content Include="Images\logo_email.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

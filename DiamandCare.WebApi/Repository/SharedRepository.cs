@@ -390,7 +390,7 @@ namespace DiamandCare.WebApi.Repository
                         objKey = Tuple.Create(true, "", regkey.KeyType);
                     }
                     else
-                        objKey = Tuple.Create(false, "Oops! Please enter valid key and mobile number.", "");
+                        objKey = Tuple.Create(false, "Please enter valid key and mobile number.", "");
 
                     cxn.Close();
                 }

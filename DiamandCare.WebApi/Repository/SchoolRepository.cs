@@ -83,7 +83,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 objKey = Tuple.Create(false, "Oops! School data update failed.Please try again.", franchiseData);
             }
 
@@ -121,7 +121,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 objKey = Tuple.Create(false, "Oops! School data update failed.Please try again.", franchiseData);
             }
 

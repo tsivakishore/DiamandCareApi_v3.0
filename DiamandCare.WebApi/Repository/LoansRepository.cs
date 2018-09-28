@@ -275,7 +275,7 @@ namespace DiamandCare.WebApi
                     if (approvedLoanStatus == 0)
                         approvedLoanResult = Tuple.Create(true, "You have been successfully approved/rejected loan.");
                     else
-                        approvedLoanResult = Tuple.Create(false, "Oops! There has been an error while approve/reject loan.");
+                        approvedLoanResult = Tuple.Create(false, "There has been an error while approve/reject loan.");
                 }
             }
             catch (Exception ex)
@@ -307,7 +307,7 @@ namespace DiamandCare.WebApi
                     if (approvedLoanStatus == 0)
                         approvedLoanResult = Tuple.Create(true, "You have changed  transfer status approved/rejected successfully.");
                     else
-                        approvedLoanResult = Tuple.Create(false, "Oops! There has been an error while transfer status approve/reject loan.");
+                        approvedLoanResult = Tuple.Create(false, "There has been an error while transfer status approve/reject loan.");
                 }
             }
             catch (Exception ex)
@@ -370,7 +370,7 @@ namespace DiamandCare.WebApi
                 else if (updatedStatus == -2)
                     result = Tuple.Create(false, "Insufficient Funds in wallet, Please check once.");
                 else
-                    result = Tuple.Create(false, "Oops! Update loan payment failed. Please try again.");
+                    result = Tuple.Create(false, "Update loan payment failed. Please try again.");
             }
             catch (Exception ex)
             {

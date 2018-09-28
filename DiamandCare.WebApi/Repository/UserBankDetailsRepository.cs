@@ -80,7 +80,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 objKey = Tuple.Create(false, "Oops! User Bank Details inserted/updated failed.Please try again.", userBank);
             }
 

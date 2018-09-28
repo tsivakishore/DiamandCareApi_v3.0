@@ -52,7 +52,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 objKey = Tuple.Create(false, "Oops! Register key generation failed.Please try again.", regkey);
             }
 
@@ -85,11 +85,11 @@ namespace DiamandCare.WebApi.Repository
                 if (insertStatus == 0)
                     resultKey = Tuple.Create(true, "Multiple register keys generated successfully.");
                 else
-                    Tuple.Create(false, "Oops! Multiple register keys generation failed.Please try again.");
+                    Tuple.Create(false, "Multiple register keys generation failed.Please try again.");
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 resultKey = Tuple.Create(false, "Oops! " + ex.Message + ".Please try again.");
             }
 

@@ -52,7 +52,7 @@ namespace DiamandCare.WebApi.Repository
                     if (masterCharges != null)
                         objMasterCharges = Tuple.Create(true, "Master charges added successfully.", masterCharges);
                     else
-                        objMasterCharges = Tuple.Create(false, "Oops! Master charges added failed.Please try again.", masterCharges);
+                        objMasterCharges = Tuple.Create(false, "Master charges added failed.Please try again.", masterCharges);
 
                     cxn.Close();
                 }

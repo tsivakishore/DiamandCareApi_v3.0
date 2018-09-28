@@ -109,7 +109,7 @@ namespace DiamandCare.WebApi
                         if (isUserInserted != 0)
                         {
                             await _userManager.DeleteAsync(appUser);
-                            return identityUserResult = Tuple.Create(false, "Oops! User details not created.Please try again.");
+                            return identityUserResult = Tuple.Create(false, "User details not created.Please try again.");
                         }
                     }
                     identityUserResult = Tuple.Create(true, "User Registered successfully!");

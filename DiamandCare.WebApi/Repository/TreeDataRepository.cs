@@ -17,11 +17,12 @@ namespace DiamandCare.WebApi.Repository
         private string _dvDb = Settings.Default.DiamandCareConnection;
 
 
-        public async Task<Tuple<bool, string, List<TreeData>>> GetTreeData(int ID)
+        public async Task<Tuple<bool, string, List<OrgTreeData>>> GetTreeData(int ID)
         {
-            Tuple<bool, string, List<TreeData>> result = null;
-            List<TreeData> lstTreeData = new List<TreeData>();       
-            IEnumerable<TreeData> lstNewParentTreeData;
+            Tuple<bool, string, List<OrgTreeData>> result = null;
+            List<TreeData> lstTreeData = new List<TreeData>();
+            List<OrgTreeData> lstOrgTreeData = new List<OrgTreeData>();
+            IEnumerable<OrgTreeData> lstNewParentTreeData;           
             try
             {
                 var parameters = new DynamicParameters();
@@ -36,38 +37,76 @@ namespace DiamandCare.WebApi.Repository
 
                 if (lstTreeData != null && lstTreeData.Count() > 1)
                 {
-                    lstNewParentTreeData = lstTreeData.Where(data => data.UserID == ID);
+                    lstNewParentTreeData = lstTreeData.Where(data => data.UserID == ID).Select(x =>
+                    new OrgTreeData
+                    {
+                        label = x.FirstName + " " + x.LastName,
+                        UserID = x.UserID,
+                        UnderID = x.UnderID,
+                        type = "person",
+                        styleClass = "ui-person",
+                        expanded = true,
+                        data = new OrgTreeDetailedData
+                        {
+                            Parents = x.Parents,
+                            Level = x.Level,
+                            FirstName = x.FirstName,
+                            LastName = x.LastName,
+                            UserName = x.UserName,
+                            PhoneNumber = x.PhoneNumber,
+                            DcID = x.DcID
+                        }
+                    });
 
                     foreach (var treeItem in lstNewParentTreeData)
                     {
                         buildTreeviewMenu(treeItem, lstTreeData);
+                        lstOrgTreeData.Add(treeItem);
                     }
-
-                    result = Tuple.Create(true, "", lstNewParentTreeData.ToList());
-                }                   
+                    result = Tuple.Create(true, "", lstOrgTreeData);
+                }
                 else
-                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstTreeData);
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstOrgTreeData);
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "", lstTreeData);
+                result = Tuple.Create(false, "", lstOrgTreeData);
             }
             return result;
         }
 
-        private void buildTreeviewMenu(TreeData treeItem, IEnumerable<TreeData> lstTreeData)
+        private void buildTreeviewMenu(OrgTreeData treeItem, IEnumerable<TreeData> lstTreeData)
         {
-            IEnumerable<TreeData> _treeItems;
+            IEnumerable<OrgTreeData> _treeItems;
 
-            _treeItems = lstTreeData.Where(item => item.UnderID == treeItem.UserID);
+            _treeItems = lstTreeData.Where(item => item.UnderID == treeItem.UserID).Select(x =>
+                    new OrgTreeData
+                    {
+                        label = x.FirstName + " " + x.LastName,
+                        UserID = x.UserID,
+                        UnderID = x.UnderID,
+                        type = "person",
+                        styleClass = "ui-person",
+                        expanded = x.Level < 4 ? true : false,
+                        data = new OrgTreeDetailedData
+                        {
+                            Parents = x.Parents,
+                            Level = x.Level,
+                            FirstName = x.FirstName,
+                            LastName = x.LastName,
+                            UserName = x.UserName,
+                            PhoneNumber = x.PhoneNumber,
+                            DcID = x.DcID
+                        }
+                    });
 
             if (_treeItems != null && _treeItems.Count() > 0)
             {
-                List<TreeData> items = new List<TreeData>(); 
+                List<OrgTreeData> items = new List<OrgTreeData>();
                 foreach (var item in _treeItems)
                 {
-                    treeItem.TreeItems.Add(item);
+                    treeItem.children.Add(item);
                     buildTreeviewMenu(item, lstTreeData);
                 }
             }

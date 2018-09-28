@@ -23,9 +23,9 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("GetTreeData")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<TreeData>>> GetTreeData(int ID)
+        public async Task<Tuple<bool, string, List<OrgTreeData>>> GetTreeData(int ID)
         {
-            Tuple<bool, string, List<TreeData>> result = null;
+            Tuple<bool, string, List<OrgTreeData>> result = null;
             try
             {
                 result = await _repo.GetTreeData(ID);

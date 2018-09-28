@@ -116,7 +116,7 @@ namespace DiamandCare.WebApi.Repository
                         if (isUserInserted != 0)
                         {
                             await _userManager.DeleteAsync(appUser);
-                            return identityUserResult = Tuple.Create(false, "User details not created.Please try again.");
+                            return identityUserResult = Tuple.Create(false, "Oops! User details not created.Please try again.");
                         }
                     }
                     identityUserResult = Tuple.Create(true, "User Registered successfully!");
@@ -237,7 +237,7 @@ namespace DiamandCare.WebApi.Repository
                         updateUser = Tuple.Create(true, "User details updated successfully.");
                     }
                     else
-                        updateUser = Tuple.Create(false, "User details updatation failed.Please try again.");
+                        updateUser = Tuple.Create(false, "Oops! User details updatation failed.Please try again.");
                 }
             }
             catch (Exception ex)
@@ -352,7 +352,7 @@ namespace DiamandCare.WebApi.Repository
                     if (updatedStatus == 0)
                         updateRoles = Tuple.Create(true, "Role updated successfully.");
                     else
-                        updateRoles = Tuple.Create(false, "Role details updatation failed.Please try again.");
+                        updateRoles = Tuple.Create(false, "Oops! Role details updatation failed.Please try again.");
                 }
             }
             catch (Exception ex)
@@ -461,11 +461,11 @@ namespace DiamandCare.WebApi.Repository
                         await SendSMSDCID(createdUser.PhoneNumber, smsBody);
                     }
                     else
-                        resultForgetPassword = Tuple.Create(false, "There has been an error from server. Please try again.");
+                        resultForgetPassword = Tuple.Create(false, "Oops! There has been an error from server. Please try again.");
 
                 }
                 else
-                    resultForgetPassword = Tuple.Create(false, "There has been an error from server. Please try again.");
+                    resultForgetPassword = Tuple.Create(false, "Oops! There has been an error from server. Please try again.");
             }
             catch (Exception ex)
             {
@@ -495,7 +495,7 @@ namespace DiamandCare.WebApi.Repository
                 if (updatedStatus == 0)
                     changePasswordResult = Tuple.Create(true, "Password has been changed successfully.");
                 else
-                    changePasswordResult = Tuple.Create(false, "Change Password failed. Please try again.");
+                    changePasswordResult = Tuple.Create(false, "Oops! Change Password failed. Please try again.");
 
             }
             catch (Exception ex)
@@ -764,7 +764,7 @@ namespace DiamandCare.WebApi.Repository
         {
             Tuple<bool, string, List<MenuViewModel1>> result = null;
             List<MenuViewModel1> lstMenu = new List<MenuViewModel1>();
-            
+
             try
             {
                 using (SqlConnection cxn = new SqlConnection(_dcDb))
@@ -787,63 +787,57 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
-        public async Task<Tuple<bool, string, List<UsersRoleViewModel>>> GetUserAndRoles()
+        public async Task<Tuple<bool, string, List<UserRolesViewModel>>> GetUserAndRoles()
         {
-            Tuple<bool, string, List<UsersRoleViewModel>> result = null;
-            List<UsersRoleViewModel> listUserRole = null;
+            Tuple<bool, string, List<UserRolesViewModel>> result = null;
+            List<UserRolesViewModel> lstUserRoles = new List<UserRolesViewModel>();
+            List<UserRoleMapping> lstMap = new List<UserRoleMapping>();
             try
             {
                 using (SqlConnection cxn = new SqlConnection(_dcDb))
                 {
-                    var list = await cxn.QueryAsync<UsersRoleViewModel>("dbo.Select_UserAndRoles", commandType: CommandType.StoredProcedure);
-                    listUserRole = list.Select(x => new UsersRoleViewModel
+                    using (var multi = await cxn.QueryMultipleAsync("[dbo].[Select_UserRoles]", commandType: CommandType.StoredProcedure))
                     {
-                        UserID = x.UserID,
-                        FirstName = x.FirstName,
-                        LastName = x.LastName,
-                        RoleID = x.RoleID,
-                        RoleName = x.RoleName
-
-                    }).ToList();
-
+                        lstUserRoles = multi.Read<UserRolesViewModel>().ToList();
+                        lstMap = multi.Read<UserRoleMapping>().ToList();
+                    }
                 }
 
-                if (listUserRole != null && listUserRole.Count > 0)
-                    result = Tuple.Create(true, "", listUserRole);
+                lstUserRoles.ForEach(x =>
+                    x.Roles = lstMap.Where(y => y.UserId.Equals(x.Id)).ToList()
+                );
+
+                if (lstUserRoles != null && lstUserRoles.Count > 0)
+                    result = Tuple.Create(true, "", lstUserRoles);
                 else
-                    result = Tuple.Create(false, "", listUserRole);
+                    result = Tuple.Create(false, "", lstUserRoles);
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                result = Tuple.Create(false, "Oops! Get user role details failed.Please try again.", listUserRole);
+                result = Tuple.Create(false, "Oops! Get user role details failed.Please try again.", lstUserRoles);
             }
             return result;
         }
 
-        public async Task<Tuple<bool, string>> UpdateUserRole(RegistrationViewModel obj)
+        public async Task<Tuple<bool, string>> UpdateUserRole(UserRolesViewModel obj)
         {
             int updatedStatus = -1;
             Tuple<bool, string> updateUser = null;
 
             try
             {
-                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                var res = await _userManager.AddToRolesAsync(obj.Id, obj.Roles.Select(x => x.RoleId).ToArray());
+
+                // updatedStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_UserRole", parameters, commandType: CommandType.StoredProcedure);
+
+                if (updatedStatus == 0)
                 {
-                    var parameters = new DynamicParameters();
-
-                    parameters.Add("@UserID", obj.Id);
-                    parameters.Add("@RoleID", obj.RoleID, DbType.String);
-
-                    updatedStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_UserRole", parameters, commandType: CommandType.StoredProcedure);
-
-                    if (updatedStatus == 0)
-                    {
-                        updateUser = Tuple.Create(true, "User role updated successfully.");
-                    }
-                    else
-                        updateUser = Tuple.Create(false, "User role updatation failed.Please try again.");
+                    updateUser = Tuple.Create(true, "User role updated successfully.");
                 }
+                else
+                    updateUser = Tuple.Create(false, "Oops! User role updatation failed.Please try again.");
+
             }
             catch (Exception ex)
             {
@@ -878,7 +872,7 @@ namespace DiamandCare.WebApi.Repository
                     if (updatedStatus == 0)
                         updateUserProfile = Tuple.Create(true, "User profile updated successfully.", userProfile);
                     else
-                        updateUserProfile = Tuple.Create(false, "User profile updatation failed.Please try again.", new UserProfileViewModel());
+                        updateUserProfile = Tuple.Create(false, "Oops! User profile updatation failed.Please try again.", new UserProfileViewModel());
                 }
             }
             catch (Exception ex)
@@ -1033,7 +1027,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                ErrorLog.Write(ex);
+                // ErrorLog.Write(ex);
                 result = Tuple.Create(false, "Oops! There has been an error while Loan Waiveoff.Please try again.");
             }
 
@@ -1099,7 +1093,7 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                ErrorLog.Write(ex);
+                // ErrorLog.Write(ex);
                 result = Tuple.Create(false, "Oops! There has been an error while Updating Free to Paid Key.Please try again.");
             }
 

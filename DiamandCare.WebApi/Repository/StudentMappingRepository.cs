@@ -49,7 +49,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@State", studentMappingModel.State, DbType.String);
                     parameters.Add("@Country", studentMappingModel.Country, DbType.String);
                     parameters.Add("@Zipcode", studentMappingModel.Zipcode, DbType.String);
-                    parameters.Add("@FeeMaterID", studentMappingModel.FeeMasterID, DbType.Int32);
+                    parameters.Add("@FeeMasterID", studentMappingModel.FeeMasterID, DbType.Int32);
                     parameters.Add("@GroupID", studentMappingModel.GroupID, DbType.Int32);
                     parameters.Add("@Fees", studentMappingModel.CourseFee, DbType.Decimal);
                     parameters.Add("@ApprovalStatusID", studentMappingModel.ApprovalStatusID, DbType.Int32);
@@ -57,7 +57,7 @@ namespace DiamandCare.WebApi
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
                     registerStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_StudentMapping", parameters, commandType: CommandType.StoredProcedure);
 
-                    if (registerStatus > 0)
+                    if (registerStatus == 0)
                         result = Tuple.Create(true, "");
                     else
                         result = Tuple.Create(false, "Student mapping failed.Please try again.");

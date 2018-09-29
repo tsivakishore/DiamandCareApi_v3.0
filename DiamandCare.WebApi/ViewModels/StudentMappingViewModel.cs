@@ -19,14 +19,15 @@ namespace DiamandCare.WebApi
         public string State { get; set; }
         public string Country { get; set; }
         public string Zipcode { get; set; }
-        public int CourseMasterID { get; set; }
-        public int CourseID { get; set; }
+        public int FeeMasterID { get; set; }
         public int GroupID { get; set; }
-        public decimal Fees { get; set; }
+        public decimal CourseFee { get; set; }
         public int ApprovalStatusID { get; set; }
+        public string ApprovalStatus { get; set; }
         public string ApprovedBy { get; set; }
         public string ApprovedOn { get; set; }
         public int TransferStatusID { get; set; }
+        public string TransferStatus { get; set; }
         public string TransferBy { get; set; }
         public string TransferOn { get; set; }
         public string CreatedBy { get; set; }

@@ -37,6 +37,25 @@ namespace DiamandCare.WebApi
             return result;
         }
 
+        [Authorize]
+        [Route("InsertStudentMapping")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> InsertStudentMapping(StudentMappingModel studentMappingModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.InsertStudentMapping(studentMappingModel);
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
         [Route("VerifyOTP")]
         [HttpPost]
         public async Task<Tuple<bool, string, OTPViewModel>> VerifyOTP(OTPViewModel oTPViewModel)
@@ -46,6 +65,42 @@ namespace DiamandCare.WebApi
             try
             {
                 result = await _repo.VerifyOTP(oTPViewModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetFeeMastersByUserID")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<FeeMastersModel>>> GetFeeMastersByUserID(int UserID)
+        {
+            Tuple<bool, string, List<FeeMastersModel>> result = null;
+            try
+            {
+                result = await _repo.GetFeeMastersByUserID(UserID);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetStudentMappingDetails")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<StudentMappingViewModel>>> GetStudentDetails(int UserID)
+        {
+            Tuple<bool, string, List<StudentMappingViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetStudentDetails(UserID);
             }
             catch (Exception ex)
             {

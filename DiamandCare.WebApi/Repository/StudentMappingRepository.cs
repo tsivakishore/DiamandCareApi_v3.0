@@ -27,11 +27,54 @@ namespace DiamandCare.WebApi
         public StudentMappingRepository()
         {
             UserID = Helper.FindUserByID().UserID;
-            _imageUrl = System.Web.Hosting.HostingEnvironment.MapPath("~/Images");
+            _imageUrl = System.Web.Hosting.HostingEnvironment.MapPath("~/");
         }
 
+        public async Task<Tuple<bool, string>> InsertStudentMapping(StudentMappingModel studentMappingModel)
+        {
+            Tuple<bool, string> result = null;
+            int registerStatus = -1;
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", studentMappingModel.UserID, DbType.Int32);
+                    parameters.Add("@StudentName", studentMappingModel.StudentName, DbType.String);
+                    parameters.Add("@Gender", studentMappingModel.Gender, DbType.String);
+                    parameters.Add("@Address1", studentMappingModel.Address1, DbType.String);
+                    parameters.Add("@Address2", studentMappingModel.Address2, DbType.String);
+                    parameters.Add("@City", studentMappingModel.City, DbType.String);
+                    parameters.Add("@District", studentMappingModel.District, DbType.String);
+                    parameters.Add("@State", studentMappingModel.State, DbType.String);
+                    parameters.Add("@Country", studentMappingModel.Country, DbType.String);
+                    parameters.Add("@Zipcode", studentMappingModel.Zipcode, DbType.String);
+                    parameters.Add("@FeeMaterID", studentMappingModel.FeeMasterID, DbType.Int32);
+                    parameters.Add("@GroupID", studentMappingModel.GroupID, DbType.Int32);
+                    parameters.Add("@Fees", studentMappingModel.CourseFee, DbType.Decimal);
+                    parameters.Add("@ApprovalStatusID", studentMappingModel.ApprovalStatusID, DbType.Int32);
+                    parameters.Add("@TransferStatusID", studentMappingModel.TransferStatusID, DbType.Int32);
+                    parameters.Add("@CreatedBy", UserID, DbType.Int32);
+                    registerStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_StudentMapping", parameters, commandType: CommandType.StoredProcedure);
 
-        public async Task<Tuple<bool, string, List<StudentMappingViewModel>>> GetStudentDetails(int UserID)
+                    if (registerStatus > 0)
+                        result = Tuple.Create(true, "");
+                    else
+                        result = Tuple.Create(false, "Student mapping failed.Please try again.");
+
+                    cxn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! Student mapping failed.Please try again.");
+            }
+
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<StudentMappingViewModel>>> GetStudentDetails(int userID)
         {
             Tuple<bool, string, List<StudentMappingViewModel>> result = null;
             List<StudentMappingViewModel> lstStudentDetails = new List<StudentMappingViewModel>();
@@ -41,10 +84,25 @@ namespace DiamandCare.WebApi
                 var parameters = new DynamicParameters();
                 using (SqlConnection con = new SqlConnection(_dcDb))
                 {
-                    parameters.Add("@UserID", UserID, DbType.Int32);
+                    parameters.Add("@UserID", userID, DbType.Int32);
                     con.Open();
-                    var list = await con.QueryAsync<StudentMappingViewModel>("[dbo].[Select_FeePerticularsDetails]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstStudentDetails = list as List<StudentMappingViewModel>;
+                    var list = await con.QueryAsync<StudentMappingViewModel>("[dbo].[Select_StudentMappingDetails]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+
+                    lstStudentDetails = (List<StudentMappingViewModel>)list.Select(x => new StudentMappingViewModel
+                    {
+                        UserID = x.UserID,
+                        StudentName = x.StudentName,
+                        Gender = x.Gender == "M" ? "Male" : "Female",
+                        GroupID = x.GroupID,
+                        CourseFee = x.CourseFee,
+                        ApprovalStatusID = x.ApprovalStatusID,
+                        ApprovalStatus = x.ApprovalStatus,
+                        TransferStatusID = x.TransferStatusID,
+                        TransferStatus = x.TransferStatus,
+                        UpdatedBy = x.UpdatedBy,
+                        UpdatedOn = x.UpdatedOn
+                    }).ToList();
+
                     con.Close();
                 }
 
@@ -139,6 +197,36 @@ namespace DiamandCare.WebApi
                 result = Tuple.Create(false, "Oops! Please enter valid OTP.", otpResultObj);
             }
 
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<FeeMastersModel>>> GetFeeMastersByUserID(int userID)
+        {
+            Tuple<bool, string, List<FeeMastersModel>> result = null;
+            List<FeeMastersModel> lstFeeMasters = new List<FeeMastersModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", userID, DbType.Int32);
+                    con.Open();
+                    var list = await con.QueryAsync<FeeMastersModel>("[dbo].[Select_FeeMasterByUserID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstFeeMasters = list as List<FeeMastersModel>;
+                    con.Close();
+                }
+
+                if (lstFeeMasters != null && lstFeeMasters.Count() > 0)
+                    result = Tuple.Create(true, "", lstFeeMasters);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstFeeMasters);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstFeeMasters);
+            }
             return result;
         }
 

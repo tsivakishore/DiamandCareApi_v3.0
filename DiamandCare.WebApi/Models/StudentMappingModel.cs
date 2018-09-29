@@ -18,10 +18,9 @@ namespace DiamandCare.WebApi
         public string State { get; set; }
         public string Country { get; set; }
         public string Zipcode { get; set; }
-        public int CourseMasterID { get; set; }
-        public int CourseID { get; set; }
+        public int FeeMasterID { get; set; }
         public int GroupID { get; set; }
-        public decimal Fees { get; set; }
+        public decimal CourseFee { get; set; }
         public int ApprovalStatusID { get; set; }
         public int ApprovedBy { get; set; }
         public DateTime ApprovedOn { get; set; }

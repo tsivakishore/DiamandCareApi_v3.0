@@ -148,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Images\logo_email.jpg" />
+    <Content Include="logo_email.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -196,6 +196,7 @@
     <Compile Include="Models\CourseMasterModel.cs" />
     <Compile Include="Models\EventsModel.cs" />
     <Compile Include="Models\FeeMasterModel.cs" />
+    <Compile Include="Models\FeeMastersModel.cs" />
     <Compile Include="Models\FeeReimbursementModel.cs" />
     <Compile Include="Models\FranchiseMaster.cs" />
     <Compile Include="Models\FranchiseRequestResponse.cs" />

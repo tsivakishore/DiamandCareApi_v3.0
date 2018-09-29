@@ -171,6 +171,7 @@
     <Compile Include="Controllers\LoanController.cs" />
     <Compile Include="Controllers\LoanEarnsController.cs" />
     <Compile Include="Controllers\MasterChargesController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\RegisterByInstitutionController.cs" />
     <Compile Include="Controllers\RegisterKeyController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Models\LoanTransferStatus.cs" />
     <Compile Include="Models\MasterChargesModel.cs" />
     <Compile Include="Models\MenuCustomModel.cs" />
+    <Compile Include="Models\MenuModel.cs" />
     <Compile Include="Models\ModeofTransfer.cs" />
     <Compile Include="Models\MultipleRegisterKey.cs" />
     <Compile Include="Models\PersonalLoanModel.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="Repository\LoanEarnsRepository.cs" />
     <Compile Include="Repository\LoansRepository.cs" />
     <Compile Include="Repository\MasterChargesRepository.cs" />
+    <Compile Include="Repository\MenuRepository.cs" />
     <Compile Include="Repository\RegisterByInstitutionRepository.cs" />
     <Compile Include="Repository\RegisterKeyRepository.cs" />
     <Compile Include="Repository\ReportsRepository.cs" />

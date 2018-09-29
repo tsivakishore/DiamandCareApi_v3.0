@@ -87,6 +87,24 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
+        [Authorize]
+        [Route("GetWithdrawalTransactions")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<WithdrawFundsViewModel>>> GetWithdrawalTransactions()
+        {
+            Tuple<bool, string, List<WithdrawFundsViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetWithdrawalTransactions();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
         [Authorize]
         [Route("GetFundRequest")]
         [HttpGet]
@@ -180,6 +198,23 @@ namespace DiamandCare.WebApi.Controllers
             try
             {
                 result = await _repo.UpdateFundsTransfer(fundRequestModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("WithdrawFunds")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> WithdrawFunds(WithdrawFunds withdrawModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.InsertWithdrawals(withdrawModel);
             }
             catch (Exception ex)
             {

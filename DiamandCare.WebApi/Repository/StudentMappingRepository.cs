@@ -95,6 +95,7 @@ namespace DiamandCare.WebApi
                         Gender = x.Gender == "M" ? "Male" : "Female",
                         GroupID = x.GroupID,
                         CourseFee = x.CourseFee,
+                        PhoneNumber = x.PhoneNumber,
                         ApprovalStatusID = x.ApprovalStatusID,
                         ApprovalStatus = x.ApprovalStatus,
                         TransferStatusID = x.TransferStatusID,
@@ -140,7 +141,7 @@ namespace DiamandCare.WebApi
                         resultOTPUpdate = Tuple.Create(true, "", otpResultObj);
                         string smsBody = $"Welcome to DIAMAND CARE  " +
                                          $"Your OTP :- {oTPViewModel.OneTimePassword}";
-                        //await SendSMS(oTPViewModel.PhoneNumber, smsBody);
+                        await SendSMS(oTPViewModel.PhoneNumber, smsBody);
                         //if (oTPViewModel.Email != "")
                         //{
                         //    string mailBody = $"<table width='100%'><tr><td style='font-family:Times New Roman;font-size:15px !important;'> Dear {oTPViewModel.FirstName + " " + oTPViewModel.LastName},</td></tr><tr><td><table width='100%'><tr><td style='width:95%;font-family:Times New Roman;font-size:15px !important;'>&nbsp;&nbsp;&nbsp;&nbsp;" +
@@ -200,6 +201,43 @@ namespace DiamandCare.WebApi
             return result;
         }
 
+        public async Task<Tuple<bool, string>> GenerateLoanOTP(OTPViewModel oTPViewModel)
+        {
+            Tuple<bool, string> result = null;
+            int generateStatus = -1;
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", oTPViewModel.UserID, DbType.Int32);
+                    parameters.Add("@PhoneNumber", oTPViewModel.PhoneNumber, DbType.String);
+                    parameters.Add("@LoanOTP", oTPViewModel.LoanOTP, DbType.Int32);
+                    generateStatus = await cxn.ExecuteScalarAsync<int>("dbo.Generate_Student_LoanOTP", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (generateStatus == 0)
+                    {
+                        string smsBody = $"Welcome to DIAMAND CARE  " +
+                                         $"Your OTP for apply loan:- {oTPViewModel.LoanOTP}";
+                        await SendSMS(oTPViewModel.PhoneNumber, smsBody);
+                        result = Tuple.Create(true, "OTP sent to your phone number: " + oTPViewModel.PhoneNumber);
+                    }
+                    else if (generateStatus == -2)
+                        result = Tuple.Create(false, "Your phone number is in correct.Please contact admin.");
+                    else
+                        result = Tuple.Create(false, "Your OTP generation failed.Please try again.");
+
+                    cxn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! Your OTP generation failed.Please try again.");
+            }
+
+            return result;
+        }
         public async Task<Tuple<bool, string, List<FeeMastersModel>>> GetFeeMastersByUserID(int userID)
         {
             Tuple<bool, string, List<FeeMastersModel>> result = null;

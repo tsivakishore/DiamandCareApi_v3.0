@@ -20,6 +20,7 @@ namespace DiamandCare.WebApi
         public string Country { get; set; }
         public string Zipcode { get; set; }
         public int FeeMasterID { get; set; }
+        public string PhoneNumber { get; set; }
         public int GroupID { get; set; }
         public decimal CourseFee { get; set; }
         public int ApprovalStatusID { get; set; }

@@ -13,5 +13,6 @@ namespace DiamandCare.WebApi
         public string PhoneNumber { get; set; }
         public int OneTimePassword { get; set; }
         public string Email { get; set; }
+        public int LoanOTP { get; set; }
     }
 }

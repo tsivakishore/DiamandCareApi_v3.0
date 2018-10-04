@@ -75,6 +75,25 @@ namespace DiamandCare.WebApi
         }
 
         [Authorize]
+        [Route("GenerateLoanOTP")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> GenerateLoanOTP(OTPViewModel oTPViewModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.GenerateLoanOTP(oTPViewModel);
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
         [Route("GetFeeMastersByUserID")]
         [HttpGet]
         public async Task<Tuple<bool, string, List<FeeMastersModel>>> GetFeeMastersByUserID(int UserID)

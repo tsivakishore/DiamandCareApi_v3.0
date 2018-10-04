@@ -40,22 +40,22 @@ namespace DiamandCare.WebApi.Repository
                     lstNewParentTreeData = lstTreeData.Where(data => data.UserID == ID).Select(x =>
                     new OrgTreeData
                     {
-                        label = x.FirstName + " " + x.LastName,
+                        name = x.UserName,
                         UserID = x.UserID,
-                        UnderID = x.UnderID,
-                        type = "person",
-                        styleClass = "ui-person",
-                        expanded = true,
-                        data = new OrgTreeDetailedData
-                        {
-                            Parents = x.Parents,
-                            Level = x.Level,
-                            FirstName = x.FirstName,
-                            LastName = x.LastName,
-                            UserName = x.UserName,
-                            PhoneNumber = x.PhoneNumber,
-                            DcID = x.DcID
-                        }
+                        //UnderID = x.UnderID,
+                        //type = "person",
+                        styleClass = setColor(x.Level),
+                        //expanded = true,
+                        //data = new OrgTreeDetailedData
+                        //{
+                        //    Parents = x.Parents,
+                        //    Level = x.Level,
+                        //    FirstName = x.FirstName,
+                        //    LastName = x.LastName,
+                        //    UserName = x.UserName,
+                        //    PhoneNumber = x.PhoneNumber,
+                        //    DcID = x.DcID
+                        //}
                     });
 
                     foreach (var treeItem in lstNewParentTreeData)
@@ -83,22 +83,22 @@ namespace DiamandCare.WebApi.Repository
             _treeItems = lstTreeData.Where(item => item.UnderID == treeItem.UserID).Select(x =>
                     new OrgTreeData
                     {
-                        label = x.FirstName + " " + x.LastName,
+                        name = x.UserName,
                         UserID = x.UserID,
-                        UnderID = x.UnderID,
-                        type = "person",
-                        styleClass = "ui-person",
-                        expanded = x.Level < 4 ? true : false,
-                        data = new OrgTreeDetailedData
-                        {
-                            Parents = x.Parents,
-                            Level = x.Level,
-                            FirstName = x.FirstName,
-                            LastName = x.LastName,
-                            UserName = x.UserName,
-                            PhoneNumber = x.PhoneNumber,
-                            DcID = x.DcID
-                        }
+                        //UnderID = x.UnderID,
+                       // type = "person",
+                       styleClass = setColor(x.Level),
+                       // expanded = x.Level < 4 ? true : false,
+                        //data = new OrgTreeDetailedData
+                        //{
+                        //    Parents = x.Parents,
+                        //    Level = x.Level,
+                        //    FirstName = x.FirstName,
+                        //    LastName = x.LastName,
+                        //    UserName = x.UserName,
+                        //    PhoneNumber = x.PhoneNumber,
+                        //    DcID = x.DcID
+                        //}
                     });
 
             if (_treeItems != null && _treeItems.Count() > 0)
@@ -110,6 +110,26 @@ namespace DiamandCare.WebApi.Repository
                     buildTreeviewMenu(item, lstTreeData);
                 }
             }
+        }
+
+        private string setColor(int num)
+        {
+            string strColor = string.Empty;
+
+            if (num == 0)
+                strColor = "pink";
+            else if (num == 1)
+                strColor = "#C45F4A";
+            else if (num == 2)
+                strColor = "orange";
+            else if (num == 3)
+                strColor = "#ff3399";
+            else if (num == 4)
+                strColor = "#C45F4A";
+            else
+                strColor = "purple";
+
+            return strColor;
         }
     }
 }

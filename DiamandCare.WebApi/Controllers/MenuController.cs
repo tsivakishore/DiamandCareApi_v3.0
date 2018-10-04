@@ -37,5 +37,41 @@ namespace DiamandCare.WebApi.Controllers
 
             return result;
         }
+
+        [Authorize]
+        [Route("CreateScreenMaster")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> CreateScreenMaster(MenuModel obj)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.CreateScreenMaster(obj);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetRoleMenuDetailsByScreenID")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<RoleMenuModel>>> GetRoleMenuDetailsByScreenID(int screenID)
+        {
+            Tuple<bool, string, List<RoleMenuModel>> result = null;
+            try
+            {
+                result = await _repo.GetRoleMenuDetailsByScreenID(screenID);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
     }
 }

@@ -53,6 +53,36 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
+        public async Task<Tuple<bool, string, List<RoleMenuModel>>> GetRoleMenuDetailsByScreenID(int screenID)
+        {
+            Tuple<bool, string, List<RoleMenuModel>> result = null;
+            List<RoleMenuModel> lstMenuRoles = new List<RoleMenuModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@ScreenID", screenID, DbType.Int32);
+                    var list = await con.QueryAsync<MenuModel>("[dbo].[Select_RoleMenuDetailsByScreenID]", parameters, commandType: CommandType.StoredProcedure);
+                    lstMenuRoles = list as List<RoleMenuModel>;
+                }
+
+                if (lstMenuRoles != null && lstMenuRoles.Count() > 0)
+                {
+                    result = Tuple.Create(true, "", lstMenuRoles);
+                }
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstMenuRoles);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstMenuRoles);
+            }
+            return result;
+        }
+
         public async Task<Tuple<bool, string>> CreateScreenMaster(MenuModel obj)
         {
             Tuple<bool, string> result = null;
@@ -66,7 +96,7 @@ namespace DiamandCare.WebApi.Repository
                         parameters.Add("@MenuID", obj.MenuID, DbType.Int32);
 
                     parameters.Add("@MenuName", obj.MenuName, DbType.String);
-                    parameters.Add("@MenuDescription", obj.MenuDescription, DbType.String);                  
+                    parameters.Add("@MenuDescription", obj.MenuDescription, DbType.String);
                     cxn.Open();
                     insertStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_Menu", parameters, commandType: CommandType.StoredProcedure);
                     cxn.Close();

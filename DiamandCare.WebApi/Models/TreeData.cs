@@ -35,12 +35,12 @@ namespace DiamandCare.WebApi.Models
     public class OrgTreeData
     {
         public int UserID { get; set; }
-        public int UnderID { get; set; }
-        public string label { get; set; }
-        public string type { get; set; }
+        //public int UnderID { get; set; }
+        public string name { get; set; }
+        //public string type { get; set; }
         public string styleClass { get; set; }
-        public bool expanded { get; set; }
-        public OrgTreeDetailedData data { get; set; }
+        //public bool expanded { get; set; }
+        //public OrgTreeDetailedData data { get; set; }
         public List<OrgTreeData> children { get; set; }
         public OrgTreeData()
         {

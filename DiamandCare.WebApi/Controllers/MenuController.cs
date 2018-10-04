@@ -57,6 +57,42 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("CreateRoleMenu")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> CreateRoleMenu(RoleMenuModel obj)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.CreateRoleMenu(obj);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("DeleteRoleMenu")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> DeleteRoleMenu(int ID)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.DeleteRoleMenu(ID);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
         [Route("GetRoleMenuDetailsByScreenID")]
         [HttpGet]
         public async Task<Tuple<bool, string, List<RoleMenuModel>>> GetRoleMenuDetailsByScreenID(int screenID)

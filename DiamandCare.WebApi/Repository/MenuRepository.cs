@@ -64,7 +64,7 @@ namespace DiamandCare.WebApi.Repository
                 using (SqlConnection con = new SqlConnection(_dcDb))
                 {
                     parameters.Add("@ScreenID", screenID, DbType.Int32);
-                    var list = await con.QueryAsync<MenuModel>("[dbo].[Select_RoleMenuDetailsByScreenID]", parameters, commandType: CommandType.StoredProcedure);
+                    var list = await con.QueryAsync<RoleMenuModel>("[dbo].[Select_RoleMenuDetailsByScreenID]", parameters, commandType: CommandType.StoredProcedure);
                     lstMenuRoles = list as List<RoleMenuModel>;
                 }
 
@@ -111,6 +111,65 @@ namespace DiamandCare.WebApi.Repository
                 }
                 else
                     result = Tuple.Create(false, "Screen details created failed");
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message);
+            }
+
+            return result;
+        }
+        public async Task<Tuple<bool, string>> CreateRoleMenu(RoleMenuModel obj)
+        {
+            Tuple<bool, string> result = null;
+            int insertStatus = -1;
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@MenuID", obj.MenuID, DbType.Int32);
+                    parameters.Add("@RoleID", obj.RoleID, DbType.String);
+
+                    insertStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_RoleMenu", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                if (insertStatus == 0)
+                {
+                    result = Tuple.Create(true, "Screen and Role mapped successfully");
+                }
+                else
+                    result = Tuple.Create(false, "Screen and Role mapping failed");
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message);
+            }
+
+            return result;
+        }
+        public async Task<Tuple<bool, string>> DeleteRoleMenu(int ID)
+        {
+            Tuple<bool, string> result = null;
+            int insertStatus = -1;
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@ID", ID, DbType.Int32);                    
+
+                    insertStatus = await cxn.ExecuteScalarAsync<int>("dbo.Delete_RoleMenu", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                if (insertStatus == 0)
+                {
+                    result = Tuple.Create(true, "Screen and Role map deleted successfully");
+                }
+                else
+                    result = Tuple.Create(false, "Screen and Role map deletion failed");
             }
             catch (Exception ex)
             {

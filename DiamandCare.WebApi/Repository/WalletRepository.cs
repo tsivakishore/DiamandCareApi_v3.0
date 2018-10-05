@@ -166,6 +166,90 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+        public async Task<Tuple<bool, string, List<WithdrawFundsViewModel>>> GetPendingWithdrawalTransactions()
+        {
+            Tuple<bool, string, List<WithdrawFundsViewModel>> result = null;
+            List<WithdrawFundsViewModel> lstKeys = new List<WithdrawFundsViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@status", 1, DbType.Int32);
+                    con.Open();
+                    var list = await con.QueryAsync<WithdrawFundsViewModel>("[dbo].[Select_WithdrawalTransactions]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<WithdrawFundsViewModel>;
+                    con.Close();
+
+                }
+                if (lstKeys != null && lstKeys.Count > 0)
+                    result = Tuple.Create(true, "", lstKeys);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstKeys);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstKeys);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<WithdrawFundsViewModel>>> GetRejectedWithdrawalTransactions()
+        {
+            Tuple<bool, string, List<WithdrawFundsViewModel>> result = null;
+            List<WithdrawFundsViewModel> lstKeys = new List<WithdrawFundsViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@status", 3, DbType.Int32);
+                    con.Open();
+                    var list = await con.QueryAsync<WithdrawFundsViewModel>("[dbo].[Select_WithdrawalTransactions]",parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<WithdrawFundsViewModel>;
+                    con.Close();
+                }
+                if (lstKeys != null && lstKeys.Count > 0)
+                    result = Tuple.Create(true, "", lstKeys);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstKeys);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstKeys);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<WithdrawFundsViewModel>>> GetApprovedWithdrawalTransactions()
+        {
+            Tuple<bool, string, List<WithdrawFundsViewModel>> result = null;
+            List<WithdrawFundsViewModel> lstKeys = new List<WithdrawFundsViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@status", 2, DbType.Int32);
+                    con.Open();
+                    var list = await con.QueryAsync<WithdrawFundsViewModel>("[dbo].[Select_WithdrawalTransactions]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<WithdrawFundsViewModel>;
+                    con.Close();
+                }
+                if (lstKeys != null && lstKeys.Count > 0)
+                    result = Tuple.Create(true, "", lstKeys);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstKeys);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstKeys);
+            }
+            return result;
+        }
 
         public async Task<Tuple<bool, string, List<FundRequestViewModel>>> GetFundRequest()
         {
@@ -348,7 +432,6 @@ namespace DiamandCare.WebApi.Repository
                     var parameters = new DynamicParameters();
 
                     parameters.Add("@userID", UserID, DbType.Int32);
-                    parameters.Add("@ID", withdrawModel.UserID, DbType.Int32);
                     parameters.Add("@WithdrawAmount", withdrawModel.WithdrawAmount, DbType.Decimal);
                     parameters.Add("@Purpose", withdrawModel.Purpose, DbType.String);
                     requestStatus = await con.ExecuteScalarAsync<int>("dbo.InsertWithdrawals", parameters, commandType: CommandType.StoredProcedure);

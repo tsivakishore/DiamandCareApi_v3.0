@@ -106,6 +106,57 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("GetPendingWithdrawalTransactions")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<WithdrawFundsViewModel>>> GetPendingWithdrawalTransactions()
+        {
+            Tuple<bool, string, List<WithdrawFundsViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetPendingWithdrawalTransactions();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetRejectedWithdrawalTransactions")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<WithdrawFundsViewModel>>> GetRejectedWithdrawalTransactions()
+        {
+            Tuple<bool, string, List<WithdrawFundsViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetRejectedWithdrawalTransactions();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
+        [Route("GetApprovedWithdrawalTransactions")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<WithdrawFundsViewModel>>> GetApprovedWithdrawalTransactions()
+        {
+            Tuple<bool, string, List<WithdrawFundsViewModel>> result = null;
+            try
+            {
+                result = await _repo.GetApprovedWithdrawalTransactions();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        [Authorize]
         [Route("GetFundRequest")]
         [HttpGet]
         public async Task<Tuple<bool, string, List<FundRequestViewModel>>> GetFundRequest()

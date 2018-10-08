@@ -14,5 +14,6 @@ namespace DiamandCare.WebApi
         public int OneTimePassword { get; set; }
         public string Email { get; set; }
         public int LoanOTP { get; set; }
+        public bool HaveOTP { get; set; }
     }
 }

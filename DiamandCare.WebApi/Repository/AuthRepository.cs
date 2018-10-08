@@ -827,22 +827,32 @@ namespace DiamandCare.WebApi.Repository
 
             try
             {
-                var res = await _userManager.AddToRolesAsync(obj.Id, obj.Roles.Select(x => x.RoleId).ToArray());
+                DataTable dt = new DataTable();
+                dt.Columns.Add("UserID", typeof(string));
+                dt.Columns.Add("RoleID", typeof(string));
 
-                // updatedStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_UserRole", parameters, commandType: CommandType.StoredProcedure);
+                obj.Roles.ForEach(x => dt.Rows.Add(new object[] { obj.Id, x.RoleId }));
+
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", obj.Id, DbType.String);
+                    parameters.Add("@UserRoles", dt.AsTableValuedParameter());
+                    updatedStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_UserRolesMultiple", parameters, commandType: CommandType.StoredProcedure);
+                }
 
                 if (updatedStatus == 0)
                 {
-                    updateUser = Tuple.Create(true, "User role updated successfully.");
+                    updateUser = Tuple.Create(true, "User roles updated successfully.");
                 }
                 else
-                    updateUser = Tuple.Create(false, "Oops! User role updatation failed.Please try again.");
+                    updateUser = Tuple.Create(false, "Oops! User roles updatation failed.Please try again.");
 
             }
             catch (Exception ex)
             {
                 ErrorLog.Write(ex);
-                updateUser = Tuple.Create(false, "Oops! User role updatation failed.Please try again.");
+                updateUser = Tuple.Create(false, "Oops! User roles updatation failed.Please try again.");
             }
 
             return updateUser;

@@ -106,6 +106,8 @@ namespace DiamandCare.WebApi
                 applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_18);
             else if (applyLoanStatus == -19)
                 applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_19);
+            else if (applyLoanStatus == -20)
+                applyLoanResult = Tuple.Create(false, AppConstants.DISPLAY_MESSAGE_20);
             else
                 applyLoanResult = Tuple.Create(false, "Oops! loan apply failed.");
 
@@ -825,6 +827,31 @@ namespace DiamandCare.WebApi
                     var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_AmountTransferPending_ByDCIDorName]", spParams, commandType: CommandType.StoredProcedure, commandTimeout: 300);
                     lstLoans = list as List<LoansViewModel>;
                     con.Close();
+                }
+                if (lstLoans != null && lstLoans.Count > 0)
+                    result = Tuple.Create(true, "", lstLoans);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstLoans);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstLoans);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferPendingDownload()
+        {
+            Tuple<bool, string, List<LoansViewModel>> result = null;
+            List<LoansViewModel> lstLoans = new List<LoansViewModel>();
+            try
+            {
+                var spParams = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {                   
+                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_AmountTransferPending_Download]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoans = list as List<LoansViewModel>;                   
                 }
                 if (lstLoans != null && lstLoans.Count > 0)
                     result = Tuple.Create(true, "", lstLoans);

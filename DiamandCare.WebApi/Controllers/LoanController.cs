@@ -370,6 +370,24 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
+        [Authorize]
+        [Route("GetLoansAmountTransferPendingDownload")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<LoanTransferPendingModel>>> GetLoansAmountTransferPendingDownload()
+        {
+            Tuple<bool, string, List<LoanTransferPendingModel>> result = null;
+            try
+            {
+                result = await _repoLoans.GetLoansAmountTransferPendingDownload();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
         [Authorize]
         [Route("GetLoansAmountTransferedByDCIDorName")]
         [HttpGet]

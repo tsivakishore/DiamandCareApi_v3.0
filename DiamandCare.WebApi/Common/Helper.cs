@@ -344,6 +344,7 @@ namespace DiamandCare.WebApi
         public const string DISPLAY_MESSAGE_17 = "Can't apply this loan second time as the next level is not enabled";
         public const string DISPLAY_MESSAGE_18 = "Fees Reimbursement can't applied as already loan was applied in this level";
         public const string DISPLAY_MESSAGE_19 = "Not eligible for this loan";
+        public const string DISPLAY_MESSAGE_20 = "Loan can't be applied as you didn't reach 5 referrals";
 
         public const string ALL_LOAN_PAYMENTS = "All Loan Payments";
         public const string LOAN_PAYMENTS = "Loan Payments";

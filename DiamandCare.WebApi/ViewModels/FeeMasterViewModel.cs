@@ -12,6 +12,7 @@ namespace DiamandCare.WebApi
         public string UserName { get; set; }
         public int CourseID { get; set; }
         public string CourseName { get; set; }
+        public int CourseMasterID { get; set; }
         public decimal CourseFee { get; set; }
         public int CreatedBy { get; set; }
         public string CreatedOn { get; set; }

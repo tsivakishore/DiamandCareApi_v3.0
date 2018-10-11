@@ -56,15 +56,15 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-        [Route("VerifyOTP")]
+        [Route("VerifyStudentOTP")]
         [HttpPost]
-        public async Task<Tuple<bool, string, OTPViewModel>> VerifyOTP(OTPViewModel oTPViewModel)
+        public async Task<Tuple<bool, string, OTPViewModel>> VerifyStudentOTP(OTPViewModel oTPViewModel)
         {
             Tuple<bool, string, OTPViewModel> result = null;
 
             try
             {
-                result = await _repo.VerifyOTP(oTPViewModel);
+                result = await _repo.VerifyStudentOTP(oTPViewModel);
             }
             catch (Exception ex)
             {

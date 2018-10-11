@@ -123,7 +123,7 @@ namespace DiamandCare.WebApi
         public async Task<Tuple<bool, string, OTPViewModel>> UpdateUserOTP(OTPViewModel oTPViewModel)
         {
             Tuple<bool, string, OTPViewModel> resultOTPUpdate = null;
-            OTPViewModel otpResultObj = new OTPViewModel();
+            OTPViewModel otpResultObj = null;
 
             try
             {
@@ -132,16 +132,22 @@ namespace DiamandCare.WebApi
                 {
                     parameters.Add("@UserID", oTPViewModel.UserID, DbType.Int32);
                     parameters.Add("@OneTimePassword", oTPViewModel.OneTimePassword, DbType.Int32);
+                    parameters.Add("@HaveOTP", oTPViewModel.HaveOTP, DbType.Boolean);
 
                     var resultObj = await cxn.QueryAsync<OTPViewModel>("dbo.Update_UserOTP", parameters, commandType: CommandType.StoredProcedure);
-                    otpResultObj = resultObj.Single() as OTPViewModel;
+                    if (resultObj.Count() > 0)
+                        otpResultObj = resultObj.Single() as OTPViewModel;
 
                     if (otpResultObj != null)
                     {
                         resultOTPUpdate = Tuple.Create(true, "", otpResultObj);
-                        string smsBody = $"Welcome to DIAMAND CARE  " +
+
+                        if (!oTPViewModel.HaveOTP)
+                        {
+                            string smsBody = $"Welcome to DIAMAND CARE  " +
                                          $"Your OTP :- {oTPViewModel.OneTimePassword}";
-                        await SendSMS(oTPViewModel.PhoneNumber, smsBody);
+                            await SendSMS(oTPViewModel.PhoneNumber, smsBody);
+                        }
                         //if (oTPViewModel.Email != "")
                         //{
                         //    string mailBody = $"<table width='100%'><tr><td style='font-family:Times New Roman;font-size:15px !important;'> Dear {oTPViewModel.FirstName + " " + oTPViewModel.LastName},</td></tr><tr><td><table width='100%'><tr><td style='width:95%;font-family:Times New Roman;font-size:15px !important;'>&nbsp;&nbsp;&nbsp;&nbsp;" +
@@ -170,7 +176,7 @@ namespace DiamandCare.WebApi
             return resultOTPUpdate;
         }
 
-        public async Task<Tuple<bool, string, OTPViewModel>> VerifyOTP(OTPViewModel oTPViewModel)
+        public async Task<Tuple<bool, string, OTPViewModel>> VerifyStudentOTP(OTPViewModel oTPViewModel)
         {
             Tuple<bool, string, OTPViewModel> result = null;
             OTPViewModel otpResultObj = new OTPViewModel();

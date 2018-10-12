@@ -341,6 +341,7 @@ namespace DiamandCare.WebApi.Controllers
 
             return result;
         }
+
         [Authorize]
         [Route("getfreetopaiduserdetails")]
         [HttpGet]
@@ -360,6 +361,24 @@ namespace DiamandCare.WebApi.Controllers
         }
 
         [Authorize]
+        [Route("getUserSponserJoineeRequired")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, UserSponserJoineeModel>> GetUserSponserJoineeRequired(string DcIDorName)
+        {
+            Tuple<bool, string, UserSponserJoineeModel> result = null;
+            try
+            {
+                result = await _repo.GetUserSponserJoineeRequired(DcIDorName);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
         [Route("updatefreetopaidkeydetails")]
         [HttpGet]
         public async Task<Tuple<bool, string>> updatefreetopaidkeydetails(int UserID, decimal KeyCost)
@@ -368,6 +387,24 @@ namespace DiamandCare.WebApi.Controllers
             try
             {
                 result = await _repo.updatefreetopaidkeydetails(UserID, KeyCost);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Authorize]
+        [Route("UpdateUserSponserJoineeRequired")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> UpdateUserSponserJoineeRequired(int UserID, bool isSponserJoineesReq)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.UpdateUserSponserJoineeRequired(UserID, isSponserJoineesReq);
             }
             catch (Exception ex)
             {

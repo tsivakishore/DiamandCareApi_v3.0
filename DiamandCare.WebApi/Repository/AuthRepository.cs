@@ -1078,6 +1078,37 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
+        public async Task<Tuple<bool, string, UserSponserJoineeModel>> GetUserSponserJoineeRequired(string DcIDorName)
+        {
+            Tuple<bool, string, UserSponserJoineeModel> result = null;
+            UserSponserJoineeModel userSponserDataModel = new UserSponserJoineeModel();
+           
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    con.Open();
+                    parameters.Add("@DcIDorName", DcIDorName, DbType.String);
+                    using (var multi = await con.QueryMultipleAsync("[dbo].[Select_UsernameWithSponserJoineesReqByDCIDorName]", parameters, commandType: CommandType.StoredProcedure))
+                    {
+                        userSponserDataModel = multi.Read<UserSponserJoineeModel>().Single();
+                    }
+                }
+
+                if (userSponserDataModel.UserName != null)
+                    result = Tuple.Create(true, "", userSponserDataModel);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, userSponserDataModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, userSponserDataModel);
+            }
+            return result;
+        }
+
         public async Task<Tuple<bool, string>> updatefreetopaidkeydetails(int UserID, decimal KeyCost)
         {
             Tuple<bool, string> result = null;
@@ -1103,8 +1134,40 @@ namespace DiamandCare.WebApi.Repository
             }
             catch (Exception ex)
             {
-                // ErrorLog.Write(ex);
+                ErrorLog.Write(ex);
                 result = Tuple.Create(false, "Oops! There has been an error while Updating Free to Paid Key.Please try again.");
+            }
+
+            return result;
+        }
+
+        public async Task<Tuple<bool, string>> UpdateUserSponserJoineeRequired(int UserID, bool isSponserJoineesReq)
+        {
+            Tuple<bool, string> result = null;
+            int status = -1;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+                    parameters.Add("@IsSponserJoineesReq", isSponserJoineesReq, DbType.Boolean);
+                    parameters.Add("@CreatedBy", userID, DbType.Int32);
+
+                    status = await cxn.ExecuteScalarAsync<int>("dbo.Update_User_IsSponserJoineesReqStatus", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (status == 0)
+                        result = Tuple.Create(true, "Your sponser joinees required status updated successfully.");
+                    else
+                        result = Tuple.Create(false, "There has been an error while updating sponser joinees required status.Please try again.");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! There has been an error while updating sponser joinees required status.");
             }
 
             return result;

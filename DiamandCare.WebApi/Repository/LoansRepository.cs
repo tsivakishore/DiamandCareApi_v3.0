@@ -841,17 +841,16 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-        public async Task<Tuple<bool, string, List<LoansViewModel>>> GetLoansAmountTransferPendingDownload()
+        public async Task<Tuple<bool, string, List<LoanTransferPendingModel>>> GetLoansAmountTransferPendingDownload()
         {
-            Tuple<bool, string, List<LoansViewModel>> result = null;
-            List<LoansViewModel> lstLoans = new List<LoansViewModel>();
+            Tuple<bool, string, List<LoanTransferPendingModel>> result = null;
+            List<LoanTransferPendingModel> lstLoans = new List<LoanTransferPendingModel>();
             try
-            {
-                var spParams = new DynamicParameters();
+            {              
                 using (SqlConnection con = new SqlConnection(_dvDb))
                 {                   
-                    var list = await con.QueryAsync<LoansViewModel>("[dbo].[Select_Loans_AmountTransferPending_Download]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstLoans = list as List<LoansViewModel>;                   
+                    var list = await con.QueryAsync<LoanTransferPendingModel>("[dbo].[Select_Loans_AmountTransferPending_Download]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstLoans = list as List<LoanTransferPendingModel>;                   
                 }
                 if (lstLoans != null && lstLoans.Count > 0)
                     result = Tuple.Create(true, "", lstLoans);

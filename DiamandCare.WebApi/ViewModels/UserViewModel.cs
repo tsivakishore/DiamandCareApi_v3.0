@@ -40,4 +40,11 @@ namespace DiamandCare.WebApi
         public string UserId { get; set; }
         public string RoleId { get; set; }
     }
+
+    public class UserSponserJoineeModel
+    {
+        public int UserID { get; set; }
+        public string UserName { get; set; }
+        public bool IsSponserJoineesReq { get; set; }
+    }
 }

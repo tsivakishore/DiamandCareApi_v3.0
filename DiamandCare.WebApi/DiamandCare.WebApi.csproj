@@ -174,6 +174,7 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\RegisterByInstitutionController.cs" />
     <Compile Include="Controllers\RegisterKeyController.cs" />
+    <Compile Include="Controllers\RenewLoanAccountController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Repository\MenuRepository.cs" />
     <Compile Include="Repository\RegisterByInstitutionRepository.cs" />
     <Compile Include="Repository\RegisterKeyRepository.cs" />
+    <Compile Include="Repository\RenewLoanAccountRepository.cs" />
     <Compile Include="Repository\ReportsRepository.cs" />
     <Compile Include="Repository\SchoolRepository.cs" />
     <Compile Include="Repository\SharedRepository.cs" />

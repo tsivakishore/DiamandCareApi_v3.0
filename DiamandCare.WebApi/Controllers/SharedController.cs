@@ -238,5 +238,22 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
+        [Authorize]
+        [Route("GetAgainstType")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<AgainstTypeModel>>> GetAgainstType()
+        {
+            Tuple<bool, string, List<AgainstTypeModel>> result = null;
+            try
+            {
+                result = await _srepo.GetAgainstType();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
     }
 }

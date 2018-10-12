@@ -22,7 +22,7 @@ namespace DiamandCare.WebApi.Repository
             Tuple<bool, string, List<OrgTreeData>> result = null;
             List<TreeData> lstTreeData = new List<TreeData>();
             List<OrgTreeData> lstOrgTreeData = new List<OrgTreeData>();
-            IEnumerable<OrgTreeData> lstNewParentTreeData;           
+            IEnumerable<OrgTreeData> lstNewParentTreeData;
             try
             {
                 var parameters = new DynamicParameters();
@@ -42,20 +42,13 @@ namespace DiamandCare.WebApi.Repository
                     {
                         name = x.UserName,
                         UserID = x.UserID,
-                        //UnderID = x.UnderID,
-                        //type = "person",
                         styleClass = setColor(x.Level),
-                        //expanded = true,
-                        //data = new OrgTreeDetailedData
-                        //{
-                        //    Parents = x.Parents,
-                        //    Level = x.Level,
-                        //    FirstName = x.FirstName,
-                        //    LastName = x.LastName,
-                        //    UserName = x.UserName,
-                        //    PhoneNumber = x.PhoneNumber,
-                        //    DcID = x.DcID
-                        //}
+                        Level = x.Level,
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        UserName = x.UserName,
+                        PhoneNumber = x.PhoneNumber,
+                        DcID = x.DcID
                     });
 
                     foreach (var treeItem in lstNewParentTreeData)
@@ -85,20 +78,14 @@ namespace DiamandCare.WebApi.Repository
                     {
                         name = x.UserName,
                         UserID = x.UserID,
-                        //UnderID = x.UnderID,
-                       // type = "person",
-                       styleClass = setColor(x.Level),
-                       // expanded = x.Level < 4 ? true : false,
-                        //data = new OrgTreeDetailedData
-                        //{
-                        //    Parents = x.Parents,
-                        //    Level = x.Level,
-                        //    FirstName = x.FirstName,
-                        //    LastName = x.LastName,
-                        //    UserName = x.UserName,
-                        //    PhoneNumber = x.PhoneNumber,
-                        //    DcID = x.DcID
-                        //}
+                        styleClass = setColor(x.Level),
+                        Level = x.Level,
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        UserName = x.UserName,
+                        PhoneNumber = x.PhoneNumber,
+                        DcID = x.DcID
+
                     });
 
             if (_treeItems != null && _treeItems.Count() > 0)

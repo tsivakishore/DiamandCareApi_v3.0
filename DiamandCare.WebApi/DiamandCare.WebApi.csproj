@@ -190,6 +190,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ActionByID.cs" />
+    <Compile Include="Models\AgainstTypeModel.cs" />
     <Compile Include="Models\BanksModel.cs" />
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\CommonModel.cs" />

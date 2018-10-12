@@ -315,6 +315,41 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+
+        public async Task<Tuple<bool, string, List<AgainstTypeModel>>> GetAgainstType()
+        {
+            Tuple<bool, string, List<AgainstTypeModel>> result = null;
+            List<AgainstTypeModel> lstAgainstType = new List<AgainstTypeModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<AgainstTypeModel>("[dbo].[Select_AgainstType]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstAgainstType = list as List<AgainstTypeModel>;
+
+                    lstAgainstType = list.Select(x => new AgainstTypeModel
+                    {
+                        ID = x.ID,
+                        AgainstType = x.AgainstType,
+                        AgainstDesc = x.AgainstDesc
+                    }).ToList();
+
+                    con.Close();
+                }
+                if (lstAgainstType != null && lstAgainstType.Count > 0)
+                    result = Tuple.Create(true, "", lstAgainstType);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstAgainstType);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstAgainstType);
+            }
+            return result;
+        }
+
         public async Task<Tuple<bool, string>> SendSMS(string PhoneNumber, string RegKey)
         {
             Tuple<bool, string> result = null;

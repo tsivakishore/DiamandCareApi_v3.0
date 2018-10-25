@@ -64,9 +64,9 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("GetIssuedRegisterKeys")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<RegisterKey>>> GetIssuedRegisterKeys()
+        public async Task<Tuple<bool, string, List<RegisterKeyViewModel1>>> GetIssuedRegisterKeys()
         {
-            Tuple<bool, string, List<RegisterKey>> result = null;
+            Tuple<bool, string, List<RegisterKeyViewModel1>> result = null;
             try
             {
                 result = await _repo.GetIssuedRegisterKeys();
@@ -81,9 +81,9 @@ namespace DiamandCare.WebApi.Controllers
         [Authorize]
         [Route("GetIssuedRegisterKeysByUserID")]
         [HttpGet]
-        public async Task<Tuple<bool, string, List<RegisterKey>>> GetIssuedRegisterKeysByUserID()
+        public async Task<Tuple<bool, string, List<RegisterKeyViewModel2>>> GetIssuedRegisterKeysByUserID()
         {
-            Tuple<bool, string, List<RegisterKey>> result = null;
+            Tuple<bool, string, List<RegisterKeyViewModel2>> result = null;
             try
             {
                 result = await _repo.GetIssuedRegisterKeysByUserID();

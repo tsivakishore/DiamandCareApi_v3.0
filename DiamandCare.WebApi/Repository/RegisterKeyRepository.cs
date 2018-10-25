@@ -125,28 +125,16 @@ namespace DiamandCare.WebApi.Repository
             row["ToUserID"] = ToUserID;
             return row;
         }
-        public async Task<Tuple<bool, string, List<RegisterKey>>> GetIssuedRegisterKeys()
+        public async Task<Tuple<bool, string, List<RegisterKeyViewModel1>>> GetIssuedRegisterKeys()
         {
-            Tuple<bool, string, List<RegisterKey>> result = null;
-            List<RegisterKey> lstKeys = new List<RegisterKey>();
+            Tuple<bool, string, List<RegisterKeyViewModel1>> result = null;
+            List<RegisterKeyViewModel1> lstKeys = new List<RegisterKeyViewModel1>();
             try
             {
                 using (SqlConnection con = new SqlConnection(_dcDb))
                 {
-                    con.Open();
-                    var list = await con.QueryAsync<RegisterKey>("[dbo].[Select_IssuedRegisterKeys]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstKeys = list.Select(x => new RegisterKey
-                    {
-                        RegKey = x.RegKey,
-                        PhoneNumber = x.PhoneNumber,
-                        RegKeyStatus = x.RegKeyStatus,
-                        CreatedBy = x.CreatedBy,
-                        CreateDate = x.CreateDate,
-                        KeyType = x.KeyType,
-                        KeyCost = x.KeyCost
-                    }).ToList();
-
-                    con.Close();
+                    var list = await con.QueryAsync<RegisterKeyViewModel1>("[dbo].[Select_IssuedRegisterKeys]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list as List<RegisterKeyViewModel1>;
                 }
                 if (lstKeys != null && lstKeys.Count > 0)
                     result = Tuple.Create(true, "", lstKeys);
@@ -161,19 +149,19 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
-        public async Task<Tuple<bool, string, List<RegisterKey>>> GetIssuedRegisterKeysByUserID()
+        public async Task<Tuple<bool, string, List<RegisterKeyViewModel2>>> GetIssuedRegisterKeysByUserID()
         {
-            Tuple<bool, string, List<RegisterKey>> result = null;
-            List<RegisterKey> lstKeys = new List<RegisterKey>();
+            Tuple<bool, string, List<RegisterKeyViewModel2>> result = null;
+            List<RegisterKeyViewModel2> lstKeys = new List<RegisterKeyViewModel2>();
             try
             {
                 using (SqlConnection con = new SqlConnection(_dcDb))
                 {
                     var parameters = new DynamicParameters();
                     parameters.Add("@userID", UserID, DbType.Int32);
-                    con.Open();
-                    var list = await con.QueryAsync<RegisterKey>("[dbo].[Select_IssuedRegisterKeysByUserID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstKeys = list.Select(x => new RegisterKey
+                    
+                    var list = await con.QueryAsync<RegisterKeyViewModel2>("[dbo].[Select_IssuedRegisterKeysByUserID]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstKeys = list.Select(x => new RegisterKeyViewModel2
                     {
                         ToUserID = x.ToUserID,
                         RegKey = x.RegKey,
@@ -182,10 +170,10 @@ namespace DiamandCare.WebApi.Repository
                         CreatedBy = x.CreatedBy,
                         CreateDate = x.CreateDate,
                         KeyType = x.KeyType,
-                        KeyCost = x.KeyCost
+                        KeyCost = x.KeyCost,
+                        UsedTo = x.UsedTo
                     }).ToList();
-
-                    con.Close();
+                                        
                 }
                 if (lstKeys != null && lstKeys.Count > 0)
                     result = Tuple.Create(true, "", lstKeys);
@@ -315,7 +303,7 @@ namespace DiamandCare.WebApi.Repository
                     parameters.Add("@RegKey", registerKey.RegKey, DbType.String);
                     parameters.Add("@ToUserID", registerKey.ToUserID, DbType.Int32);
                     parameters.Add("@SharedUserID", registerKey.SharedUserID, DbType.Int32);
-                    //parameters.Add("@CreatedBy", userID, DbType.String);
+                    parameters.Add("@PhoneNumber", registerKey.PhoneNumber, DbType.String);
 
                     insertStatus = await cxn.ExecuteScalarAsync<int>("dbo.Update_ShareRegKey", parameters, commandType: CommandType.StoredProcedure);
 

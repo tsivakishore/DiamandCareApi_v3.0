@@ -87,6 +87,22 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+        [Authorize]
+        [Route("UpdateWithdrawFunds")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> UpdateWithdrawFunds(WithdrawFundsViewModel withdrawFundsViewModel)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.UpdateWithdrawFunds(withdrawFundsViewModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
 
         [Authorize]
         [Route("GetWithdrawalTransactions")]

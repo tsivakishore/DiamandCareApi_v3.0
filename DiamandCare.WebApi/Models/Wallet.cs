@@ -105,5 +105,7 @@ namespace DiamandCare.WebApi.Models
         public string CreatedOn { get; set; }
         public int UpdatedBy { get; set; }
         public string UpdatedOn { get; set; }
+        public string TransferByName { get; set; }
+        public string TransferStatus { get; set; }
     }
 }

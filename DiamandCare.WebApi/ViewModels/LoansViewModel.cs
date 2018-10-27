@@ -49,11 +49,12 @@ namespace DiamandCare.WebApi
         public string UserName { get; set; }       
         public double IssuedAmount { get; set; }        
         public string ModeofTransferType { get; set; }        
-        public string LoanTypeDescription { get; set; }      
-        public string LoanApprovalStatus { get; set; }       
+        public string LoanTypeDescription { get; set; }                   
         public string AccountHolderName { get; set; }
         public string AccountNumber { get; set; }
+        public string BankName { get; set; }
         public string IFSCCode { get; set; }
         public string BranchName { get; set; }
+        public string BranchAddress { get; set; }
     }
 }

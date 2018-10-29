@@ -359,5 +359,6 @@ namespace DiamandCare.WebApi
         public const string TRANSFER_PAYMENTS = "Transfer Payments";
         public const string ALL_COMMISSIONS_LOG = "All Commissions Log";
         public const string COMMISSIONS_LOG = "Commissions Log";
+        public const string EXPENSES = "Expenses";
     }
 }

@@ -89,6 +89,63 @@ namespace DiamandCare.WebApi
             return result;
         }
 
+        public async Task<Tuple<bool, string, List<UserReportModel>>> DownloadUserReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<UserReportModel>> result = null;
+            List<UserReportModel> lst = new List<UserReportModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@FromDate", DateTime.ParseExact(reportsModel.FromDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ToDate", DateTime.ParseExact(reportsModel.ToDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);                   
+                    parameters.Add("@UserStatusID", reportsModel.UserStatusID, DbType.Int32);
+                    
+                    var list = await con.QueryAsync<UserReportModel>("[dbo].[rpt_Users]", parameters, commandType: CommandType.StoredProcedure);
+                    lst = list as List<UserReportModel>;
+                }
+
+                if (lst != null && lst.Count() > 0)
+                    result = Tuple.Create(true, "", lst);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lst);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lst);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<UserReportModel>>> DownloadAllUserReport()
+        {
+            Tuple<bool, string, List<UserReportModel>> result = null;
+            List<UserReportModel> lst = new List<UserReportModel>();
+
+            try
+            {               
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {                   
+                    var list = await con.QueryAsync<UserReportModel>("[dbo].[rpt_AllUsers]", commandType: CommandType.StoredProcedure);
+                    lst = list as List<UserReportModel>;
+                }
+
+                if (lst != null && lst.Count() > 0)
+                    result = Tuple.Create(true, "", lst);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lst);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lst);
+            }
+            return result;
+        }
+
         public async Task<Tuple<bool, string, List<LoansViewModel>>> DownloadLoanDetailsReport(ReportsModel reportsModel)
         {
             Tuple<bool, string, List<LoansViewModel>> result = null;
@@ -265,6 +322,41 @@ namespace DiamandCare.WebApi
             {
                 ErrorLog.Write(ex);
                 result = Tuple.Create(false, ex.Message, lstCommissionsLog);
+            }
+            return result;
+        }
+        public async Task<Tuple<bool, string, List<WalletTransactionsViewModel>>> DownloadExpensesReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<WalletTransactionsViewModel>> result = null;
+            List<WalletTransactionsViewModel> lstExpenses = new List<WalletTransactionsViewModel>();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@FromDate", DateTime.ParseExact(reportsModel.FromDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ToDate", DateTime.ParseExact(reportsModel.ToDate, "d/M/yyyy", CultureInfo.InvariantCulture), DbType.DateTime);
+                    parameters.Add("@ReportType", reportsModel.ReportType, DbType.String);
+                    parameters.Add("@UserID", UserID, DbType.Int32);
+
+                    con.Open();
+
+                    var list = await con.QueryAsync<WalletTransactionsViewModel>("[dbo].[rpt_Expenses]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstExpenses = list as List<WalletTransactionsViewModel>;
+
+                    con.Close();
+                }
+
+                if (lstExpenses != null && lstExpenses.Count() > 0)
+                    result = Tuple.Create(true, "", lstExpenses);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstExpenses);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, ex.Message, lstExpenses);
             }
             return result;
         }

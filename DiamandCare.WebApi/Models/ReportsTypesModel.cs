@@ -18,5 +18,6 @@ namespace DiamandCare.WebApi
         public string ToDate { set; get; }
         public string ReportType { set; get; }
         public int UserID { set; get; }
+        public int UserStatusID { set; get; }
     }
 }

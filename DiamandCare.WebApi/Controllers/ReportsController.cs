@@ -222,6 +222,33 @@ namespace DiamandCare.WebApi
                         }
                     }
                 }
+                else if (reportsModel.ReportType == AppConstants.EXPENSES)
+                {
+                    resultWalletTransactions = await _repoReports.DownloadExpensesReport(reportsModel);
+                    if (resultWalletTransactions.Item1)
+                    {
+                        return resultWalletTransactions.Item3.Select(x => new
+                        {
+                            x.UserName,
+                            x.Against,
+                            x.AgainstType,
+                            x.TransactionType,
+                            x.TransactionAmount,
+                            x.Purpose,
+                            x.CreatedOn
+                        });
+                    }
+                    else
+                    {
+                        if (!resultWalletTransactions.Item1 && resultWalletTransactions.Item2 == AppConstants.NO_RECORDS_FOUND)
+                        {
+                            return resultWalletTransactions.Item3.Select(x => new
+                            {
+                                x.Against
+                            });
+                        }
+                    }
+                }
                 else if (reportsModel.ReportType == AppConstants.TRANSFER_PAYMENTS || reportsModel.ReportType == AppConstants.TRANSFER_PAYMENTS)
                 {
 
@@ -235,5 +262,121 @@ namespace DiamandCare.WebApi
             return null;
         }
 
+        [Authorize]
+        [Route("DownloadUserReport")]
+        [HttpPost]
+        public async Task<IEnumerable<dynamic>> DownloadUserReport(ReportsModel reportsModel)
+        {
+            Tuple<bool, string, List<UserReportModel>> result = null;
+
+            try
+            {
+                result = await _repoReports.DownloadUserReport(reportsModel);
+                if (result.Item1)
+                {
+                    return result.Item3.Select(x => new
+                    {
+                        x.Id,
+                        x.UserID,
+                        x.UserName,
+                        x.FirstName,
+                        x.LastName,
+                        x.Email,
+                        x.PhoneNumber,
+                        x.FatherName,
+                        x.AadharNumber,
+                        x.ParentID,
+                        x.SponserID,
+                        x.SponserName,
+                        x.UnderID,
+                        x.UnderName,
+                        x.RegisterFrom,
+                        x.SourceID,
+                        x.SourceName,
+                        x.CreatedBy,
+                        x.CreatedDate,
+                        x.DcID,
+                        x.SecretKey,
+                        x.UserStatusID,
+                        x.UserStatus,
+                        x.LoanWaiveOff,
+                        x.IsSponserJoineesReq
+                    });
+                }
+                else
+                {
+                    if (!result.Item1 && result.Item2 == AppConstants.NO_RECORDS_FOUND)
+                    {
+                        return result.Item3.Select(x => new
+                        {
+                            x.Id
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return null;
+        }
+        [Authorize]
+        [Route("DownloadAllUserReport")]
+        [HttpGet]
+        public async Task<IEnumerable<dynamic>> DownloadAllUserReport()
+        {
+            Tuple<bool, string, List<UserReportModel>> result = null;
+
+            try
+            {
+                result = await _repoReports.DownloadAllUserReport();
+                if (result.Item1)
+                {
+                    return result.Item3.Select(x => new
+                    {
+                        x.Id,
+                        x.UserID,
+                        x.UserName,
+                        x.FirstName,
+                        x.LastName,
+                        x.Email,
+                        x.PhoneNumber,
+                        x.FatherName,
+                        x.AadharNumber,
+                        x.ParentID,
+                        x.SponserID,
+                        x.SponserName,
+                        x.UnderID,
+                        x.UnderName,
+                        x.RegisterFrom,
+                        x.SourceID,
+                        x.SourceName,
+                        x.CreatedBy,
+                        x.CreatedDate,
+                        x.DcID,
+                        x.SecretKey,
+                        x.UserStatusID,
+                        x.UserStatus,
+                        x.LoanWaiveOff,
+                        x.IsSponserJoineesReq
+                    });
+                }
+                else
+                {
+                    if (!result.Item1 && result.Item2 == AppConstants.NO_RECORDS_FOUND)
+                    {
+                        return result.Item3.Select(x => new
+                        {
+                            x.Id
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return null;
+        }
     }
 }

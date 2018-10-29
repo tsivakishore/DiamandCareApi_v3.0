@@ -377,6 +377,7 @@
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UsersByInstitutionViewModel.cs" />
     <Compile Include="ViewModels\UsersRoleViewModel.cs" />
+    <Compile Include="ViewModels\UserStatusViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\WalletTransactionsViewModel.cs" />
   </ItemGroup>

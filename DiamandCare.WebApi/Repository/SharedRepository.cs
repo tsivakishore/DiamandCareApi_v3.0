@@ -350,6 +350,31 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
+        public async Task<Tuple<bool, string, List<UserStatusViewModel>>> GetUserStatus()
+        {
+            Tuple<bool, string, List<UserStatusViewModel>> result = null;
+            List<UserStatusViewModel> lstUserStatus = new List<UserStatusViewModel>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dvDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<UserStatusViewModel>("[dbo].[Select_UserStatus]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstUserStatus = list as List<UserStatusViewModel>;
+                    con.Close();
+                }
+                if (lstUserStatus != null && lstUserStatus.Count > 0)
+                    result = Tuple.Create(true, "", lstUserStatus);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstUserStatus);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstUserStatus);
+            }
+            return result;
+        }
         public async Task<Tuple<bool, string>> SendSMS(string PhoneNumber, string RegKey)
         {
             Tuple<bool, string> result = null;

@@ -255,5 +255,23 @@ namespace DiamandCare.WebApi.Controllers
             }
             return result;
         }
+
+        [Route("GetUserStatus")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<UserStatusViewModel>>> GetUserStatus()
+        {
+            Tuple<bool, string, List<UserStatusViewModel>> result = null;
+
+            try
+            {
+                result = await _srepo.GetUserStatus();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace DiamandCare.WebApi
     {
         public int ID { get; set; }
         public int UserID { get; set; }
+        public string UserName { get; set; }
         public int AgainstTypeID { get; set; }
         public string AgainstType { get; set; }
         public string TransactionType { get; set; }

@@ -126,7 +126,8 @@ namespace DiamandCare.WebApi
                             x.RegKeyStatus,
                             x.CreateDate,
                             KeyType = x.KeyType == "P" ? "Paid" : "Free",
-                            x.KeyCost
+                            x.KeyCost,
+                            x.UsedTo
                         });
                     }
                     else
@@ -174,6 +175,7 @@ namespace DiamandCare.WebApi
                     {
                         return resultWalletTransactions.Item3.Select(x => new
                         {
+                            x.UserName,
                             x.Against,
                             x.AgainstType,
                             x.TransactionType,
@@ -200,6 +202,7 @@ namespace DiamandCare.WebApi
                     {
                         return resultWalletTransactions.Item3.Select(x => new
                         {
+                            x.UserName,
                             x.Against,
                             x.AgainstType,
                             x.TransactionType,

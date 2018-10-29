@@ -17,6 +17,7 @@ namespace DiamandCare.WebApi
         public string SharedTo { get; set; }
         public decimal KeyCost { get; set; }
         public DateTime SharedOn { get; set; }
+        public string UsedTo { get; set; }
     }
 
     public class RegisterKeyViewModel1

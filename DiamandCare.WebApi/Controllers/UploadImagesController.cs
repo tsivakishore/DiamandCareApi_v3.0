@@ -24,7 +24,6 @@ namespace DiamandCare.WebApi
         {
             _repo = repository;
             fileUploadPath = ConfigurationManager.AppSettings["FileUploadPath"].ToString();
-            imagesLoadPath = ConfigurationManager.AppSettings["ImagesLoadPath"].ToString();
         }
 
         [Route("GetImagesByInstitute")]
@@ -73,7 +72,7 @@ namespace DiamandCare.WebApi
                 if (result.FormData == null)
                     return Tuple.Create(false, "BadRequest");
 
-                resTuple = await _repo.SaveImages(result, hfc);
+                resTuple = await _repo.SaveImages(result, hfc, fileUploadPath);
             }
             catch (Exception ex)
             {

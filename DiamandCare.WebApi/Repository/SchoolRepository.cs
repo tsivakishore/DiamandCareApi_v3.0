@@ -62,7 +62,7 @@ namespace DiamandCare.WebApi.Repository
                 var parameters = new DynamicParameters();
                 using (SqlConnection cxn = new SqlConnection(_dcDb))
                 {
-                    parameters.Add("@UserID", obj.UserID, DbType.Int32);                    
+                    parameters.Add("@UserID", obj.UserID, DbType.Int32);
                     parameters.Add("@SchoolName", obj.SchoolName, DbType.String);
                     parameters.Add("@BranchCode", obj.BranchCode, DbType.String);
                     parameters.Add("@Address1", obj.Address1, DbType.String);
@@ -74,12 +74,12 @@ namespace DiamandCare.WebApi.Repository
                     parameters.Add("@Zipcode", obj.Zipcode, DbType.String);
                     parameters.Add("@CreatedBy", userID, DbType.Int32);
 
-                    var resultObj = await cxn.QueryAsync<SchoolModel>("dbo.Insert_School", parameters, commandType: CommandType.StoredProcedure);                    
+                    var resultObj = await cxn.QueryAsync<SchoolModel>("dbo.Insert_School", parameters, commandType: CommandType.StoredProcedure);
 
                     cxn.Close();
                 }
-                
-                    objKey = Tuple.Create(true, "School data inserted successfully.", franchiseData);
+
+                objKey = Tuple.Create(true, "School data inserted successfully.", franchiseData);
             }
             catch (Exception ex)
             {
@@ -126,6 +126,36 @@ namespace DiamandCare.WebApi.Repository
             }
 
             return objKey;
+        }
+
+        public async Task<Tuple<bool, string, SchoolViewModel>> GetSchoolIDOrUserName(string DcIDorName)
+        {
+            Tuple<bool, string, SchoolViewModel> result = null;
+            SchoolViewModel schoolDetails = new SchoolViewModel();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@DcIDorName", DcIDorName, DbType.String);
+                    using (var multi = await con.QueryMultipleAsync("dbo.Select_SchoolIDandName", parameters, commandType: CommandType.StoredProcedure))
+                    {
+                        schoolDetails = multi.Read<SchoolViewModel>().Single();
+                    }
+                }
+
+                if (schoolDetails != null)
+                    result = Tuple.Create(true, "", schoolDetails);
+                else
+                    result = Tuple.Create(false, "No records found", schoolDetails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", schoolDetails);
+            }
+            return result;
         }
     }
 }

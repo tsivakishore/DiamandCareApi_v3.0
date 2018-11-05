@@ -15,6 +15,8 @@ using System.Transactions;
 using System.Net;
 using System.IO;
 using DiamandCare.WebApi.ViewModels;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace DiamandCare.WebApi.Repository
 {
@@ -1082,7 +1084,7 @@ namespace DiamandCare.WebApi.Repository
         {
             Tuple<bool, string, UserSponserJoineeModel> result = null;
             UserSponserJoineeModel userSponserDataModel = new UserSponserJoineeModel();
-           
+
             try
             {
                 var parameters = new DynamicParameters();
@@ -1262,6 +1264,85 @@ namespace DiamandCare.WebApi.Repository
                 changePasswordResult = Tuple.Create(false, "Oops! Change Password failed.Please try again.");
             }
             return changePasswordResult;
+        }
+
+        public async Task<Tuple<bool, string>> UploadUserImage(UserImageModel userImageModel, List<MultipartFileData> multipartFileData, string fileUploadPath)
+        {
+            int submitStatus = -1;
+            Tuple<bool, string> result = null;
+
+            try
+            {
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@UserID", userID, DbType.Int32);
+
+                    MultipartFileData fileContent = multipartFileData[0];
+                    ContentDispositionHeaderValue contentDispositionValue = fileContent.Headers.ContentDisposition;                 
+                    string FileName = UnquoteToken(contentDispositionValue.FileName) ?? String.Empty;
+                    fileUploadPath = fileContent.LocalFileName;
+                    userImageModel.ImageContent = File.ReadAllBytes(fileUploadPath);
+
+                    parameters.Add("@ImageName", FileName, DbType.String);
+                    parameters.Add("@ImageContent", userImageModel.ImageContent, DbType.Binary);
+               
+                    submitStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_UserImage", parameters, commandType: CommandType.StoredProcedure);
+                    if (submitStatus == 0)
+                        result = Tuple.Create(true, "Image has been uploaded successfully.");
+                    else
+                        result = Tuple.Create(false, "Oops! Image upload failed. Please try again.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! Risk benefit applied failed.");
+            }
+
+            return result;
+        }
+
+        private static string UnquoteToken(string token)
+        {
+            if (String.IsNullOrWhiteSpace(token))
+            {
+                return token;
+            }
+
+            if (token.StartsWith("\"", StringComparison.Ordinal) && token.EndsWith("\"", StringComparison.Ordinal) && token.Length > 1)
+            {
+                return token.Substring(1, token.Length - 2);
+            }
+
+            return token;
+        }
+
+        public Tuple<bool, string, UserImageModel> GetUserImage()
+        {
+            Tuple<bool, string, UserImageModel> result = null;
+            UserImageModel userAddress = null;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", userID);
+                    userAddress = con.QuerySingle<UserImageModel>("dbo.Select_UserImage", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                if (userAddress != null)
+                    result = Tuple.Create(true, "", userAddress);
+                else
+                    result = Tuple.Create(false, "No details found.", userAddress);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "No details found.", userAddress);
+            }
+            return result;
         }
 
         public void Dispose()

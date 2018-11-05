@@ -9,6 +9,11 @@ using DiamandCare.WebApi.Models;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using DiamandCare.Core;
+using System.Configuration;
+using System.Text.RegularExpressions;
+using System.IO;
+using System.Net.Http;
+using System.Reflection;
 
 namespace DiamandCare.WebApi.Controllers
 {
@@ -464,6 +469,101 @@ namespace DiamandCare.WebApi.Controllers
                 ErrorLog.Write(ex);
             }
             return result;
+        }
+
+        [Authorize]
+        [Route("userimage")]
+        [HttpPost]
+        public async Task<Tuple<bool, string>> UploaduserImage()
+        {
+            UserImageModel imageModel = new UserImageModel();
+            string fileUploadPath = ConfigurationManager.AppSettings["FileUploadPath"].ToString();
+            Tuple<bool, string> resTuple = null;
+            string filePath = string.Empty;
+            string[] headerColumns = new string[0];
+            Regex csvParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+
+            try
+            {
+                if (!Directory.Exists(fileUploadPath))
+                    Directory.CreateDirectory(fileUploadPath);
+                else
+                {
+                    Array.ForEach(Directory.GetFiles(fileUploadPath),
+                    delegate (string path)
+                    {
+                        File.Delete(path);
+                    });
+                }
+
+                var provider = new MultipartFormDataStreamProvider(fileUploadPath);
+                var result = await Request.Content.ReadAsMultipartAsync(provider);
+
+                if (result.FormData == null)
+                    return Tuple.Create(false, "BadRequest");
+
+                var formData = result.FormData;
+                foreach (var prop in typeof(UserImageModel).GetProperties())
+                {
+                    var curVal = formData[prop.Name];
+                    if (curVal != null && !string.IsNullOrEmpty(curVal))
+                    {
+                        prop.SetValue(imageModel, To(curVal, prop.PropertyType), null);
+                    }
+                }
+
+                //if (UserID == null)
+                //    return Tuple.Create(false, "User not Authenticated");
+
+                if (result.FileData.Count > 0)
+                    resTuple = await _repo.UploadUserImage(imageModel, result.FileData.ToList(), fileUploadPath);
+                else
+                    resTuple = Tuple.Create(false, "There has been an error while applying fee reimbursement.");
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return resTuple;
+        }
+        private object To(IConvertible obj, Type t)
+        {
+            Type u = Nullable.GetUnderlyingType(t);
+
+            if (u != null)
+            {
+                return (obj == null) ? GetDefaultValue(t) : Convert.ChangeType(obj, u);
+            }
+            else
+            {
+                return Convert.ChangeType(obj, t);
+            }
+        }
+
+        [Authorize]
+        [Route("GetUserImageById")]
+        [HttpGet]
+        public Tuple<bool, string, UserImageModel> GetUserImageById()
+        {
+            Tuple<bool, string, UserImageModel> result = null;
+            try
+            {
+                result = _repo.GetUserImage();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
+        private object GetDefaultValue(Type t)
+        {
+            if (t.GetTypeInfo().IsValueType)
+            {
+                return Activator.CreateInstance(t);
+            }
+            return null;
         }
     }
 }

@@ -75,4 +75,12 @@ namespace DiamandCare.WebApi
         public bool LoanWaiveOff { get; set; }
         public bool IsSponserJoineesReq { get; set; }
     }
+
+    public class UserImageModel
+    {
+        public int ID { get; set; }
+        public int UserID { get; set; }
+        public string ImageName { get; set; }
+        public byte[] ImageContent { get; set; }        
+    }
 }

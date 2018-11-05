@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
@@ -19,21 +20,102 @@ namespace DiamandCare.WebApi
     public class UploadImagesRepository
     {
         private string _dcDb = Settings.Default.DiamandCareConnection;
-        string fileUploadPath = string.Empty;
-        string imagesLoadPath = string.Empty;
-        string applicationDirectort = string.Empty;
+        string InstitutionImagesPath = string.Empty;
+        string ImageUrlPath = string.Empty;
+        DataTable _dtName = null;
         public static int UserID;
 
         public UploadImagesRepository()
         {
             UserID = Helper.FindUserByID().UserID;
-            fileUploadPath = ConfigurationManager.AppSettings["FileUploadPath"].ToString();
-            imagesLoadPath = ConfigurationManager.AppSettings["ImagesLoadPath"].ToString();
-            //imagesLoadPath = new Uri(imagesLoadPath).LocalPath;
-            applicationDirectort = ReturlRootUrl();
-            var filePath = HttpContext.Current.Server.MapPath("~/Image/" + "School");
-            var sPath = System.Web.Hosting.HostingEnvironment.MapPath("/FilePath/");
+            InstitutionImagesPath = ConfigurationManager.AppSettings["InstitutionImagesPath"].ToString();
+            ImageUrlPath = ConfigurationManager.AppSettings["ImageUrlPath"].ToString();
         }
+
+
+        public async Task<Tuple<bool, string>> SaveImages(MultipartFormDataStreamProvider multipartFormDataStreamProvider, System.Web.HttpFileCollection hfc, string fileUploadPath)
+        {
+            UploadImagesModel uploadImagesModel = new UploadImagesModel();
+            Tuple<bool, string> resTuple = null;
+            int saveImgStatus = -1;
+
+            try
+            {
+                int iUploadedCnt = 0;
+                var formData = multipartFormDataStreamProvider.FormData;
+                foreach (var prop in typeof(UploadImagesModel).GetProperties())
+                {
+                    var curVal = formData[prop.Name];
+
+                    if (curVal != null && !string.IsNullOrEmpty(curVal))
+                    {
+                        prop.SetValue(uploadImagesModel, To(curVal, prop.PropertyType), null);
+                    }
+                }
+
+                if (!Directory.Exists(InstitutionImagesPath + uploadImagesModel.UserID))
+                    Directory.CreateDirectory(InstitutionImagesPath + uploadImagesModel.UserID);
+
+                for (int iCnt = 0; iCnt <= hfc.Count - 1; iCnt++)
+                {
+                    System.Web.HttpPostedFile hpf = hfc[iCnt];
+
+                    if (hpf.ContentLength > 0)
+                    {
+                        if (!File.Exists(InstitutionImagesPath + uploadImagesModel.UserID + "\\" + Path.GetFileName(hpf.FileName)))
+                        {
+                            hpf.SaveAs(InstitutionImagesPath + uploadImagesModel.UserID + "\\" + Path.GetFileName(hpf.FileName));
+                            iUploadedCnt = iUploadedCnt + 1;
+                        }
+                    }
+                }
+
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@UserID", uploadImagesModel.UserID, DbType.Int32);
+                    parameters.Add("@InstituteImgDocumentTable", CreateTable(uploadImagesModel, multipartFormDataStreamProvider.FileData.ToList(), fileUploadPath, ImageUrlPath + uploadImagesModel.UserID).AsTableValuedParameter());
+                    parameters.Add("@CreatedBy", UserID, DbType.Int32);
+
+                    saveImgStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_InstituteImage", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                resTuple = Tuple.Create(true, "Created successfully");
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return resTuple;
+        }
+
+        private DataTable CreateTable(UploadImagesModel uploadImagesModel, List<MultipartFileData> MultipartFileData, string fileUploadPath, string imgUrl)
+        {
+            _dtName = new DataTable();
+            _dtName.Columns.Add("UserID");
+            _dtName.Columns.Add("ImageUrl");
+            _dtName.Columns.Add("ImageName");
+            _dtName.Columns.Add("ImageContent", typeof(byte[]));
+
+            DataRow newDataRow = null;
+
+            foreach (MultipartFileData fileContent in MultipartFileData)
+            {
+                ContentDispositionHeaderValue contentDispositionValue = fileContent.Headers.ContentDisposition;
+                string Name = UnquoteToken(contentDispositionValue.Name) ?? String.Empty;
+                uploadImagesModel.ImageName = UnquoteToken(contentDispositionValue.FileName) ?? String.Empty;
+                fileUploadPath = fileContent.LocalFileName;
+                newDataRow = _dtName.NewRow();
+
+                uploadImagesModel.ImageContent = File.ReadAllBytes(fileUploadPath);
+                newDataRow = ReturnDataRow(uploadImagesModel.UserID, imgUrl + @"\" + uploadImagesModel.ImageName, uploadImagesModel.ImageContent, uploadImagesModel.ImageName, uploadImagesModel.Description);
+                _dtName.Rows.Add(newDataRow);
+
+            }
+
+            return _dtName;
+        }
+
         public async Task<Tuple<bool, string, List<UploadImagesModel>>> GetImagesByInstitute(string InstituteName)
         {
             Tuple<bool, string, List<UploadImagesModel>> result = null;
@@ -41,17 +123,15 @@ namespace DiamandCare.WebApi
 
             try
             {
-                lstDetails = GetImagesPath(imagesLoadPath + "SaradaSchool");
-
                 var parameters = new DynamicParameters();
-                //using (SqlConnection con = new SqlConnection(_dcDb))
-                //{
-                //    parameters.Add("@InstituteName", InstituteName, DbType.String);
-                //    con.Open();
-                //    var list = await con.QueryAsync<UploadImagesModel>("[dbo].[Select_ReportTypes]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                //    lstDetails = list as List<UploadImagesModel>;
-                //    con.Close();
-                //}
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@InstituteName", InstituteName, DbType.String);
+                    con.Open();
+                    var list = await con.QueryAsync<UploadImagesModel>("[dbo].[Select_InstituteImages]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    lstDetails = list as List<UploadImagesModel>;
+                    con.Close();
+                }
 
                 if (lstDetails != null && lstDetails.Count() > 0)
                     result = Tuple.Create(true, "", lstDetails);
@@ -66,55 +146,6 @@ namespace DiamandCare.WebApi
             return result;
         }
 
-        public async Task<Tuple<bool, string>> SaveImages(MultipartFormDataStreamProvider multipartFormDataStreamProvider, System.Web.HttpFileCollection hfc)
-        {
-            string FileSaveFolderName = string.Empty;
-            UploadImagesModel uploadImagesModel = new UploadImagesModel();
-            Tuple<bool, string> resTuple = null;
-
-            try
-            {
-                int iUploadedCnt = 0;
-                var formData = multipartFormDataStreamProvider.FormData;
-                foreach (var prop in typeof(UploadImagesModel).GetProperties())
-                {
-                    var curVal = formData[prop.Name];
-                    if (prop.Name == "InstituteName")
-                        FileSaveFolderName = formData[prop.Name];
-
-                    if (curVal != null && !string.IsNullOrEmpty(curVal))
-                    {
-                        prop.SetValue(uploadImagesModel, To(curVal, prop.PropertyType), null);
-                    }
-                }
-
-                if (!Directory.Exists(imagesLoadPath + FileSaveFolderName))
-                    Directory.CreateDirectory(imagesLoadPath + FileSaveFolderName);
-
-                for (int iCnt = 0; iCnt <= hfc.Count - 1; iCnt++)
-                {
-                    System.Web.HttpPostedFile hpf = hfc[iCnt];
-
-                    if (hpf.ContentLength > 0)
-                    {
-                        if (!File.Exists(imagesLoadPath + FileSaveFolderName + "\\" + Path.GetFileName(hpf.FileName)))
-                        {
-                            hpf.SaveAs(imagesLoadPath + FileSaveFolderName + "\\" + Path.GetFileName(hpf.FileName));
-                            iUploadedCnt = iUploadedCnt + 1;
-                        }
-                    }
-                }
-
-
-                resTuple = Tuple.Create(true, "Created successfully");
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Write(ex);
-            }
-            return resTuple;
-        }
-
         public List<UploadImagesModel> GetImagesPath(String folderName)
         {
             DirectoryInfo Folder;
@@ -127,26 +158,13 @@ namespace DiamandCare.WebApi
 
             for (int i = 0; i < Images.Length; i++)
             {
-                obj.Url = String.Format(@"{0}/{1}", folderName, Images[i].Name);
-                obj.FileName = Images[i].Name;
-                obj.InstituteName = Images[i].Name;
+                obj.ImageUrl = String.Format(@"{0}/{1}", folderName, Images[i].Name);
+                obj.ImageName = Images[i].Name;
+                obj.ImageName = Images[i].Name;
                 lstImages.Add(obj);
             }
 
             return lstImages;
-        }
-
-        public string ReturlRootUrl()
-        {
-            //if (!Directory.Exists(Path.Combine(_strDirectoryPath, instituteName)))
-            //{
-            //    Directory.CreateDirectory(Path.Combine(_strDirectoryPath, instituteName));
-            //}
-
-            string _strDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
-            var lastFolder = Path.GetDirectoryName(_strDirectoryPath);
-            var pathWithoutLastFolder = Path.GetDirectoryName(lastFolder);
-            return pathWithoutLastFolder + "\\";
         }
 
         private object To(IConvertible obj, Type t)
@@ -170,6 +188,31 @@ namespace DiamandCare.WebApi
                 return Activator.CreateInstance(t);
             }
             return null;
+        }
+
+        private DataRow ReturnDataRow(int UserID, string ImageUrl, byte[] ImageContent, string ImageName, string Description)
+        {
+            DataRow row = null;
+            row = _dtName.NewRow();
+            row["UserID"] = UserID;
+            row["ImageUrl"] = ImageUrl;
+            row["ImageContent"] = ImageContent;
+            row["ImageName"] = ImageName;
+            return row;
+        }
+        private static string UnquoteToken(string token)
+        {
+            if (String.IsNullOrWhiteSpace(token))
+            {
+                return token;
+            }
+
+            if (token.StartsWith("\"", StringComparison.Ordinal) && token.EndsWith("\"", StringComparison.Ordinal) && token.Length > 1)
+            {
+                return token.Substring(1, token.Length - 2);
+            }
+
+            return token;
         }
     }
 }

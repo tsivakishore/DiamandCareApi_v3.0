@@ -257,6 +257,7 @@
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
+    <Compile Include="Controllers\EmployeeMasterController.cs" />
     <Compile Include="Controllers\FeeMasterController.cs" />
     <Compile Include="Controllers\FranchiseController.cs" />
     <Compile Include="Controllers\LoanController.cs" />
@@ -288,6 +289,7 @@
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\CommonModel.cs" />
     <Compile Include="Models\CourseMasterModel.cs" />
+    <Compile Include="Models\EmployeeMasterModel.cs" />
     <Compile Include="Models\EventsModel.cs" />
     <Compile Include="Models\FeeMasterModel.cs" />
     <Compile Include="Models\FeeMastersModel.cs" />
@@ -331,6 +333,7 @@
     </Compile>
     <Compile Include="Repository\AuthRepository.cs" />
     <Compile Include="Repository\CourseRepository.cs" />
+    <Compile Include="Repository\EmployeeMasterRepository.cs" />
     <Compile Include="Repository\ErrorLogRepository.cs" />
     <Compile Include="Repository\FeeMasterRepository.cs" />
     <Compile Include="Repository\FranchiseRepository.cs" />

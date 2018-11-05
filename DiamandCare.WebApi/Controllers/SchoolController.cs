@@ -72,5 +72,23 @@ namespace DiamandCare.WebApi.Controllers
 
             return result;
         }
+
+        [Authorize]
+        [Route("GetSchoolIDorName")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, SchoolViewModel>> GetSchoolIDOrUserName(string DcIDorName)
+        {
+            Tuple<bool, string, SchoolViewModel> result = null;
+            try
+            {
+                result = await _repo.GetSchoolIDOrUserName(DcIDorName);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
     }
 }

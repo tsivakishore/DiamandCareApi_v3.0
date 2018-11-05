@@ -52,10 +52,12 @@ namespace DiamandCare.WebApi.Repository
             }
             return result;
         }
+        
         public async Task<Tuple<bool, string, List<FranchiseViewModel>>> GetFranchiseDetails()
         {
             Tuple<bool, string, List<FranchiseViewModel>> result = null;
             List<FranchiseViewModel> lstDetails = new List<FranchiseViewModel>();
+
 
             try
             {

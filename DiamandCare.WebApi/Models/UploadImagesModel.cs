@@ -7,9 +7,10 @@ namespace DiamandCare.WebApi
 {
     public class UploadImagesModel
     {
-        public int InstituteID { get; set; }
-        public string InstituteName { get; set; }
-        public string FileName { get; set; }
-        public string Url { get; set; }
+        public int UserID { get; set; }
+        public string ImageName { get; set; }
+        public string ImageUrl { get; set; }
+        public byte[] ImageContent { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -74,6 +74,7 @@ namespace DiamandCare.WebApi
                 {
                     var parameters = new DynamicParameters();
                     parameters.Add("@UserID", uploadImagesModel.UserID, DbType.Int32);
+                    parameters.Add("@Description", uploadImagesModel.Description, DbType.String);
                     parameters.Add("@InstituteImgDocumentTable", CreateTable(uploadImagesModel, multipartFormDataStreamProvider.FileData.ToList(), fileUploadPath, ImageUrlPath + uploadImagesModel.UserID).AsTableValuedParameter());
                     parameters.Add("@CreatedBy", UserID, DbType.Int32);
 
@@ -129,7 +130,15 @@ namespace DiamandCare.WebApi
                     parameters.Add("@InstituteName", InstituteName, DbType.String);
                     con.Open();
                     var list = await con.QueryAsync<UploadImagesModel>("[dbo].[Select_InstituteImages]", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 300);
-                    lstDetails = list as List<UploadImagesModel>;
+
+                    lstDetails = list.Select(x => new UploadImagesModel
+                    {
+                        ImageUrl = x.ImageUrl,
+                        Description = x.Description,
+                        SchoolName = x.SchoolName,
+                        ImageName = x.ImageName
+                    }).ToList();
+
                     con.Close();
                 }
 

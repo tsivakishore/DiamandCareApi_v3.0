@@ -273,6 +273,7 @@
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\StudentMappingController.cs" />
     <Compile Include="Controllers\TreeDataController.cs" />
+    <Compile Include="Controllers\UpgradeToEmployeeController.cs" />
     <Compile Include="Controllers\UploadImagesController.cs" />
     <Compile Include="Controllers\UserBankDetailsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -321,6 +322,7 @@
     <Compile Include="Models\TicketTypesModel.cs" />
     <Compile Include="Models\TreeData.cs" />
     <Compile Include="Models\UnderModel.cs" />
+    <Compile Include="Models\UpgradeEmployeeModel.cs" />
     <Compile Include="Models\UploadImagesModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserBankDetails.cs" />
@@ -349,6 +351,7 @@
     <Compile Include="Repository\SharedRepository.cs" />
     <Compile Include="Repository\StudentMappingRepository.cs" />
     <Compile Include="Repository\TreeDataRepository.cs" />
+    <Compile Include="Repository\UpgradeToEmployeeRepository.cs" />
     <Compile Include="Repository\UploadImagesRepository.cs" />
     <Compile Include="Repository\UserBankDetailsRepository.cs" />
     <Compile Include="Repository\WalletRepository.cs" />

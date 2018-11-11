@@ -1175,6 +1175,37 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
+        public async Task<Tuple<bool, string>> UpdateUserStatus(int userID, int userStatusID)
+        {
+            Tuple<bool, string> result = null;
+            int status = -1;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection cxn = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", userID, DbType.Int32);
+                    parameters.Add("@UserStatusID", userStatusID, DbType.Int32);
+
+                    status = await cxn.ExecuteScalarAsync<int>("[dbo].[Update_UserStatus]", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (status >= 0)
+                        result = Tuple.Create(true, "User status updated successfully.");
+                    else
+                        result = Tuple.Create(false, "There has been an error while updating user status.Please try again.");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "Oops! There has been an error while updating user status.");
+            }
+
+            return result;
+        }
+
         //Get user details by DCID or Username
         public async Task<Tuple<bool, string, UserProfileViewModel>> GetUserDetailsByDCIDOrUserName(string DCIDorName)
         {
@@ -1279,14 +1310,14 @@ namespace DiamandCare.WebApi.Repository
                     parameters.Add("@UserID", userID, DbType.Int32);
 
                     MultipartFileData fileContent = multipartFileData[0];
-                    ContentDispositionHeaderValue contentDispositionValue = fileContent.Headers.ContentDisposition;                 
+                    ContentDispositionHeaderValue contentDispositionValue = fileContent.Headers.ContentDisposition;
                     string FileName = UnquoteToken(contentDispositionValue.FileName) ?? String.Empty;
                     fileUploadPath = fileContent.LocalFileName;
                     userImageModel.ImageContent = File.ReadAllBytes(fileUploadPath);
 
                     parameters.Add("@ImageName", FileName, DbType.String);
                     parameters.Add("@ImageContent", userImageModel.ImageContent, DbType.Binary);
-               
+
                     submitStatus = await cxn.ExecuteScalarAsync<int>("dbo.Insert_UserImage", parameters, commandType: CommandType.StoredProcedure);
                     if (submitStatus == 0)
                         result = Tuple.Create(true, "Image has been uploaded successfully.");

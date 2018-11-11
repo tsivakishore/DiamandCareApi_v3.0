@@ -327,6 +327,7 @@ namespace DiamandCare.WebApi
         public const string DISPLAY_MESSAGE_2 = "Payment not done for your previous loan";
 
         public const string NO_RECORDS_FOUND = "No records found";
+        public const string NO_UNDER_EMPLOYEE = "No Under Employees";
         public const string DISPLAY_MESSAGE_3 = "Already applied for personal loan in this level";
         public const string DISPLAY_MESSAGE_4 = "Risk loan already applied";
         public const string DISPLAY_MESSAGE_5 = "Applied for Rinsk benefit, can't apply for any loan";

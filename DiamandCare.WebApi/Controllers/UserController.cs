@@ -419,6 +419,24 @@ namespace DiamandCare.WebApi.Controllers
             return result;
         }
 
+        [Authorize]
+        [Route("UpdateUserStatus")]
+        [HttpGet]
+        public async Task<Tuple<bool, string>> UpdateUserStatus(int userID, int userStatusID)
+        {
+            Tuple<bool, string> result = null;
+            try
+            {
+                result = await _repo.UpdateUserStatus(userID, userStatusID);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
         //Get user details by DCIC or Username
         [Authorize]
         [Route("UserDetailsByDCIDOrUserName")]

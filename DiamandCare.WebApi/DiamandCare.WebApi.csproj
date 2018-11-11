@@ -358,6 +358,7 @@
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\CourseMasterViewModel.cs" />
     <Compile Include="ViewModels\CredentialsViewModel.cs" />
+    <Compile Include="ViewModels\EmployeeViewModel.cs" />
     <Compile Include="ViewModels\ErrorLogViewModel.cs" />
     <Compile Include="ViewModels\FacebookAuthViewModel.cs" />
     <Compile Include="ViewModels\FeeMasterViewModel.cs" />

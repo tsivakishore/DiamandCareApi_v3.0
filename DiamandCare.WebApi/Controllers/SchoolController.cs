@@ -1,6 +1,7 @@
 ﻿using DiamandCare.Core;
 using DiamandCare.WebApi.Models;
 using DiamandCare.WebApi.Repository;
+using DiamandCare.WebApi.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,6 +83,24 @@ namespace DiamandCare.WebApi.Controllers
             try
             {
                 result = await _repo.GetSchoolIDOrUserName(DcIDorName);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
+
+        [Route("GetEmployesImages")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, List<EmployeeViewModel>>> GetEmployesImages()
+        {
+            Tuple<bool, string, List<EmployeeViewModel>> result = null;
+            try
+            {
+
+                result = await _repo.GetEmployesImages();
             }
             catch (Exception ex)
             {

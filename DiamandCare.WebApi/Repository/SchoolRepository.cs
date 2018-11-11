@@ -2,6 +2,7 @@
 using DiamandCare.Core;
 using DiamandCare.WebApi.Models;
 using DiamandCare.WebApi.Properties;
+using DiamandCare.WebApi.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -154,6 +155,42 @@ namespace DiamandCare.WebApi.Repository
             {
                 ErrorLog.Write(ex);
                 result = Tuple.Create(false, "", schoolDetails);
+            }
+            return result;
+        }
+
+        public async Task<Tuple<bool, string, List<EmployeeViewModel>>> GetEmployesImages()
+        {
+            Tuple<bool, string, List<EmployeeViewModel>> result = null;
+            List<EmployeeViewModel> lstDetails = new List<EmployeeViewModel>();
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    con.Open();
+                    var list = await con.QueryAsync<EmployeeViewModel>("[dbo].[Select_EmployeesImages]", commandType: CommandType.StoredProcedure, commandTimeout: 300);
+
+                    lstDetails = list.Select(x => new EmployeeViewModel
+                    {
+                        EmployeeName = x.EmployeeName,
+                        Designation = x.Designation,
+                        ImageName = x.ImageName,
+                        ImageContent = x.ImageContent
+                    }).ToList();
+
+                    con.Close();
+                }
+
+                if (lstDetails != null && lstDetails.Count() > 0)
+                    result = Tuple.Create(true, "", lstDetails);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, lstDetails);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "", lstDetails);
             }
             return result;
         }

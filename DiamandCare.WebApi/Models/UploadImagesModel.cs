@@ -12,5 +12,6 @@ namespace DiamandCare.WebApi
         public string ImageUrl { get; set; }
         public byte[] ImageContent { get; set; }
         public string Description { get; set; }
+        public string SchoolName { get; set; }
     }
 }

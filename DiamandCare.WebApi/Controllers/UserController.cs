@@ -575,6 +575,23 @@ namespace DiamandCare.WebApi.Controllers
             return result;
         }
 
+        [Authorize]
+        [Route("GetUserIdCardDetailsById")]
+        [HttpGet]
+        public Tuple<bool, string, UserIDCardModel> GetUserIdCardDetailsById()
+        {
+            Tuple<bool, string, UserIDCardModel> result = null;
+            try
+            {
+                result = _repo.GetUserIdCardDetailsById();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+            return result;
+        }
+
         private object GetDefaultValue(Type t)
         {
             if (t.GetTypeInfo().IsValueType)

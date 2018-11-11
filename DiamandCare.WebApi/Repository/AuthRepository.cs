@@ -1376,6 +1376,33 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
+        public Tuple<bool, string, UserIDCardModel> GetUserIdCardDetailsById()
+        {
+            Tuple<bool, string, UserIDCardModel> result = null;
+            UserIDCardModel data = null;
+
+            try
+            {
+                var parameters = new DynamicParameters();
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    parameters.Add("@UserID", userID);
+                    data = con.QuerySingle<UserIDCardModel>("dbo.Select_IDCardDetails", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+                if (data != null)
+                    result = Tuple.Create(true, "", data);
+                else
+                    result = Tuple.Create(false, "No details found.", data);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, "No details found.", data);
+            }
+            return result;
+        }
+
         public void Dispose()
         {
             _roleManager.Dispose();

@@ -592,6 +592,23 @@ namespace DiamandCare.WebApi.Controllers
             return result;
         }
 
+        [Authorize]
+        [Route("GetIdCardImages")]
+        [HttpGet]
+        public async Task<Tuple<bool, string, IdCardsViewModel>> GetIdCardImages()
+        {
+            Tuple<bool, string, IdCardsViewModel> result = null;
+            try
+            {
+                result = await _repo.GetIdCardImages();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+            }
+
+            return result;
+        }
         private object GetDefaultValue(Type t)
         {
             if (t.GetTypeInfo().IsValueType)

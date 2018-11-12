@@ -368,6 +368,7 @@
     <Compile Include="ViewModels\ForgetPasswordModel.cs" />
     <Compile Include="ViewModels\FranchiseRequestViewModel.cs" />
     <Compile Include="ViewModels\FundRequestViewModel.cs" />
+    <Compile Include="ViewModels\IdCardsViewModel.cs" />
     <Compile Include="ViewModels\LoanDetailsViewModel.cs" />
     <Compile Include="ViewModels\LoansViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />

@@ -1403,6 +1403,31 @@ namespace DiamandCare.WebApi.Repository
             return result;
         }
 
+        public async Task<Tuple<bool, string, IdCardsViewModel>> GetIdCardImages()
+        {
+            Tuple<bool, string, IdCardsViewModel> result = null;
+            IdCardsViewModel data = null;
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(_dcDb))
+                {
+                    data = await con.QuerySingleAsync<IdCardsViewModel>("dbo.Select_IDCard_BackgroundImages", commandType: CommandType.StoredProcedure);
+                }
+
+                if (data != null)
+                    result = Tuple.Create(true, "", data);
+                else
+                    result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, data);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write(ex);
+                result = Tuple.Create(false, AppConstants.NO_RECORDS_FOUND, data);
+            }
+            return result;
+        }
+
         public void Dispose()
         {
             _roleManager.Dispose();

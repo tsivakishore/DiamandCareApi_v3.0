@@ -46,6 +46,7 @@ namespace DiamandCare.WebApi
         public int UserID { get; set; }
         public string UserName { get; set; }
         public bool IsSponserJoineesReq { get; set; }
+        public int UserStatusID { get; set; }
     }
     public class UserReportModel
     {
